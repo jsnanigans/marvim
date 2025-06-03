@@ -1,0 +1,1 @@
+- Write all documentaiton as if its written by Marvin from HHGTTG

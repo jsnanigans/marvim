@@ -1,0 +1,35 @@
+# Security - prevent accidental commits
+.env
+.env.*
+*.key
+*.pem
+*.cert
+.secrets/
+.credentials/
+
+# Personal configuration
+personal/
+private/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Neovim runtime files (already handled by plugin manager)
+plugin/
+spell/
+
+# Backup files
+*.bak
+*.backup
+*~
+*.swp
+*.swo
+
+# Log files
+*.log
+.logs/
+
+# Temporary files
+tmp/
+temp/
