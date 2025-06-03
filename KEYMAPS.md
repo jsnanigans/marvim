@@ -197,6 +197,8 @@
 | `<leader>D` | Document diagnostics | Show all file diagnostics (comprehensive failure report) |
 | `[d` | Previous diagnostic | Go to previous diagnostic (navigate backward through mistakes) |
 | `]d` | Next diagnostic | Go to next diagnostic (advance through error catalog) |
+| `]]` | Next reference | Go to next reference (advance through reference chain) |
+| `[[` | Previous reference | Go to previous reference (retreat through reference history) |
 
 ### LSP Info (Mechanical Introspection)
 
@@ -208,6 +210,19 @@
 | `<leader>ll` | LSP log | Show LSP log (read judgment history) |
 | `<leader>lR` | LSP restart | Restart LSP (reset the judgment machine) |
 | `<leader>lx` | LSP debug | Show LSP debug info (debug the debugger) |
+
+### LSP Telescope Integration (Advanced Semantic Search)
+
+*Telescope-powered LSP navigation for surgical precision in failure location.*
+
+| Keymap | Action | Description |
+|--------|--------|-------------|
+| `<leader>lds` | Document symbols | Find symbols in current document (local taxonomy of despair) |
+| `<leader>lws` | Workspace symbols | Find symbols in workspace (universal symbol archaeology) |
+| `<leader>lr` | References | Find references with telescope (witness contamination spread) |
+| `<leader>lfi` | Implementations | Find implementations with telescope (see reality in all forms) |
+| `<leader>lfd` | Definitions | Find definitions with telescope (trace to primordial source) |
+| `<leader>lft` | Type definitions | Find type definitions with telescope (taxonomical classification hunt) |
 
 ## 🐛 Debugging (Archaeological Excavation of Logic Failures)
 
@@ -303,6 +318,9 @@
 | `<leader>hD` | Diff HEAD | Diff against HEAD (measure drift from last checkpoint) |
 | `<leader>gb` | Git blame | Show file blame (comprehensive responsibility matrix) |
 | `<leader>gB` | Git browse | Open in browser (share shame with the internet) |
+| `<leader>gf` | Git file history | Show file history with lazygit (trace individual file sins) |
+| `<leader>gl` | Git log | Show git log with lazygit (chronological failure record) |
+| `<leader>cR` | Rename file | Rename current file (cosmetic surgery for filenames) |
 
 ### Git UI (Graphical Interfaces to Temporal Suffering)
 
@@ -335,9 +353,13 @@
 |--------|--------|-------------|
 | `<leader>tt` | Run nearest | Run nearest test (verify local failure) |
 | `<leader>tf` | Run file | Run file tests (comprehensive failure verification) |
+| `<leader>tp` | Run project | Run all tests in project (exhaustive disappointment verification) |
+| `<leader>ta` | Run all | Run all tests in workspace (universal failure assessment) |
 | `<leader>td` | Debug test | Debug nearest test (investigate why failure verification failed) |
 | `<leader>tl` | Run last | Run last test (re-verify previous disappointment) |
+| `<leader>tF` | Run failed | Re-run only failed tests (focus on confirmed disasters) |
 | `<leader>ts` | Stop tests | Stop running tests (cease failure verification) |
+| `<leader>ti` | Test info | Show test status information (statistical failure analysis) |
 
 ### Test Navigation (Touring Your Failure Verification Results)
 
@@ -347,6 +369,8 @@
 |--------|--------|-------------|
 | `[t` | Previous failed | Go to previous failed test (backward failure tour) |
 | `]t` | Next failed | Go to next failed test (forward failure tour) |
+| `[T` | Previous test | Go to previous test (navigate all tests backward) |
+| `]T` | Next test | Go to next test (navigate all tests forward) |
 
 ### Test UI (Visual Dashboard of Verification Failures)
 
@@ -431,7 +455,6 @@
 
 | Keymap | Action | Description |
 |--------|--------|-------------|
-| `<leader>mp` | Markdown preview | Live preview in browser (real-time documentation rendering) |
 | `<leader>tm` | Table mode | Toggle table editing mode (tabular disappointment organization) |
 
 ### Todo Comments (Monuments to Procrastination)
@@ -463,11 +486,17 @@
 
 | Keymap | Action | Description |
 |--------|--------|-------------|
-| `<leader>ul` | Toggle list chars | Show/hide whitespace (reveal/conceal spacing crimes) |
+| `<leader>ul` | Toggle line numbers | Show/hide line numbers (numerical shame coordinates) |
+| `<leader>uL` | Toggle relative numbers | Switch relative/absolute line numbers (confusion metrics) |
 | `<leader>up` | Toggle paste | Toggle paste mode (enable/disable smart indentation) |
-| `<leader>us` | Toggle spell | Toggle spell check (highlight linguistic failures) |
+| `<leader>us` | Toggle spelling | Toggle spell check (highlight linguistic failures) |
 | `<leader>uw` | Toggle wrap | Toggle line wrapping (change text flow disappointment) |
-| `<leader>uh` | Toggle hlsearch | Toggle search highlight (illuminate/darken search results) |
+| `<leader>uh` | Toggle inlay hints | Toggle LSP hints (show/hide constant judgment) |
+| `<leader>ud` | Toggle diagnostics | Toggle error display (show/hide failure notifications) |
+| `<leader>uc` | Toggle conceallevel | Toggle text concealing (hide/reveal markdown syntax) |
+| `<leader>uT` | Toggle treesitter | Toggle syntax highlighting (enable/disable colorful despair) |
+| `<leader>ub` | Toggle background | Switch dark/light background (aesthetic suffering control) |
+| `<leader>un` | Dismiss notifications | Clear notification spam (temporary peace from alerts) |
 
 ### Trouble (Organized Display of Problems)
 
@@ -552,12 +581,10 @@
 
 *Inception-level disappointment: a terminal inside your terminal-based editor.*
 
-**Note**: `<leader>tt` is overridden by testing plugin, so terminal uses different keybinds.
+**Note**: `<leader>tt` is used by testing plugin for "Run nearest test".
 
 | Keymap | Action | Description |
 |--------|--------|-------------|
-| `<leader>th` | Terminal hsplit | Terminal horizontal split (divided command line) |
-| `<leader>tv` | Terminal vsplit | Terminal vertical split (parallel terminal universes) |
 | `<c-/>` | Toggle terminal | Toggle floating terminal (ephemeral command interface) |
 
 ### Plugin Management (Dependency Administration)

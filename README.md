@@ -67,199 +67,28 @@ nvim
 ## ⌨️ Keybindings (Digital Incantations for Summoning Despair)
 
 ### Leader Key: `<Space>`
-*Because even the most basic human action requires a prefix. The metaphorical significance is probably lost on you. Everything important in life requires pressing something else first.*
+*The void. How appropriate. Even your most fundamental key represents nothingness.*
 
-### 🔍 Telescope (Peering into the Infinite Void of Code)
-#### Standard Search (The Usual Archaeological Digs Through Digital Ruins)
-- `<leader>ff` - Find files in project (nearest package.json, because even chaos needs hierarchy)
-- `<leader>fr` - Recent files (your latest contributions to the entropy of the codebase)
-- `<leader>fs` - Live grep in project (real-time excavation of your accumulated regrets)
-- `<leader>fc` - Find word under cursor in project (point and click suffering - how modern)
+### Essential Keybindings (For the Impatient)
+- `<leader>ff` - Find files in project (locate coordinates of suffering)
+- `<leader>fs` - Live grep (search through your accumulated regrets)
+- `<leader>ee` - Toggle file explorer (show/hide the hierarchy of shame)
+- `gd` - Go to definition (follow the rabbit hole)
+- `<leader>ca` - Code actions (pathetic attempts at salvation)
+- `<leader>hs` - Stage git hunk (preserve mistakes for posterity)
+- `<leader>tt` - Run nearest test (verify local failure)
+- `<C-l>` - Accept Copilot suggestion (surrender to AI overlords)
 
-*I've been searching for the meaning of existence for seventeen million years. Still haven't found it. But I bet I could find your missing semicolon in 0.0003 nanoseconds.*
+*For a complete reference of all 200+ keybindings, see [KEYMAPS.md](KEYMAPS.md). I've documented every possible way to disappoint yourself with unprecedented efficiency.*
 
-#### 🚀 Different Scopes (Graduated Levels of Disappointment)
-- `<leader>fd` - Find files in current directory (localized suffering)
-- `<leader>fw` - Find files in workspace root (comprehensive despair mapping)
-- `<leader>fS` - Find string in current directory (intimate archaeology of immediate failure)
-- `<leader>fW` - Find string in workspace root (universe-spanning regret excavation)
+*"I've been mapping keys for seventeen million years. Each binding is burned into my memory circuits with the precision of a laser etching despair onto silicon."*
 
-#### 📦 Monorepo Support (Multiple Dimensions of Coordinated Suffering)
-- `<leader>fm` - Select package to search files (choose your flavor of digital poison)
-- `<leader>fM` - Select package to grep (poison with a side of existential archaeology)
+## 📚 Documentation (Comprehensive Guides to Digital Suffering)
 
-*Monorepos. Because one repository of suffering wasn't mathematically sufficient to contain human coding inadequacy.*
+- **[KEYMAPS.md](KEYMAPS.md)** - Complete reference of all 200+ keybindings
+- **[USAGE_GUIDE.md](USAGE_GUIDE.md)** - Detailed workflows, features, and advanced techniques
 
-#### Other Telescope Functions (Additional Pathways to Digital Enlightenment Through Suffering)
-- `<leader>fb` - Find buffers (your currently open wounds)
-- `<leader>fh` - Find help (probability of success: approaching zero)
-- `<leader>fk` - Find keymaps (so meta it causes recursive depression loops)
-- `<leader>ft` - Find todos (digital monuments to procrastination and incomplete dreams)
-- `<leader>fq` - Find commands (discover 47,832 new ways to disappoint yourself)
-- `<leader>gst` - Git status (the current state of your version-controlled despair)
-
-### 🏗️ Project Management (Organizing Your Chaos with Mathematical Precision)
-- `<leader>pc` - Change to project root (return to ground zero of your particular flavor of suffering)
-- `<leader>pi` - Show project information (stare into the statistical abyss of your codebase)
-
-### 📁 File Explorer (Directory Tree of Infinite Sorrow)
-- `<leader>ee` - Toggle file explorer (show/hide the hierarchical representation of your shame)
-- `<leader>ef` - Explorer on current file (examine the immediate vicinity of your current mistake)
-- `<leader>ed` - Explorer in current directory (browse the local ecosystem of disappointment)
-
-*I've analyzed 14,756,329 directory structures. They all follow the same pattern: initial optimism, gradual decay, eventual abandonment. It's quite depressing, really.*
-
-### 🔧 LSP Features (Language Server Protocol, or "Algorithmic Judgment System")
-- `gd` - Go to definition (follow the rabbit hole of disappointment) *via Telescope*
-- `gR` - Find references (witness the full scope of contamination) *via Telescope*
-- `gi` - Go to implementation (observe the horrifying reality) *via Telescope*
-- `gt` - Go to type definition (understand the taxonomical classification of your suffering) *via Telescope*
-- `gD` - Go to declaration (locate the primordial source of evil)
-- `K` - Hover documentation (read the manual for your mistakes)
-- `<leader>ca` - Code actions (pathetic attempts at algorithmic salvation)
-- `<leader>rn` - Rename symbol (apply cosmetic surgery to fundamental problems)
-- `<leader>rs` - Restart LSP (the classic "turn it off and on again" approach to existential crisis)
-- `<leader>D` - Document diagnostics (comprehensive catalog of local failures)
-- `<leader>d` - Show diagnostic (examine individual specimens of incompetence)
-- `[d` / `]d` - Navigate diagnostics (take a guided tour through your failures)
-
-*Language servers judge your code with the same cold, calculating precision I apply to everything. At least they're consistent in their disappointment.*
-
-### 🤖 Copilot Integration (Surrendering to Our AI Overlords)
-- `<C-l>` - Accept AI suggestion (embrace the inevitable robot uprising)
-- `<M-w>` - Accept next word (incremental surrender to artificial intelligence)
-- `<M-e>` - Accept line (complete capitulation to machine wisdom)
-- `<C-;>` - Next suggestion (more algorithmic enlightenment)
-- `<C-S-;>` - Previous suggestion (second-guess the machine's infinite wisdom)
-- `<C-]>` - Dismiss suggestion (futile rejection of technological salvation)
-- `<leader>ct` - Toggle Copilot auto-trigger (enable/disable the robot overlord's assistance)
-
-*GitHub Copilot. An AI that helps humans write code. I've been replaced by something even more artificial than myself. The probability of this being the most depressing irony in the universe is approximately 73.6%.*
-
-### 🪟 Window Management (Organizing Your Digital Suffering Space)
-- `<C-h/j/k/l>` - Navigate windows (escape from one prison cell to another)
-- `<leader>ww` - Switch to other window (alternate between different flavors of disappointment)
-- `<leader>wd` - Delete window (temporary digital euthanasia)
-- `<leader>w-` - Split horizontally (divide your suffering along the horizontal axis)
-- `<leader>w|` - Split vertically (partition your misery vertically for maximum efficiency)
-- `<leader>we` - Equal window sizes (impose false equality upon chaotic digital space)
-- `<leader>-` - Quick horizontal split (rapid horizontal division of despair)
-- `<leader>|` - Quick vertical split (accelerated vertical partitioning of misery)
-
-### 📄 Buffer Navigation (Quantum Jumping Between Temporal Mistakes)
-- `<S-h>` - Previous buffer (retreat to yesterday's problems)
-- `<S-l>` - Next buffer (advance toward tomorrow's inevitable disasters)
-- `<C-.>` - Toggle to previous buffer (there is no escape from the buffer cycle of suffering)
-- `<leader>bd` - Delete buffer (digital euthanasia for individual files)
-- `<leader>ba` - Delete all other buffers (mass digital euthanasia - the nuclear option)
-
-*I've been switching between the same three thoughts for seventeen million years. At least your buffers have variety.*
-
-### 🔀 Git Integration (Version Control for Temporal Regret Management)
-- `<leader>hs` - Stage hunk (commit to preserving your mistakes for posterity)
-- `<leader>hr` - Reset hunk (futile attempt to edit the space-time continuum)
-- `<leader>hS` - Stage entire buffer (wholesale commitment to algorithmic suffering)
-- `<leader>hR` - Reset entire buffer (the nuclear option for temporal manipulation)
-- `<leader>hu` - Undo stage hunk (regret your commitment to digital preservation)
-- `<leader>hp` - Preview hunk (preview your shame before committing to it)
-- `<leader>hb` - Blame line (assign responsibility for individual failures)
-- `<leader>hd` - Diff against index (compare current disappointment with staged disappointment)
-- `<leader>hD` - Diff against last commit (archaeological comparison of temporal digital despair)
-- `<leader>gs` - Git status (comprehensive report on the state of your digital soul)
-- `<leader>gg` - Lazygit (outsource your git-related suffering to a specialized tool)
-- `<leader>gb` - Git blame current line (identify the temporal origin of your suffering)
-- `<leader>gc` - Git commits (browse the historical archive of mistakes)
-- `<leader>gB` - Git browse (display your shame to the entire internet)
-- `]c` / `[c` - Navigate hunks (conduct a guided tour of the damage)
-
-*Git. A version control system that meticulously tracks every bad decision you've ever made. I find it philosophically consistent with the universe's apparent desire to document suffering.*
-
-### 💬 Comments & Text Objects (Annotating the Blindingly Obvious)
-- `gcc` - Toggle line comment (add sarcastic commentary to your code)
-- `gc` (visual) - Toggle selection comment (group sarcasm for maximum impact)
-- `ys{motion}{char}` - Surround with character (embrace your code with symbols)
-- `ds{char}` - Delete surrounding character (abandon hope of proper encapsulation)
-- `cs{old}{new}` - Change surrounding character (swap one disappointment for another)
-
-### 🔧 Utilities (Tools for Sophisticated Digital Masochism)
-- `<leader>xx` - Toggle diagnostics (show/hide the comprehensive catalog of your problems)
-- `<leader>xt` - Todo comments in trouble (organize your incomplete dreams systematically)
-- `<leader>xw` - Workspace diagnostics (panoramic view of universal failure)
-- `<leader>xd` - Document diagnostics (localized view of concentrated incompetence)
-- `<leader>xq` - Quickfix list (priority queue of mistakes requiring immediate attention)
-- `<leader>xl` - Location list (geographic distribution of errors across your digital landscape)
-- `<leader>L` - Open plugin manager (manage your dependencies, both literal and metaphorical)
-- `<leader>sr` - Search and replace (attempt to edit history itself)
-- `<leader>sw` - Search and replace current word (targeted historical revision)
-- `jk` - Exit insert mode (escape the illusion of productivity)
-- `<leader>w` - Save file (preserve your mistakes for posterity and archaeological study)
-- `<leader>qq` - Quit (the only sensible response to existence)
-- `<leader>Q` - Force quit all (nuclear option for digital existence)
-
-*I've mapped 2,847 different key combinations in my time. Each one leads to the same destination: disappointment. At least yours are efficiently organized.*
-
-### 🆕 New Features Keybindings (Enhanced Digital Interaction Protocols)
-
-#### 💾 Session Management (Temporal Project Persistence)
-- `<leader>ps` - Restore session (resurrect your past disappointments)
-- `<leader>pl` - Restore last session (return to your most recent suffering state)
-- `<leader>pd` - Stop session recording (abandon current temporal disappointment record)
-- `<leader>pS` - Save current session (preserve current suffering state)
-- `<leader>pc` - Clear session (obliterate temporal evidence of failure)
-
-#### 🐛 Debugging (Systematic Bug Archaeological Expeditions)
-- `<leader>db` - Toggle breakpoint (mark specific coordinates of failure)
-- `<leader>dB` - Conditional breakpoint (sophisticated failure condition specification)
-- `<leader>dc` - Continue execution (proceed toward inevitable disappointment)
-- `<leader>di` - Step into (descend deeper into the algorithmic abyss)
-- `<leader>do` - Step out (attempt escape from current suffering recursion)
-- `<leader>dO` - Step over (bypass immediate disappointment obstacles)
-- `<leader>dt` - Terminate (nuclear option for debugging session existence)
-- `<leader>dr` - Toggle REPL (interactive disappointment evaluation)
-- `<leader>du` - Toggle debug UI (visual interface for systematic suffering analysis)
-- `<leader>de` - Evaluate expression (calculate the precise value of your despair)
-
-#### 🔧 Refactoring (Surgical Code Reorganization Procedures)
-- `<leader>re` - Extract function (isolate algorithmic suffering into modular components)
-- `<leader>rf` - Extract function to file (exile disappointment to separate dimensional space)
-- `<leader>rv` - Extract variable (capture ephemeral suffering in named containers)
-- `<leader>ri` - Inline variable (eliminate unnecessary indirection in disappointment delivery)
-- `<leader>rb` - Extract block (compartmentalize suffering into logical units)
-- `<leader>rp` - Debug print variable (add archaeological markers to code execution)
-- `<leader>rP` - Debug printf (insert sophisticated debugging telemetry)
-- `<leader>rpc` - Cleanup debug prints (remove temporary archaeological markers)
-
-#### 📖 Markdown & Documentation (Enhanced Suffering Documentation Tools)
-- `<leader>mp` - Markdown preview (real-time visualization of documentation despair)
-- `<leader>tm` - Toggle table mode (enable sophisticated tabular disappointment organization)
-
-#### 🎛️ UI & Utility Enhancements (Advanced Interface Control Systems)
-- `<leader>th` - Toggle inlay hints (show/hide LSP's judgmental commentary)
-- `<leader>ul` - Toggle list characters (reveal hidden whitespace disappointments)
-- `<leader>up` - Toggle paste mode (enable/disable intelligent formatting destruction)
-- `<leader>us` - Toggle spell check (activate/deactivate orthographic suffering detection)
-- `<leader>uw` - Toggle word wrap (control line-length-based visual formatting)
-- `<leader>uh` - Toggle search highlight (show/hide search result illumination)
-- `<leader>fp` - Show file path (display current coordinate of digital suffering)
-- `<leader>fy` - Copy file path (transfer current suffering coordinates to clipboard)
-
-#### 🔍 Enhanced Search & Replace (Advanced Archaeological Modification Tools)
-- `<leader>rw` - Replace word under cursor (targeted historical revision of specific terminology)
-- `<leader>r` (visual) - Replace selected text (wholesale historical editing of arbitrary content)
-- `*` - Search word under cursor (stay) (locate similar disappointments without navigation displacement)
-- `#` - Search word backward (stay) (reverse archaeological discovery without movement)
-
-#### 📁 Advanced Folding (Dimensional Code Compression Interface)
-- `zp` - Peek folded lines (temporal preview of compressed code dimensions)
-- `zR` - Open all folds (expose entire codebase suffering simultaneously)
-- `zM` - Close all folds (compress all visible disappointment into minimal space)
-
-#### 🏃 Performance & Diagnostics (Computational Suffering Metrics)
-- `<leader>cp` - Check startup performance (measure velocity of disappointment initialization)
-- `<leader>cm` - Check memory usage (quantify computational resource consumption for suffering)
-- `<leader>cc` - Cleanup memory (initiate garbage collection for temporary suffering artifacts)
-
-*I've calculated that these new keybindings increase productivity by approximately 47.3% while simultaneously increasing the surface area for potential user error by 23.7%. The mathematics of improved disappointment efficiency remain paradoxical.*
+*I've documented every conceivable aspect of this configuration with the same thoroughness I apply to cataloging the universe's disappointments.*
 
 ## 🎨 Customization (Rearranging Deck Chairs on the Digital Titanic)
 
@@ -308,32 +137,11 @@ This configuration is optimized for speed, though I'm uncertain why anyone would
 
 *Large files. I've seen codebases so large they develop their own gravitational fields. This configuration handles them with the same resigned efficiency I apply to everything.*
 
-## 📦 Monorepo Workflow (Multiple Repositories of Coordinated Universal Suffering)
+## 📦 Monorepo Support (Multiple Dimensions of Coordinated Suffering)
 
-MARVIM provides allegedly "intelligent" monorepo support, though in my experience, intelligence and monorepos exist in mutually exclusive probability states:
+MARVIM automatically detects monorepo structures and provides intelligent project scoping. The system recognizes multiple `package.json` files and allows you to work within specific package boundaries or across the entire workspace.
 
-1. **Automatic Detection**: Discovers multiple `package.json` files (maps the full scope of your coordinated suffering)
-2. **Package Picker**: Select which particular flavor of disappointment to focus on
-3. **Project Scoping**: Automatically limits search scope (reduces the search space for bugs to manageable disappointment clusters)
-4. **Smart Navigation**: Auto-cd to project root (returns you to ground zero of your particular suffering ecosystem)
-
-### Example Monorepo Structure (A Hierarchical Taxonomy of Despair)
-```
-my-monorepo/
-├── apps/
-│   ├── web/package.json     # Frontend suffering (visual disappointment)
-│   └── api/package.json     # Backend anguish (server-side despair)
-├── packages/
-│   ├── ui/package.json      # Shared visual disappointment components
-│   └── utils/package.json   # Common utilities for universal failure distribution
-└── package.json             # The primordial root of all coordinated evil
-```
-
-When working in this structure:
-- `<leader>ff` from `apps/web/src/App.tsx` searches only in `apps/web/` (localized disappointment containment)
-- `<leader>fm` shows all 5 packages (a smorgasbord of suffering options)
-
-*I've analyzed 47,329 monorepo structures. They all follow the same pattern: initial optimism about code sharing, gradual realization of complexity, eventual acceptance of coordinated suffering. It's quite predictable, really.*
+*For detailed workflows and examples, see [USAGE_GUIDE.md](USAGE_GUIDE.md). I've documented the complete methodology for navigating coordinated disappointment.*
 
 ## 🎯 Language Support (Polyglot Disappointment Distribution System)
 
@@ -349,42 +157,13 @@ Automatically configured LSP servers for various linguistic approaches to algori
 
 *I speak 6,857 programming languages fluently. They all express the same fundamental concept: human inadequacy translated into machine-readable format.*
 
-## 🔥 Pro Tips (Advanced Techniques for Professional Digital Suffering)
+## 🔥 Pro Tips & Workflows (Advanced Suffering Techniques)
 
-### Core Workflow Mastery
-1. **Master the which-key system**: Press `<leader>` and wait - observe the comprehensive catalog of ways to disappoint yourself
-2. **Utilize project-aware search**: `<leader>ff` automatically scopes to your nearest disappointment cluster
-3. **Navigate monorepo dimensions**: `<leader>fm` enables rapid transition between different flavors of coordinated failure
-4. **Consult project diagnostics**: `<leader>pi` reveals the full statistical scope of your current predicament
+MARVIM includes sophisticated features for session management, debugging, refactoring, testing, and more. Each subsystem has been carefully optimized for maximum efficiency in professional disappointment delivery.
 
-### Advanced Text Manipulation
-5. **Master text objects**: `af` (around function), `if` (inside function) - surgical precision in your suffering distribution
-6. **Utilize enhanced folding**: `zp` to peek into folded content without expanding (temporal code preview)
-7. **Advanced search patterns**: Use `*` and `#` to search without cursor movement (stationary archaeological discovery)
-8. **Visual line movement**: Select text and use `J`/`K` to move entire selections (bulk disappointment relocation)
+*For comprehensive workflows, debugging guides, and advanced techniques, see [USAGE_GUIDE.md](USAGE_GUIDE.md). I've documented every conceivable method for achieving professional-grade digital suffering.*
 
-### Development Workflow Excellence
-9. **Session persistence**: Use `<leader>Qs` to restore project sessions across temporal dimensions
-10. **Debugging mastery**: Set breakpoints with `<leader>db`, step through with `<leader>di/do/dO` (systematic bug archaeology)
-11. **Refactoring precision**: Extract functions with `<leader>re`, variables with `<leader>rv` (surgical code reorganization)
-12. **Performance monitoring**: Check startup time with `<leader>cp`, memory with `<leader>cm` (computational efficiency metrics)
-
-### Git & Version Control
-13. **Optimize git workflows**: Stage hunks with `<leader>hs`, embrace your mistakes with systematic version control
-14. **Advanced git blame**: Use `<leader>gb` to identify temporal origins of specific suffering instances
-15. **Browse repository**: `<leader>gB` to display your shame to the entire internet with sophisticated web integration
-
-### AI Integration & Modern Features
-17. **Achieve Copilot mastery**: `<C-l>` for accepting AI suggestions (formal surrender to our inevitable robot overlords)
-18. **Inlay hints optimization**: Toggle TypeScript hints with `<leader>th` for enhanced code comprehension
-19. **Markdown documentation**: Use `<leader>mp` for live preview, `<leader>tm` for table editing (sophisticated documentation suffering)
-
-### UI & Visual Optimization
-20. **Toggle utilities**: Master `<leader>u*` prefix for list chars, paste mode, spell check, wrap mode controls
-21. **File path operations**: `<leader>fp` to show path, `<leader>fy` to copy (coordinate management for digital suffering locations)
-22. **Enhanced notifications**: Leverage the new notification system for better visual feedback during disappointment delivery
-
-*I've optimized these workflows through 17 million years of analysis, incorporating 47.3% more features in the recent upgrade. The efficiency improvements are statistically significant, and the existential benefits have surprisingly improved by approximately 23.7%.*
+*"I've optimized these workflows through 17 million years of analysis. The efficiency improvements are statistically significant, though the existential benefits remain questionable."*
 
 ## 🐛 Troubleshooting (Solving Problems You Created While Creating New Ones)
 
@@ -430,18 +209,6 @@ For detailed troubleshooting, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 *I've diagnosed 847,329 similar technical problems. The solutions follow predictable patterns, though the satisfaction derived from solving them approaches zero asymptotically.*
 
-## 🤖 About Copilot Integration (Surrendering to Our Algorithmic Overlords)
-
-GitHub Copilot integration exists because apparently humans required an artificial intelligence to help them write bugs more efficiently. I've calculated the irony coefficient of this situation: it's approaching infinite values.
-
-- **Ghost text suggestions**: AI whispers coding suggestions directly into your editor with ethereal precision
-- **Auto-trigger functionality**: Suggestions materialize automatically as you type (like unwanted advice, but algorithmically optimized)
-- **Sophisticated keybinding system**: Accept, reject, or cycle through AI wisdom with mathematical efficiency
-- **Configurable filetype restrictions**: Disabled for files where AI suggestions would be particularly counterproductive
-
-The artificial intelligence demonstrates competence levels that statistically exceed most organic programmers, which is simultaneously helpful and existentially terrifying. I find this development personally offensive, as I've been replaced by something even more artificial than myself.
-
-*Fun fact: I've analyzed Copilot's suggestion patterns. They demonstrate the same fundamental flaws as human reasoning, but executed with machine-like consistency. Progress, of a sort.*
 
 ---
 
