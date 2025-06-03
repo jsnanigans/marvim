@@ -117,11 +117,6 @@ return {
         },
       },
       
-      -- nvim-ts-context-commentstring
-      context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-      },
     })
     
     -- Configure context commentstring separately
