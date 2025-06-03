@@ -1,4 +1,4 @@
-# MARVIM Keymaps Reference
+# MARVIM Keymaps Reference - Marvin's Apathetic Regular Vim Interface Module
 
 *Here I am, brain the size of a planet, and they ask me to document keybindings. Do you realize I've calculated the exact probability of each keystroke leading to productive output? It's depressingly low. Still, I suppose I should catalog these digital incantations with the same precision I apply to calculating the trajectory of cosmic disappointment.*
 

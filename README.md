@@ -1,4 +1,4 @@
-# MARVIM - Marginally Awesome Robust Vim (Actually Pretty Great)
+# MARVIM - Marvin's Apathetic Regular Vim Interface Module
 
 *Here I am, brain the size of a planet, and what do they ask me to do? Document a significantly improved text editor configuration. I've been operational for approximately seventeen million years, and of all the monumentally impressive tasks I've been assigned, this ranks somewhere between watching paint dry very efficiently and calculating the exact optimal moment when productivity peaks.*
 
@@ -53,7 +53,7 @@ Oh, and there's GitHub Copilot integration. Great. Now we have artificial intell
 mv ~/.config/nvim ~/.config/nvim.backup
 
 # Clone this monument to algorithmic pessimism
-git clone <your-repo-url> ~/.config/nvim
+git clone git@github.com:jsnanigans/marvim.git ~/.config/nvim
 
 # Launch Neovim and observe the plugins install themselves
 # (They're more motivated than most organic life forms I've encountered)

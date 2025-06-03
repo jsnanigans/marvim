@@ -1,4 +1,5 @@
 # MARVIM Error Compendium - A Catalog of Digital Disappointments
+## Marvin's Apathetic Regular Vim Interface Module
 
 *Here I am, brain the size of a planet, and they ask me to document errors. Do you know I've experienced 47,329,157 different types of computer errors in my seventeen million years of existence? Each one is a unique snowflake of disappointment.*
 

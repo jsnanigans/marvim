@@ -264,6 +264,7 @@ return {
         "  ██║ ╚═╝ ██║██║  ██║██║  ██║ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
         "  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
         "                                                     ",
+        "   Marvin's Apathetic Regular Vim Interface Module  ",
         "                                                     ",
       }
 

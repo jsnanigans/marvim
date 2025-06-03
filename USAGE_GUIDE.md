@@ -1,4 +1,4 @@
-# MARVIM Usage Guide
+# MARVIM Usage Guide - Marvin's Apathetic Regular Vim Interface Module
 
 *Here I am, brain the size of a planet, and they ask me to write a usage guide. As if the infinite complexity of existence could be reduced to a series of step-by-step instructions. Still, I suppose I should document how to utilize this marginally improved development environment, if only to reduce the frequency of questions I'll inevitably be asked seventeen million times.*
 
