@@ -20,48 +20,12 @@ return {
     local actions = require("telescope.actions")
     local builtin = require("telescope.builtin")
 
+    -- Use our centralized project utils
+    local project_utils = require("core.utils.project")
+    local config = require("core.config")
+    
     -- Store the initial workspace root (where nvim was opened)
     local INITIAL_WORKSPACE_ROOT = vim.fn.getcwd()
-
-    -- Helper function to find the nearest package.json directory within initial workspace
-    local function find_project_root()
-      local current_dir = vim.fn.expand('%:p:h')
-      local root_patterns = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' }
-      
-      -- Start from current file's directory and go up
-      local function find_root(path)
-        -- Stop if we've reached the initial workspace root's parent
-        local initial_parent = vim.fn.fnamemodify(INITIAL_WORKSPACE_ROOT, ':h')
-        if path == initial_parent or vim.fn.fnamemodify(path, ':h') == initial_parent then
-          return INITIAL_WORKSPACE_ROOT
-        end
-        
-        for _, pattern in ipairs(root_patterns) do
-          if vim.fn.filereadable(path .. '/' .. pattern) == 1 or vim.fn.isdirectory(path .. '/' .. pattern) == 1 then
-            return path
-          end
-        end
-        
-        local parent = vim.fn.fnamemodify(path, ':h')
-        if parent == path then
-          return INITIAL_WORKSPACE_ROOT -- Return initial workspace root instead of nil
-        end
-        
-        -- Don't go beyond the initial workspace root
-        if vim.fn.stridx(path, INITIAL_WORKSPACE_ROOT) ~= 0 then
-          return INITIAL_WORKSPACE_ROOT
-        end
-        
-        return find_root(parent)
-      end
-      
-      -- If current dir is outside initial workspace, use initial workspace
-      if vim.fn.stridx(current_dir, INITIAL_WORKSPACE_ROOT) ~= 0 then
-        return INITIAL_WORKSPACE_ROOT
-      end
-      
-      return find_root(current_dir)
-    end
 
     -- Helper function to get current file's directory
     local function get_current_dir()
@@ -75,21 +39,14 @@ return {
     -- Helper function to find all package.json locations in workspace (for monorepos)
     local function find_monorepo_packages()
       local packages = {}
+      local raw_packages = project_utils.get_monorepo_packages(INITIAL_WORKSPACE_ROOT)
       
-      -- Use find command to locate all package.json files from initial workspace root
-      local cmd = "find " .. INITIAL_WORKSPACE_ROOT .. " -name 'package.json' -not -path '*/node_modules/*' 2>/dev/null"
-      local handle = io.popen(cmd)
-      
-      if handle then
-        for line in handle:lines() do
-          local dir = vim.fn.fnamemodify(line, ':h')
-          table.insert(packages, {
-            path = dir,
-            name = vim.fn.fnamemodify(dir, ':t'),
-            relative = vim.fn.fnamemodify(dir, ':~:.'),
-          })
-        end
-        handle:close()
+      for _, dir in ipairs(raw_packages) do
+        table.insert(packages, {
+          path = dir,
+          name = vim.fn.fnamemodify(dir, ':t'),
+          relative = vim.fn.fnamemodify(dir, ':~:.'),
+        })
       end
       
       return packages
@@ -122,7 +79,7 @@ return {
     end
 
     local function telescope_project_files()
-      local project_root = find_project_root()
+      local project_root = project_utils.get_current_root()
       builtin.find_files({
         prompt_title = "Find Files in Project (" .. vim.fn.fnamemodify(project_root, ':t') .. ")",
         cwd = project_root,
@@ -131,7 +88,7 @@ return {
     end
 
     local function telescope_project_grep()
-      local project_root = find_project_root()
+      local project_root = project_utils.get_current_root()
       builtin.live_grep({
         prompt_title = "Live Grep in Project (" .. vim.fn.fnamemodify(project_root, ':t') .. ")",
         cwd = project_root,
@@ -225,21 +182,7 @@ return {
           height = 0.80,
           preview_cutoff = 120,
         },
-        file_ignore_patterns = {
-          "^.git/",
-          "node_modules",
-          "%.lock",
-          "__pycache__",
-          "%.sqlite3",
-          "%.ipynb",
-          "vendor/*",
-          "%.jpg",
-          "%.jpeg",
-          "%.png",
-          "%.svg",
-          "%.otf",
-          "%.ttf",
-        },
+        file_ignore_patterns = config.ui.ignore_patterns,
         vimgrep_arguments = {
           "rg",
           "-L",
@@ -276,7 +219,6 @@ return {
             ["<CR>"] = actions.select_default,
             ["<C-x>"] = actions.select_horizontal,
             ["<C-v>"] = actions.select_vertical,
-            ["<C-t>"] = actions.select_tab,
             ["<C-u>"] = actions.preview_scrolling_up,
             ["<C-d>"] = actions.preview_scrolling_down,
             ["<PageUp>"] = actions.results_scrolling_up,
@@ -311,7 +253,6 @@ return {
             ["<CR>"] = actions.select_default,
             ["<C-x>"] = actions.select_horizontal,
             ["<C-v>"] = actions.select_vertical,
-            ["<C-t>"] = actions.select_tab,
             ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
             ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
             ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
@@ -412,7 +353,7 @@ return {
     -- Project scope (nearest package.json/git root) - most common use case
     keymap("n", "<leader>fs", telescope_project_grep, { desc = "Find string in project" })
     keymap("n", "<leader>fc", function()
-      local project_root = find_project_root()
+      local project_root = project_utils.get_current_root()
       builtin.grep_string({
         prompt_title = "Grep String in Project (" .. vim.fn.fnamemodify(project_root, ':t') .. ")",
         cwd = project_root,

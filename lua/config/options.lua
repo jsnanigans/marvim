@@ -66,14 +66,10 @@ opt.conceallevel = 0                  -- Show concealed text
 opt.fileencoding = "utf-8"            -- File encoding
 opt.cmdheight = 1                     -- Command line height
 opt.showmode = false                  -- Don't show mode (status line shows it)
-opt.showtabline = 0                   -- Never show tabline
 opt.wrap = false                      -- Don't wrap lines
 opt.linebreak = true                  -- Break lines at word boundaries
 opt.formatoptions:remove({ "c", "r", "o" }) -- Disable auto-commenting
 
--- Session and view options
-opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-opt.viewoptions = "cursor,folds,slash,unix"
 
 -- Fill characters
 opt.fillchars = {
@@ -88,7 +84,6 @@ opt.fillchars = {
 
 -- List characters (when 'list' is set)
 opt.listchars = {
-  tab = "» ",                         -- Tab character
   trail = "·",                        -- Trailing spaces
   nbsp = "␣",                         -- Non-breaking space
   extends = "❯",                      -- Character to show when line extends beyond screen

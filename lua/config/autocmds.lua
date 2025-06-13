@@ -1,51 +1,51 @@
--- Autocommands for power user workflow
-local autocmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
+-- Optimized autocommands for power user workflow
+local utils = require("core.utils")
+local config = require("core.config")
+
+-- Performance optimization group
+local perf = utils.augroup("performance", { clear = true })
+
+-- Check for large files and disable heavy features
+utils.autocmd({ "BufReadPre", "FileReadPre" }, {
+  group = perf,
+  callback = function(event)
+    local file = event.match
+    if utils.is_large_file(file) then
+      vim.b.large_file = true
+      vim.opt_local.spell = false
+      vim.opt_local.swapfile = false
+      vim.opt_local.undofile = false
+      vim.opt_local.breakindent = false
+      vim.opt_local.colorcolumn = ""
+      vim.opt_local.statuscolumn = ""
+      vim.opt_local.signcolumn = "no"
+      vim.opt_local.foldcolumn = "0"
+      vim.opt_local.winbar = ""
+      -- Disable treesitter for large files
+      vim.cmd("TSBufDisable highlight")
+      vim.cmd("TSBufDisable indent")
+    end
+  end,
+  desc = "Optimize for large files",
+})
 
 -- General settings group
-local general = augroup("General", { clear = true })
+local general = utils.augroup("general", { clear = true })
 
-
--- Auto format on save for specific filetypes (excluding JS/TS - handled by eslint/prettier)
-autocmd("BufWritePre", {
+-- Better yank highlighting
+utils.autocmd("TextYankPost", {
   group = general,
-  pattern = { "*.lua", "*.py", "*.json", "*.md" },
   callback = function()
-    -- Check if current file is a JS/TS file and skip formatting
-    local filetype = vim.bo.filetype
-    local js_ts_types = {
-      "javascript", "javascriptreact", "typescript", "typescriptreact", "vue"
-    }
-    
-    for _, ft in ipairs(js_ts_types) do
-      if filetype == ft then
-        return
-      end
-    end
-    
-    vim.lsp.buf.format({ async = false })
+    vim.highlight.on_yank({
+      higroup = "Visual",
+      timeout = 200,
+    })
   end,
-  desc = "Auto format on save (excluding JS/TS)",
+  desc = "Highlight yanked text",
 })
-
--- Remove trailing whitespace on save
-autocmd("BufWritePre", {
-  group = general,
-  pattern = "*",
-  callback = function()
-    -- Save cursor position
-    local save_cursor = vim.fn.getpos(".")
-    -- Remove trailing whitespace
-    vim.cmd([[keeppatterns %s/\s\+$//e]])
-    -- Restore cursor position
-    vim.fn.setpos(".", save_cursor)
-  end,
-  desc = "Remove trailing whitespace",
-})
-
 
 -- Auto resize splits when terminal is resized
-autocmd("VimResized", {
+utils.autocmd("VimResized", {
   group = general,
   pattern = "*",
   command = "tabdo wincmd =",
@@ -53,7 +53,7 @@ autocmd("VimResized", {
 })
 
 -- Close some filetypes with <q>
-autocmd("FileType", {
+utils.autocmd("FileType", {
   group = general,
   pattern = {
     "qf",
@@ -73,34 +73,23 @@ autocmd("FileType", {
   desc = "Close with q",
 })
 
--- Performance optimization group
-local perf = augroup("Performance", { clear = true })
-
--- Check for large files and disable heavy features
-autocmd({ "BufReadPre", "FileReadPre" }, {
-  group = perf,
-  callback = function()
-    local ok, stats = pcall(vim.loop.fs_stat, vim.fn.expand("<afile>"))
-    if ok and stats and stats.size > 1024 * 1024 then -- 1MB
-      vim.b.large_file = true
-      vim.opt_local.spell = false
-      vim.opt_local.swapfile = false
-      vim.opt_local.undofile = false
-      vim.opt_local.breakindent = false
-      vim.opt_local.colorcolumn = ""
-      vim.opt_local.statuscolumn = ""
-      vim.opt_local.signcolumn = "no"
-      vim.opt_local.foldcolumn = "0"
-      vim.opt_local.winbar = ""
+-- Auto create parent directories on save
+utils.autocmd("BufWritePre", {
+  group = general,
+  callback = function(event)
+    if event.match:match("^%w%w+:[\\/][\\/]") then
+      return
     end
+    local file = vim.uv.fs_realpath(event.match) or event.match
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
-  desc = "Optimize for large files",
+  desc = "Auto create parent directories",
 })
 
 -- Terminal settings
-local terminal = augroup("Terminal", { clear = true })
+local terminal = utils.augroup("terminal", { clear = true })
 
-autocmd("TermOpen", {
+utils.autocmd("TermOpen", {
   group = terminal,
   pattern = "*",
   callback = function()
@@ -113,10 +102,10 @@ autocmd("TermOpen", {
 })
 
 -- File type specific settings
-local filetypes = augroup("FileTypes", { clear = true })
+local filetypes = utils.augroup("filetypes", { clear = true })
 
 -- JSON files
-autocmd("FileType", {
+utils.autocmd("FileType", {
   group = filetypes,
   pattern = "json",
   callback = function()
@@ -126,82 +115,68 @@ autocmd("FileType", {
 })
 
 -- Disable format options for all files to prevent auto-commenting
--- Use BufWinEnter instead of BufEnter to reduce frequency
-autocmd("BufWinEnter", {
+-- Debounced to reduce frequency
+local disable_format_options = utils.debounce(function()
+  vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+end, 50)
+
+utils.autocmd("BufWinEnter", {
   group = filetypes,
   pattern = "*",
-  callback = function()
-    vim.opt_local.formatoptions:remove({ "c", "r", "o" })
-  end,
+  callback = disable_format_options,
   desc = "Disable auto-commenting",
 })
 
--- Alpha (dashboard) settings
-autocmd("User", {
-  group = general,
-  pattern = "AlphaReady",
-  callback = function()
-    vim.cmd([[
-      set showtabline=0 | autocmd BufUnload <buffer> set showtabline=2
-    ]])
-  end,
-  desc = "Hide tabline in Alpha",
-})
-
--- Auto create parent directories on save
-autocmd("BufWritePre", {
+-- Better location restoration with caching
+local location_cache = {}
+utils.autocmd("BufReadPost", {
   group = general,
   callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then
-      return
-    end
-    local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-  end,
-  desc = "Auto create parent directories",
-})
-
--- Better yank highlighting
-autocmd("TextYankPost", {
-  group = general,
-  callback = function()
-    vim.highlight.on_yank({
-      higroup = "Visual",
-      timeout = 200,
-    })
-  end,
-  desc = "Highlight yanked text",
-})
-
--- Auto reload files changed outside of Neovim
-autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = general,
-  command = "checktime",
-  desc = "Check for file changes",
-})
-
--- Go to last location when opening a buffer
-autocmd("BufReadPost", {
-  group = general,
-  callback = function(event)
-    local exclude = { "gitcommit" }
+    local exclude = { "gitcommit", "commit", "rebase" }
     local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+    local ft = vim.bo[buf].filetype
+    
+    if vim.tbl_contains(exclude, ft) then
       return
     end
-    vim.b[buf].lazyvim_last_loc = true
+    
+    -- Check cache first
+    local file = vim.api.nvim_buf_get_name(buf)
+    if location_cache[file] then
+      local pos = location_cache[file]
+      pcall(vim.api.nvim_win_set_cursor, 0, pos)
+      return
+    end
+    
+    -- Fall back to mark
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
+      location_cache[file] = mark
     end
   end,
   desc = "Go to last location when opening a buffer",
 })
 
+-- Save location on buffer leave
+utils.autocmd("BufLeave", {
+  group = general,
+  callback = function(event)
+    local buf = event.buf
+    local file = vim.api.nvim_buf_get_name(buf)
+    if file ~= "" then
+      location_cache[file] = vim.api.nvim_win_get_cursor(0)
+    end
+  end,
+  desc = "Save cursor location",
+})
+
 -- Show cursor line only in active window
-local cursorline_group = augroup("CursorLine", { clear = true })
-autocmd({ "InsertLeave", "WinEnter" }, {
+local cursorline_group = utils.augroup("cursorline", { clear = true })
+
+-- Combine related autocmds for better performance
+utils.autocmd({ "InsertLeave", "WinEnter", "FocusGained" }, {
   group = cursorline_group,
   callback = function()
     if vim.w.auto_cursorline then
@@ -212,7 +187,7 @@ autocmd({ "InsertLeave", "WinEnter" }, {
   desc = "Show cursorline in active window",
 })
 
-autocmd({ "InsertEnter", "WinLeave" }, {
+utils.autocmd({ "InsertEnter", "WinLeave", "FocusLost" }, {
   group = cursorline_group,
   callback = function()
     if vim.wo.cursorline then
@@ -223,31 +198,19 @@ autocmd({ "InsertEnter", "WinLeave" }, {
   desc = "Hide cursorline in inactive window",
 })
 
--- Auto toggle hlsearch
-local hlsearch_group = augroup("HlSearch", { clear = true })
-autocmd("CmdlineEnter", {
-  group = hlsearch_group,
-  callback = function()
-    local cmd = vim.v.event.cmdtype
-    if cmd == "/" or cmd == "?" then
-      vim.opt.hlsearch = true
-    end
-  end,
-  desc = "Auto enable hlsearch when searching",
+-- Auto reload files changed outside of Neovim (throttled)
+local checktime = utils.throttle(function()
+  vim.cmd("checktime")
+end, 1000)
+
+utils.autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = general,
+  callback = checktime,
+  desc = "Check for file changes",
 })
 
-autocmd("CmdlineLeave", {
-  group = hlsearch_group,
-  callback = function()
-    vim.defer_fn(function()
-      vim.opt.hlsearch = false
-    end, 50)
-  end,
-  desc = "Auto disable hlsearch after searching",
-})
-
--- LSP Progress indicator (only show for long operations)
-autocmd("LspProgress", {
+-- LSP Progress indicator with better filtering
+utils.autocmd("LspProgress", {
   group = general,
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -257,7 +220,13 @@ autocmd("LspProgress", {
       return
     end
 
-    -- Only show notifications for operations that take more than 100ms
+    -- Filter out noisy clients
+    local noisy_clients = { "null-ls", "copilot" }
+    if vim.tbl_contains(noisy_clients, client.name) then
+      return
+    end
+
+    -- Only show notifications for operations that take more than 500ms
     if value.kind == "begin" then
       vim.defer_fn(function()
         if value.percentage and value.percentage < 100 then
@@ -265,13 +234,27 @@ autocmd("LspProgress", {
           local title = value.title or ""
           local message = value.message and (" " .. value.message) or ""
 
-          vim.notify(title .. message .. " " .. percentage, vim.log.levels.INFO, {
+          utils.notify(title .. message .. " " .. percentage, "INFO", {
             title = client.name,
             timeout = 500,
           })
         end
-      end, 100)
+      end, 500)
     end
   end,
   desc = "LSP Progress indicator",
-}) 
+})
+
+-- Clean up location cache periodically (every 5 minutes)
+vim.fn.timer_start(300000, function()
+  -- Keep only recent entries (files accessed in last hour)
+  local now = os.time()
+  local new_cache = {}
+  for file, _ in pairs(location_cache) do
+    local stat = vim.loop.fs_stat(file)
+    if stat and (now - stat.atime.sec) < 3600 then
+      new_cache[file] = location_cache[file]
+    end
+  end
+  location_cache = new_cache
+end, { ["repeat"] = -1 })

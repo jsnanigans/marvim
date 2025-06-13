@@ -64,16 +64,14 @@ return {
         { "<leader>h",     group = "+git-hunk" },
         { "<leader>l",     group = "+lsp" },
         { "<leader>n",     desc = "Clear search highlights" },
-        { "<leader>p",     group = "+project/session" },
         { "<leader>q",     desc = "Diagnostic loclist" },
         { "<leader>r",     group = "+refactor/replace" },
         { "<leader>s",     group = "+search/substitute" },
-        { "<leader>t",     group = "+terminal/test/tab" },
+        { "<leader>t",     group = "+terminal/test" },
         { "<leader>u",     group = "+ui/toggle" },
         { "<leader>w",     group = "+window" },
         { "<leader>x",     group = "+diagnostics/quickfix" },
         { "<leader>z",     group = "+fzf" },
-        { "<leader><tab>", group = "+tabs" },
         { "<leader>L",     desc = "Lazy plugin manager" },
         { "<leader>Q",     desc = "Force quit all" },
         { "<leader>S",     desc = "Substitute to end of line" },
@@ -164,7 +162,6 @@ return {
     opts = {
       indent = {
         char = "│",
-        tab_char = "│",
       },
       scope = { enabled = false },
       exclude = {

@@ -13,7 +13,6 @@ return {
       vim.g.vim_markdown_math = 1
       vim.g.vim_markdown_strikethrough = 1
       vim.g.vim_markdown_autowrite = 1
-      vim.g.vim_markdown_edit_url_in = "tab"
       vim.g.vim_markdown_follow_anchor = 1
     end,
   },

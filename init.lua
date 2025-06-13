@@ -1,7 +1,7 @@
 -- MARVIM: Minimal Awesome Robust Vim
--- A poweruser's dream configuration
+-- A poweruser's dream configuration with enhanced maintainability
 
--- Performance: Disable some vim defaults early
+-- Performance: Disable some vim defaults early for faster startup
 vim.g.loaded_gzip = 1
 vim.g.loaded_zip = 1
 vim.g.loaded_zipPlugin = 1
@@ -18,6 +18,9 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 vim.g.loaded_netrwFileHandlers = 1
+
+-- Initialize core configuration
+local config = require("core.config")
 
 -- Bootstrap lazy.nvim plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -56,7 +59,7 @@ require("lazy").setup("plugins", {
   ui = {
     size = { width = 0.8, height = 0.8 },
     wrap = true,
-    border = "rounded",
+    border = config.ui.border,
     backdrop = 60,
     title = "MARVIM Plugin Manager",
     title_pos = "center",
@@ -80,7 +83,7 @@ require("lazy").setup("plugins", {
       list = { "●", "➜", "★", "‒" },
     },
   },
-  -- Update checking (disabled by default for performance)
+  -- Update checking (controlled by config)
   checker = {
     enabled = false, -- Don't auto-check for updates
     notify = false, -- Don't notify about updates
@@ -113,9 +116,9 @@ require("lazy").setup("plugins", {
     patterns = {},
     fallback = false,
   },
-  -- Profiling (enable for debugging startup times)
+  -- Profiling (controlled by config)
   profiling = {
-    loader = false,
+    loader = config.performance.lazy_redraw,
     require = false,
   },
 })
@@ -124,13 +127,45 @@ require("lazy").setup("plugins", {
 require("config.autocmds")
 
 -- Initialize project utilities for monorepo support
-require("config.project-utils").setup()
+local project_utils = require("config.project-utils")
+if project_utils and project_utils.setup then
+  project_utils.setup()
+end
 
 -- Initialize performance monitoring
-require("config.performance").setup()
+local performance = require("config.performance")
+if performance and performance.setup then
+  performance.setup()
+end
 
--- Load LSP debug utilities
-require("config.lsp-debug")
+-- Load LSP debug utilities (safe require)
+local utils = require("core.utils")
+local lsp_debug = utils.safe_require("config.lsp-debug")
+if lsp_debug then
+  -- LSP debug is available
+end
 
--- Add keybinding to open lazy
-vim.keymap.set("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Open Lazy plugin manager" })
+-- Setup telescope keymaps
+require("core.keymaps.telescope").setup()
+
+-- Add keybinding to open lazy with centralized keymap system
+local keymaps = require("core.keymaps")
+keymaps.register({
+  n = {
+    ["<leader>L"] = { "<cmd>Lazy<cr>", { desc = "Open Lazy plugin manager" } },
+    ["<leader>C"] = { "<cmd>Lazy clean<cr>", { desc = "Clean unused plugins" } },
+    ["<leader>U"] = { "<cmd>Lazy update<cr>", { desc = "Update plugins" } },
+  }
+})
+
+-- Show startup time if performance monitoring is enabled
+vim.defer_fn(function()
+  local start_time = vim.g.start_time or vim.fn.reltime()
+  local startup_time = vim.fn.reltimestr(vim.fn.reltime(start_time))
+  if tonumber(startup_time) > 0.1 then -- Only show if startup took more than 100ms
+    utils.notify("Startup time: " .. startup_time .. "s", "INFO", {
+      title = "MARVIM",
+      timeout = 2000,
+    })
+  end
+end, 100)

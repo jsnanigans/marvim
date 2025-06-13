@@ -21,7 +21,6 @@ return {
         globalstatus = true,
         refresh = {
           statusline = 1000,
-          tabline = 1000,
           winbar = 1000,
         },
       },
