@@ -15,7 +15,7 @@ lua/
 │   ├── keymaps/           # Modular keymap system
 │   │   ├── init.lua       # Main keymap manager
 │   │   ├── lsp.lua        # LSP-specific keymaps
-│   │   ├── telescope.lua  # Telescope keymaps
+│   │   ├── picker.lua     # Snacks Picker keymaps
 │   │   ├── editor.lua     # Editor keymaps
 │   │   └── window.lua     # Window management keymaps
 │   └── utils/             # Utility modules
@@ -147,7 +147,7 @@ keymaps.register({
 Each keymap module handles a specific domain:
 
 - `lsp.lua`: LSP-specific keymaps (applied per buffer)
-- `telescope.lua`: Telescope picker keymaps
+- `picker.lua`: Snacks Picker keymaps
 - `editor.lua`: General editor keymaps
 - `window.lua`: Window management keymaps
 
@@ -184,7 +184,7 @@ local group = utils.augroup("my_group")
 local debounced_fn = utils.debounce(my_function, 500)
 
 -- Check if plugin is loaded
-if utils.is_loaded("telescope") then
+if utils.is_loaded("snacks") then
   -- Plugin is loaded
 end
 ```

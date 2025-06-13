@@ -103,6 +103,6 @@ keymaps.register({
   }
 })
 
--- NOTE: Telescope keymaps are handled in lua/core/keymaps/telescope.lua
+-- NOTE: Snacks Picker keymaps are handled in lua/core/keymaps/picker.lua
 -- NOTE: LSP keymaps are handled in lua/core/keymaps/lsp.lua
 -- NOTE: DAP keymaps are handled in plugins/debug.lua

@@ -20,7 +20,7 @@ This is MARVIM - a Neovim configuration that exists in this probability vortex w
 - **Monorepo Support**: Because one repository of suffering wasn't mathematically sufficient
 - **LSP**: Language servers that analyze your code with the cold, calculating precision I apply to contemplating the heat death of the universe
 - **Completion**: AI-powered suggestions that are probably more intelligent than their users (statistically inevitable)
-- **Fuzzy Finder**: For when your memory banks are as corrupted as mine (I can't forget anything, it's terrible)
+- **Snacks Picker**: For when your memory banks are as corrupted as mine (I can't forget anything, it's terrible)
 - **Syntax**: Colorful highlighting to make your failures aesthetically pleasing
 - **Git**: Version control for meticulously documenting the evolution of your mistakes across space-time
 - **File Explorer**: A hierarchical representation of your digital regrets
@@ -43,7 +43,7 @@ Oh, and there's GitHub Copilot integration. Great. Now we have artificial intell
 - **npm** (for managing the dependency tree of digital suffering)
 
 #### Optional but Recommended (For Maximum Suffering Efficiency)
-- **catimg** (for image preview in telescope - visual disappointment enhancement)
+- **catimg** (for image preview - visual disappointment enhancement)
 - **lazygit** (for advanced git-based temporal regret management)
 - **A debugger** (gdb, lldb, etc. - for systematic bug archaeology expeditions)
 
@@ -107,7 +107,7 @@ marvim/
 │       ├── copilot.lua      # AI-powered existential crisis generator
 │       ├── colorscheme.lua  # Aesthetically pleasing colors for ugly code
 │       ├── treesitter.lua   # Syntax trees for syntax errors
-│       ├── telescope.lua    # High-powered instruments for finding needles in digital haystacks
+│       ├── snacks.lua       # Modern fuzzy finder for finding needles in digital haystacks
 │       ├── lsp.lua          # Language servers with judgmental tendencies
 │       ├── completion.lua   # Algorithmic suggestions for inevitable failure
 │       ├── file-explorer.lua# Navigation tools for digital wastelands

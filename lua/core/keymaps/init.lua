@@ -72,7 +72,7 @@ end
 
 -- Load keymap modules
 M.lsp = require("core.keymaps.lsp")
-M.telescope = require("core.keymaps.telescope")
+M.picker = require("core.keymaps.picker")
 M.editor = require("core.keymaps.editor")
 M.window = require("core.keymaps.window")
 
@@ -138,6 +138,7 @@ function M.setup()
   -- Load module keymaps
   M.window.setup()
   M.editor.setup()
+  M.picker.setup()
 end
 
 return M

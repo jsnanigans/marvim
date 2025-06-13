@@ -267,7 +267,7 @@ For monorepos with multiple packages:
 
 ### Advanced Search Patterns (Sophisticated Archaeological Techniques)
 ```vim
-" Search with regex in Telescope:
+" Search with regex in Snacks Picker:
 <leader>fs
 " Then type: \bfunction\s+\w+\(
 " Finds all function definitions

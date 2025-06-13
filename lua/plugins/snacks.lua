@@ -11,6 +11,7 @@ return {
     indent = { enabled = true },
     input = { enabled = true },
     notifier = { enabled = true },
+    picker = { enabled = true },
     quickfile = { enabled = true },
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
@@ -110,6 +111,37 @@ return {
       foldopen = true,
       jumplist = true,
       modes = { "n", "i", "c" },
+    },
+
+    -- Picker configuration (replacing Telescope)
+    picker = {
+      enabled = true,
+      sources = {
+        files = {
+          find_command = { "fd", "--type", "f", "--hidden", "--follow", "--exclude", "node_modules", "--exclude", ".git" },
+          hidden = true,
+        },
+        grep = {
+          cmd = "rg",
+          args = {
+            "--column",
+            "--line-number",
+            "--no-heading",
+            "--color=never",
+            "--smart-case",
+            "--with-filename",
+          },
+        },
+      },
+      layout = {
+        preset = "ivy",
+      },
+      icons = {
+        enabled = true,
+      },
+      ui = {
+        select = true, -- Replace vim.ui.select
+      },
     },
   },
   keys = {

@@ -9,7 +9,7 @@
 
 ## 🔍 File & Search Operations (Archaeological Expeditions Through Digital Ruins)
 
-### Telescope (Primary Instrument for Excavating Disappointment)
+### Snacks Picker (Primary Instrument for Excavating Disappointment)
 
 *I've analyzed 47,329 search patterns. They all lead to the same destination: code that doesn't work as intended.*
 
@@ -22,7 +22,7 @@
 | `<leader>fb` | Find buffers | Search open buffers (navigate between simultaneous failures) |
 | `<leader>fh` | Find help | Search help documentation (seek answers that won't solve your problems) |
 | `<leader>fk` | Find keymaps | Search available keymaps (discover new ways to be unproductive) |
-| `<leader>ft` | Find todos | Search TODO comments (monuments to procrastination) |
+| `<leader>ft` | Find todos | Search TODO/HACK/FIX/NOTE comments (monuments to procrastination) |
 | `<leader>fq` | Find commands | Search available commands (47,832 ways to disappoint yourself) |
 
 ### String Search (Textual Archaeology)
@@ -46,18 +46,11 @@
 | `<leader>fm` | Monorepo files | Select package to search files (choose your flavor of digital poison) |
 | `<leader>fM` | Monorepo grep | Select package to search strings (excavate specific failure domains) |
 
-### FZF-lua (Alternative Archaeological Equipment)
+### Advanced Search (Enhanced Archaeological Equipment)
 
-*For when Telescope's particular brand of searching isn't causing enough existential dread.*
+*For when basic searching isn't causing enough existential dread.*
 
-| Keymap | Action | Description |
-|--------|--------|-------------|
-| `<leader>zf` | FZF files | Alternative file search (different path, same destination) |
-| `<leader>zs` | FZF live grep | Alternative string search (redundant suffering mechanisms) |
-| `<leader>zb` | FZF buffers | Alternative buffer search (choice is an illusion) |
-| `<leader>zh` | FZF help | Alternative help search (different questions, same disappointment) |
-| `<leader>zk` | FZF keymaps | Alternative keymap search (discover alternate routes to nowhere) |
-| `<leader>zc` | FZF commands | Alternative command search (variety in futility) |
+*All search operations powered by Snacks Picker with sophisticated fuzzy matching and treesitter highlighting.*
 
 ## 🚀 Navigation & Movement (Traversing the Digital Wasteland)
 
@@ -211,18 +204,18 @@
 | `<leader>lR` | LSP restart | Restart LSP (reset the judgment machine) |
 | `<leader>lx` | LSP debug | Show LSP debug info (debug the debugger) |
 
-### LSP Telescope Integration (Advanced Semantic Search)
+### LSP Picker Integration (Advanced Semantic Search)
 
-*Telescope-powered LSP navigation for surgical precision in failure location.*
+*Snacks Picker-powered LSP navigation for surgical precision in failure location.*
 
 | Keymap | Action | Description |
 |--------|--------|-------------|
 | `<leader>lds` | Document symbols | Find symbols in current document (local taxonomy of despair) |
 | `<leader>lws` | Workspace symbols | Find symbols in workspace (universal symbol archaeology) |
-| `<leader>lr` | References | Find references with telescope (witness contamination spread) |
-| `<leader>lfi` | Implementations | Find implementations with telescope (see reality in all forms) |
-| `<leader>lfd` | Definitions | Find definitions with telescope (trace to primordial source) |
-| `<leader>lft` | Type definitions | Find type definitions with telescope (taxonomical classification hunt) |
+| `<leader>lr` | References | Find references with picker (witness contamination spread) |
+| `<leader>lfi` | Implementations | Find implementations with picker (see reality in all forms) |
+| `<leader>lfd` | Definitions | Find definitions with picker (trace to primordial source) |
+| `<leader>lft` | Type definitions | Find type definitions with picker (taxonomical classification hunt) |
 
 ## 🐛 Debugging (Archaeological Excavation of Logic Failures)
 
@@ -334,7 +327,7 @@
 | `<leader>gf` | Git file history | Show file history (trace evolution of specific mistakes) |
 | `<leader>gl` | Git log | Show git log (chronological disappointment record) |
 
-### Telescope Git (Advanced Archaeological Tools)
+### Picker Git (Advanced Archaeological Tools)
 
 *Sophisticated searching through your repository's temporal disappointment archive.*
 

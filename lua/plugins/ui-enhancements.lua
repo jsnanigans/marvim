@@ -41,12 +41,9 @@ return {
       },
       select = {
         enabled = true,
-        backend = { "telescope", "builtin", "nui" },
+        backend = { "builtin", "nui" },
         trim_prompt = true,
-        telescope = require("telescope.themes").get_dropdown({
-          winblend = 10,
-          previewer = false,
-        }),
+        -- Telescope integration removed - using Snacks Picker
         nui = {
           position = "50%",
           size = nil,

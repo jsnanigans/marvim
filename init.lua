@@ -145,8 +145,8 @@ if lsp_debug then
   -- LSP debug is available
 end
 
--- Setup telescope keymaps
-require("core.keymaps.telescope").setup()
+-- Setup picker keymaps
+require("core.keymaps.picker").setup()
 
 -- Add keybinding to open lazy with centralized keymap system
 local keymaps = require("core.keymaps")
