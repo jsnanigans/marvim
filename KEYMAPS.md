@@ -167,10 +167,11 @@
 |--------|--------|-------------|
 | `gd` | Smart definition | Go to definition, if already there go to implementation (intelligent bouncing) |
 | `gi` | Smart implementation | Go to implementation, if already there go to definition (reverse bouncing) |
-| `gr` | Smart references | Find references (single jumps directly, multiple opens quickfix) |
+| `gr` | Smart references | Find references (filtered, excludes test files and node_modules) |
 | `gD` | Declaration | Jump to declaration (find where it all began) |
 | `gt` | Type definition | Jump to type definition (understand the taxonomy of failure) |
 | `K` | Hover docs | Show hover documentation (read lies about functionality) |
+| `<leader>sh` | Signature help | Show signature help in normal mode (parameter hints) |
 
 #### Direct Navigation (Uncompromising Precision)
 *Direct LSP calls without fallbacks. For when you want exactly what you asked for, disappointment included.*
@@ -192,9 +193,16 @@
 | Keymap | Action | Description |
 |--------|--------|-------------|
 | `<leader>ca` | Code actions | Show available code actions (choose your method of failure) |
-| `<leader>rn` | Rename symbol | Rename symbol under cursor (same mistake, different name) |
+| `<leader>ci` | Incoming calls | Show incoming calls (trace who's calling this mistake) |
+| `<leader>co` | Outgoing calls | Show outgoing calls (see what this mistake depends on) |
+| `<leader>cl` | Run codelens | Execute codelens action (automated code insights) |
+| `<leader>cr` | Refresh codelens | Refresh codelens data (update automated insights) |
+| `<leader>rn` | Rename symbol | Rename symbol with input dialog (interactive renaming) |
 | `<leader>rs` | Restart LSP | Restart language server (turn it off and on again) |
 | `<leader>th` | Toggle hints | Toggle inlay hints (show/hide constant judgment) |
+| `<leader>f` | Format document | Format entire buffer (apply robotic code style) |
+| `<leader>f` (visual) | Format selection | Format selected text (selective beautification) |
+| `<leader>fr` (visual) | Format range | Format specific range (precise formatting control) |
 
 ### Diagnostics (Catalog of Failures)
 
@@ -206,6 +214,8 @@
 | `<leader>D` | Document diagnostics | Show all file diagnostics (comprehensive failure report) |
 | `[d` | Previous diagnostic | Go to previous diagnostic (navigate backward through mistakes) |
 | `]d` | Next diagnostic | Go to next diagnostic (advance through error catalog) |
+| `[D` | Previous workspace diagnostic | Go to previous workspace diagnostic (global error navigation) |
+| `]D` | Next workspace diagnostic | Go to next workspace diagnostic (project-wide failure tour) |
 | `]]` | Next reference | Go to next reference (advance through reference chain) |
 | `[[` | Previous reference | Go to previous reference (retreat through reference history) |
 
@@ -516,6 +526,7 @@
 | `<leader>uc` | Toggle conceallevel | Toggle text concealing (hide/reveal markdown syntax) |
 | `<leader>uT` | Toggle treesitter | Toggle syntax highlighting (enable/disable colorful despair) |
 | `<leader>ub` | Toggle background | Switch dark/light background (aesthetic suffering control) |
+| `<leader>uh` | Toggle inlay hints | Toggle LSP hints per buffer (localized judgment control) |
 | `<leader>un` | Dismiss notifications | Clear notification spam (temporary peace from alerts) |
 
 ### Trouble (Organized Display of Problems)

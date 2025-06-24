@@ -165,19 +165,49 @@ function M.goto_declaration()
   center_cursor()
 end
 
--- Enhanced references (with better handling)
+-- Enhanced references (with better handling and filtering)
 function M.goto_references()
   vim.lsp.buf.references(nil, {
     on_list = function(options)
-      vim.fn.setqflist({}, ' ', options)
-      if #options.items > 1 then
+      -- Filter out test files and node_modules
+      local filtered_items = {}
+      for _, item in ipairs(options.items) do
+        local filename = item.filename or ""
+        local should_exclude = false
+        
+        -- Skip node_modules
+        if filename:match("node_modules/") then
+          should_exclude = true
+        end
+        
+        -- Skip test files (common patterns)
+        if filename:match("%.test%.") or 
+           filename:match("%.spec%.") or
+           filename:match("/test/") or
+           filename:match("/tests/") or
+           filename:match("/__tests__/") or
+           filename:match("/%.spec/") or
+           filename:match("/%.test/") then
+          should_exclude = true
+        end
+        
+        if not should_exclude then
+          table.insert(filtered_items, item)
+        end
+      end
+      
+      -- Update options with filtered items
+      local filtered_options = vim.tbl_extend("force", options, { items = filtered_items })
+      
+      vim.fn.setqflist({}, ' ', filtered_options)
+      if #filtered_items > 1 then
         vim.cmd("copen")
-      elseif #options.items == 1 then
+      elseif #filtered_items == 1 then
         -- If only one reference, jump directly and center
         vim.cmd("cfirst")
         center_cursor()
       else
-        vim.notify("No references found", vim.log.levels.INFO)
+        vim.notify("No references found (after filtering)", vim.log.levels.INFO)
       end
     end
   })
