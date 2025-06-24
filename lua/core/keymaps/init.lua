@@ -139,6 +139,7 @@ function M.setup()
   M.window.setup()
   M.editor.setup()
   M.picker.setup()
+  M.lsp.setup()
 end
 
 return M

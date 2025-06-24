@@ -160,14 +160,30 @@
 
 *The Language Server Protocol: machines analyzing your code with cold, calculating precision. At least they're consistent in their disappointment.*
 
+#### Smart Navigation (Intelligent Failure Detection)
+*Enhanced navigation that goes to the primary target, but switches to secondary if already there.*
+
 | Keymap | Action | Description |
 |--------|--------|-------------|
-| `gd` | Go to definition | Jump to definition (trace mistakes to their origin) |
-| `gR` | Find references | Show all references (witness the contamination spread) |
-| `gi` | Go to implementation | Jump to implementation (see how badly it's done) |
-| `gt` | Go to type def | Jump to type definition (understand the taxonomy of failure) |
-| `gD` | Go to declaration | Jump to declaration (find where it all began) |
+| `gd` | Smart definition | Go to definition, if already there go to implementation (intelligent bouncing) |
+| `gi` | Smart implementation | Go to implementation, if already there go to definition (reverse bouncing) |
+| `gr` | Smart references | Find references (single jumps directly, multiple opens quickfix) |
+| `gD` | Declaration | Jump to declaration (find where it all began) |
+| `gt` | Type definition | Jump to type definition (understand the taxonomy of failure) |
 | `K` | Hover docs | Show hover documentation (read lies about functionality) |
+
+#### Direct Navigation (Uncompromising Precision)
+*Direct LSP calls without fallbacks. For when you want exactly what you asked for, disappointment included.*
+
+| Keymap | Action | Description |
+|--------|--------|-------------|
+| `<leader>Gd` | Go to definition | Direct definition lookup (no fallback mercy) |
+| `<leader>GD` | Go to declaration | Direct declaration lookup (pure, unfiltered truth) |
+| `<leader>Gi` | Go to implementation | Direct implementation lookup (reality in its rawest form) |
+| `<leader>Gt` | Go to type definition | Direct type definition lookup (taxonomical precision) |
+| `<leader>Gr` | Find references | Direct reference search (uncompromising contamination analysis) |
+
+*Note: All navigation automatically centers the cursor with `zz` for optimal viewing of your mistakes.*
 
 ### Code Actions (Futile Attempts at Improvement)
 
@@ -199,10 +215,20 @@
 
 | Keymap | Action | Description |
 |--------|--------|-------------|
-| `<leader>li` | LSP info | Show LSP information (understand your judge) |
-| `<leader>ll` | LSP log | Show LSP log (read judgment history) |
+| `<leader>lI` | LSP info | Show LSP information (understand your judge) |
 | `<leader>lR` | LSP restart | Restart LSP (reset the judgment machine) |
-| `<leader>lx` | LSP debug | Show LSP debug info (debug the debugger) |
+
+### LSP Management (Administrative Control of Judgment Systems)
+
+*Commands to install, start, stop, and debug the very systems that judge your code.*
+
+| Keymap | Action | Description |
+|--------|--------|-------------|
+| `<leader>lmI` | Install LSP | Install LSP server (add new judges) |
+| `<leader>lmU` | Uninstall LSP | Uninstall LSP server (dismiss judges) |
+| `<leader>lms` | Start LSP | Start LSP server (begin judgment) |
+| `<leader>lmS` | Stop LSP | Stop LSP server (end judgment) |
+| `<leader>lml` | LSP log | Show LSP log (read judgment history) |
 
 ### LSP Picker Integration (Advanced Semantic Search)
 
@@ -210,12 +236,13 @@
 
 | Keymap | Action | Description |
 |--------|--------|-------------|
-| `<leader>lds` | Document symbols | Find symbols in current document (local taxonomy of despair) |
-| `<leader>lws` | Workspace symbols | Find symbols in workspace (universal symbol archaeology) |
+| `<leader>ls` | Document symbols | Find symbols in current document (local taxonomy of despair) |
+| `<leader>lw` | Workspace symbols | Find symbols in workspace (universal symbol archaeology) |
 | `<leader>lr` | References | Find references with picker (witness contamination spread) |
-| `<leader>lfi` | Implementations | Find implementations with picker (see reality in all forms) |
-| `<leader>lfd` | Definitions | Find definitions with picker (trace to primordial source) |
-| `<leader>lft` | Type definitions | Find type definitions with picker (taxonomical classification hunt) |
+| `<leader>li` | Implementations | Find implementations with picker (see reality in all forms) |
+| `<leader>ld` | Definitions | Find definitions with picker (trace to primordial source) |
+| `<leader>lt` | Type definitions | Find type definitions with picker (taxonomical classification hunt) |
+| `<leader>le` | Diagnostics | Find diagnostics with picker (comprehensive failure catalog) |
 
 ## 🐛 Debugging (Archaeological Excavation of Logic Failures)
 

@@ -60,8 +60,11 @@ return {
           end,
         }),
         require("neotest-vitest")({
-          vitestCommand = "npm exec vitest",
-          env = { CI = true },
+          vitestCommand = "npx vitest run",
+          env = { 
+            CI = true,
+            VITEST_REPORTER = "verbose"
+          },
           cwd = function(path)
             -- Always use project root for consistent test execution
             return project_utils.find_project_root()
@@ -140,6 +143,11 @@ return {
         enabled = true,
         virtual_text = true,
         signs = true,
+      },
+      
+      diagnostic = {
+        enabled = true,
+        severity = vim.diagnostic.severity.ERROR,
       },
 
       strategies = {
@@ -259,6 +267,10 @@ return {
     keymap("n", "]t", function() neotest.jump.next({ status = "failed" }) end, { desc = "Jump to next failed test" })
     keymap("n", "[T", function() neotest.jump.prev() end, { desc = "Jump to previous test" })
     keymap("n", "]T", function() neotest.jump.next() end, { desc = "Jump to next test" })
+    
+    -- Test diagnostics
+    keymap("n", "<leader>te", function() vim.diagnostic.open_float() end, { desc = "Show test diagnostic" })
+    keymap("n", "<leader>tE", function() vim.diagnostic.setloclist() end, { desc = "Test diagnostics to loclist" })
 
     -- Quick test status
     keymap("n", "<leader>ti", function()

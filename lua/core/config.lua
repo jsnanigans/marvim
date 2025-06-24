@@ -122,7 +122,7 @@ M.editor = {
   format_on_save = true,
   
   -- Format timeout
-  format_timeout = 5000,
+  format_timeout = 2000,
   
   -- Auto save
   auto_save = false,
@@ -195,11 +195,11 @@ M.lsp = {
 M.formatting = {
   -- Formatters by filetype
   formatters_by_ft = {
-    javascript = { "prettier", "eslint_d" },
-    javascriptreact = { "prettier", "eslint_d" },
-    typescript = { "prettier", "eslint_d" },
-    typescriptreact = { "prettier", "eslint_d" },
-    vue = { "prettier", "eslint_d" },
+    javascript = { "prettier" },
+    javascriptreact = { "prettier" },
+    typescript = { "prettier" },
+    typescriptreact = { "prettier" },
+    vue = { "prettier" },
     css = { "prettier" },
     scss = { "prettier" },
     html = { "prettier" },

@@ -271,6 +271,41 @@ if lsp_utils.has_custom_config("my_server") then
 end
 ```
 
+### Smart Navigation System (`lua/plugins/lsp/smart_navigation.lua`)
+
+Enhanced LSP navigation with intelligent fallbacks and automatic cursor centering:
+
+```lua
+-- Smart navigation with fallback chains
+function M.smart_goto_definition()
+  enhanced_goto(
+    "textDocument/definition",
+    { "textDocument/implementation", "textDocument/typeDefinition" },
+    { "definition", "implementation", "type definition" }
+  )
+end
+
+-- Automatic cursor centering after navigation
+local function center_cursor()
+  vim.schedule(function()
+    vim.cmd("normal! zz")
+  end)
+end
+```
+
+#### Features:
+- **Smart fallback chains**: When primary method fails, automatically tries alternatives
+- **Enhanced error handling**: Proper client checks and user feedback
+- **Automatic centering**: All navigation centers cursor with `zz`
+- **Enhanced references**: Single result jumps directly, multiple opens quickfix
+- **Direct methods**: Bypass fallbacks for precise control (`<leader>G*` keymaps)
+
+#### Architecture Benefits:
+- **Reliability**: Always finds something when it exists
+- **User experience**: Consistent centering and feedback
+- **Flexibility**: Both smart and direct navigation options
+- **Maintainability**: Centralized navigation logic with DRY principles
+
 ## Performance Features
 
 ### Large File Optimization

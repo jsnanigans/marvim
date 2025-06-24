@@ -4,6 +4,7 @@ local M = {}
 -- @param bufnr number The buffer number
 function M.on_attach(bufnr)
   local keymaps = require("core.keymaps")
+  local smart_nav = require("plugins.lsp.smart_navigation")
   
   local function buf_opts(desc)
     return { buffer = bufnr, desc = desc }
@@ -11,12 +12,17 @@ function M.on_attach(bufnr)
   
   keymaps.register({
     n = {
-      -- Go to definition/declaration
-      ["gd"] = { vim.lsp.buf.definition, buf_opts("Go to definition") },
-      ["gD"] = { vim.lsp.buf.declaration, buf_opts("Go to declaration") },
-      ["gi"] = { vim.lsp.buf.implementation, buf_opts("Go to implementation") },
-      ["gr"] = { vim.lsp.buf.references, buf_opts("Find references") },
-      ["gt"] = { vim.lsp.buf.type_definition, buf_opts("Go to type definition") },
+      -- Smart navigation with intelligent fallbacks
+      ["gd"] = { smart_nav.smart_goto_definition, buf_opts("Go to definition (smart fallback)") },
+      ["gi"] = { smart_nav.smart_goto_implementation, buf_opts("Go to implementation (smart fallback)") },
+      
+      -- Direct navigation methods (with centering)
+      ["gD"] = { smart_nav.goto_declaration, buf_opts("Go to declaration") },
+      ["gt"] = { smart_nav.goto_type_definition, buf_opts("Go to type definition") },
+      
+      -- Additional navigation
+      ["gr"] = { smart_nav.goto_references, buf_opts("Find references") },
+      
       
       -- Documentation and hover
       ["K"] = { vim.lsp.buf.hover, buf_opts("Show hover documentation") },
@@ -45,8 +51,8 @@ function M.on_attach(bufnr)
       ["<leader>q"] = { vim.diagnostic.setloclist, buf_opts("Set location list") },
       
       -- Additional helpers
-      ["<leader>li"] = { ":LspInfo<CR>", buf_opts("LSP info") },
-      ["<leader>lr"] = { ":LspRestart<CR>", buf_opts("Restart LSP") },
+      ["<leader>lI"] = { ":LspInfo<CR>", buf_opts("LSP info") },
+      ["<leader>lR"] = { ":LspRestart<CR>", buf_opts("Restart LSP") },
     },
     
     v = {
@@ -68,15 +74,23 @@ end
 -- Setup default LSP keymaps (not buffer-specific)
 function M.setup()
   local keymaps = require("core.keymaps")
+  local smart_nav = require("plugins.lsp.smart_navigation")
   
   keymaps.register({
     n = {
-      -- LSP management commands
-      ["<leader>lI"] = { ":LspInstall<CR>", { desc = "Install LSP server" } },
-      ["<leader>lU"] = { ":LspUninstall<CR>", { desc = "Uninstall LSP server" } },
-      ["<leader>ls"] = { ":LspStart<CR>", { desc = "Start LSP" } },
-      ["<leader>lS"] = { ":LspStop<CR>", { desc = "Stop LSP" } },
-      ["<leader>ll"] = { ":LspLog<CR>", { desc = "Show LSP log" } },
+      -- Direct LSP navigation (global, always available)
+      ["<leader>Gd"] = { smart_nav.goto_definition, { desc = "Go to definition (direct)" } },
+      ["<leader>GD"] = { smart_nav.goto_declaration, { desc = "Go to declaration (direct)" } },
+      ["<leader>Gi"] = { smart_nav.goto_implementation, { desc = "Go to implementation (direct)" } },
+      ["<leader>Gt"] = { smart_nav.goto_type_definition, { desc = "Go to type definition (direct)" } },
+      ["<leader>Gr"] = { smart_nav.goto_references, { desc = "Find references (direct)" } },
+      
+      -- LSP management commands (using <leader>lm prefix for "LSP management")
+      ["<leader>lmI"] = { ":LspInstall<CR>", { desc = "Install LSP server" } },
+      ["<leader>lmU"] = { ":LspUninstall<CR>", { desc = "Uninstall LSP server" } },
+      ["<leader>lms"] = { ":LspStart<CR>", { desc = "Start LSP" } },
+      ["<leader>lmS"] = { ":LspStop<CR>", { desc = "Stop LSP" } },
+      ["<leader>lml"] = { ":LspLog<CR>", { desc = "Show LSP log" } },
     }
   })
 end

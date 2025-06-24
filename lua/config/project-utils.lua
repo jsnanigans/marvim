@@ -119,6 +119,9 @@ end
 local function setup_autocmds()
   local augroup = vim.api.nvim_create_augroup("ProjectUtils", { clear = true })
   
+  -- DISABLED: Auto-cd functionality was causing performance issues
+  -- Keeping the code here for reference but commented out
+  --[[
   -- Automatically change to project root when opening a file
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
     group = augroup,
@@ -136,6 +139,7 @@ local function setup_autocmds()
       end
     end,
   })
+  --]]
   
   -- Set project-specific settings
   vim.api.nvim_create_autocmd({ "DirChanged" }, {

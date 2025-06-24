@@ -425,6 +425,37 @@ za
 
 ## 🔧 LSP Features (Advanced Mechanical Judgment Systems)
 
+### Enhanced Navigation (Intelligent Code Archaeology)
+
+*Revolutionary navigation with smart fallbacks and automatic cursor centering. When one method fails to locate your mistakes, others persist.*
+
+#### Smart Navigation Workflow
+```vim
+gd  " Smart definition: go to definition, if already there go to implementation
+gi  " Smart implementation: go to implementation, if already there go to definition  
+gr  " Enhanced references: single jumps directly, multiple opens quickfix
+```
+
+*Perfect for bouncing between definitions and implementations. Press `gd` on a function call to see its definition, press `gd` again to see its implementation.*
+
+#### Direct Navigation (Precision Tools)
+```vim
+<leader>Gd  " Direct definition (no fallbacks)
+<leader>GD  " Direct declaration
+<leader>Gi  " Direct implementation  
+<leader>Gt  " Direct type definition
+<leader>Gr  " Direct references
+```
+
+*When you know exactly what you want and demand uncompromising precision.*
+
+#### Navigation vs Picker Integration
+- **Basic navigation** (`gd`, `gi`): Jump directly with smart fallbacks
+- **Picker navigation** (`<leader>ld`, `<leader>li`): Browse multiple results in Snacks picker
+- **Direct navigation** (`<leader>G*`): Single-method calls without fallbacks
+
+*All navigation methods automatically center your cursor with `zz` for optimal viewing of disappointment.*
+
 ### Inlay Hints (Continuous Stream of Criticism)
 ```vim
 " Toggle TypeScript/JavaScript inlay hints:

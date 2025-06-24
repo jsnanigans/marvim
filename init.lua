@@ -43,6 +43,9 @@ vim.opt.rtp:prepend(lazypath)
 require("config.options")
 require("config.keymaps")
 
+-- Load custom commands (including Q, Qa aliases)
+require("core.commands").setup()
+
 -- Plugin management with optimized lazy configuration
 require("lazy").setup("plugins", {
   -- Improved defaults for better performance
@@ -126,11 +129,15 @@ require("lazy").setup("plugins", {
 -- Post-plugin setup
 require("config.autocmds")
 
+-- DISABLED: Project utilities were causing performance issues with monorepos
+-- Keeping the code here for reference but commented out
+--[[
 -- Initialize project utilities for monorepo support
 local project_utils = require("config.project-utils")
 if project_utils and project_utils.setup then
   project_utils.setup()
 end
+--]]
 
 -- Initialize performance monitoring
 local performance = require("config.performance")

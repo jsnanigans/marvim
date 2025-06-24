@@ -33,6 +33,13 @@ return {
       local lspconfig = require("lspconfig")
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
+      -- Load LSP debug utilities
+      require("plugins.lsp.debug")
+      
+      -- Ensure vtsls is not installed
+      require("plugins.lsp.uninstall_vtsls")
+
+
       -- Configure diagnostics
       local function configure_diagnostics()
         vim.diagnostic.config({
@@ -61,7 +68,7 @@ return {
       local on_attach = function(client, bufnr)
         -- Configure diagnostics on first LSP attach
         configure_diagnostics()
-        
+
         -- Attach navic if supported
         if client.server_capabilities.documentSymbolProvider then
           local ok, navic = pcall(require, "nvim-navic")
@@ -69,10 +76,10 @@ return {
             navic.attach(client, bufnr)
           end
         end
-        
+
         -- Setup LSP keymaps
         require("core.keymaps.lsp").on_attach(bufnr)
-        
+
         -- Enable inlay hints if supported and configured
         if config.lsp.inlay_hints.enabled and client.supports_method("textDocument/inlayHint") then
           vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
@@ -85,7 +92,7 @@ return {
       -- Ensure installed servers
       mason_lspconfig.setup({
         ensure_installed = {
-          "vtsls",
+          "ts_ls", -- typescript-language-server
           "html",
           "cssls",
           "tailwindcss",
@@ -106,21 +113,10 @@ return {
           })
           lspconfig[server_name].setup(opts)
         end,
-        
-        -- Special handling for vtsls to prevent conflicts with ts_ls
+
+        -- Disable vtsls (but keep it available if needed)
         ["vtsls"] = function()
-          -- Stop ts_ls if it's running
-          for _, client in pairs(vim.lsp.get_clients()) do
-            if client.name == "ts_ls" then
-              client.stop()
-            end
-          end
-          
-          local opts = lsp_utils.get_server_opts("vtsls", {
-            capabilities = capabilities,
-            on_attach = on_attach,
-          })
-          lspconfig.vtsls.setup(opts)
+          -- Don't set up vtsls by default
         end,
         }
       })

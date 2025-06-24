@@ -61,6 +61,7 @@ return {
         { "<leader>e",     desc = "Show diagnostic" },
         { "<leader>f",     group = "+find/file" },
         { "<leader>g",     group = "+git" },
+        { "<leader>G",     group = "+goto-direct" },
         { "<leader>h",     group = "+git-hunk" },
         { "<leader>l",     group = "+lsp" },
         { "<leader>n",     desc = "Clear search highlights" },
@@ -79,7 +80,7 @@ return {
         -- Sub-groups
         { "<leader>ts",    group = "+typescript" },
         { "<leader>gh",    group = "+github" },
-        { "<leader>gd",    group = "+diff" },
+        { "<leader>lm",    group = "+lsp-management" },
         { "<leader>dP",    group = "+profile" },
 
         -- Motion groups
