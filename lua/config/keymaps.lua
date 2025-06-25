@@ -58,7 +58,7 @@ keymaps.register({
     ["<leader>utn"] = { "<cmd>RosePineMoon<cr>", { desc = "Rosé Pine Moon" } },
     ["<leader>utd"] = { "<cmd>RosePineDawn<cr>", { desc = "Rosé Pine Dawn" } },
     ["<leader>utt"] = { "<cmd>RosePineToggleTransparency<cr>", { desc = "Toggle transparency" } },
-    ["<leader>utc"] = { "<cmd>colorscheme catppuccin<cr>", { desc = "Switch to Catppuccin" } },
+    ["<leader>uta"] = { "<cmd>colorscheme habamax<cr>", { desc = "Switch to Habamax" } },
   },
 
   v = {

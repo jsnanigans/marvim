@@ -86,7 +86,7 @@ M.ui = {
   
   -- Tabline configuration
   tabline = {
-    enabled = true,
+    enabled = false,
     show_close_icons = true,
     show_modified_icons = true,
     max_name_length = 18,
@@ -114,9 +114,9 @@ M.ui = {
       "                                   ",
     },
     shortcuts = {
-      { desc = " Find File", group = "@property", action = "Telescope find_files", key = "f" },
-      { desc = " Recent Files", group = "Label", action = "Telescope oldfiles", key = "r" },
-      { desc = " Find Word", group = "DiagnosticHint", action = "Telescope live_grep", key = "w" },
+      { desc = " Find File", group = "@property", action = "Snacks picker files", key = "f" },
+      { desc = " Recent Files", group = "Label", action = "Snacks picker recent", key = "r" },
+      { desc = " Find Word", group = "DiagnosticHint", action = "Snacks picker grep", key = "w" },
       { desc = " Config", group = "Number", action = "edit $MYVIMRC", key = "c" },
       { desc = " Lazy", group = "Title", action = "Lazy", key = "l" },
       { desc = " Quit", group = "Error", action = "quit", key = "q" },
@@ -651,17 +651,17 @@ M.lsp = vim.tbl_deep_extend("force", M.lsp, {
   },
 })
 
--- Navigation configuration (telescope + neo-tree + harpoon)
+-- Navigation configuration (snacks picker + neo-tree + harpoon)
 M.navigation = {
-  -- Telescope configuration
-  telescope = {
+  -- Snacks Picker configuration (replaces telescope)
+  picker = {
     enabled = true,
-    extensions = { "fzf", "ui-select", "file_browser", "projects" },
-    defaults = {
-      prompt_prefix = " ",
-      selection_caret = " ",
-      path_display = { "truncate" },
-      file_ignore_patterns = M.ui.ignore_patterns,
+    win = {
+      input = { keys = { ["<C-c>"] = { "close", mode = { "n", "i" } } } },
+    },
+    sources = {
+      files = { hidden = false },
+      grep = { hidden = false },
     },
   },
   

@@ -69,11 +69,26 @@ return {
       DiagnosticInfo = { fg = "foam" },
       DiagnosticHint = { fg = "iris" },
       
-      -- Enhanced telescope colors
-      TelescopeSelection = { fg = "text", bg = "highlight_med" },
-      TelescopeSelectionCaret = { fg = "rose" },
-      TelescopeMatching = { fg = "gold" },
-      TelescopePromptPrefix = { fg = "pine" },
+      -- Snacks Picker highlighting (correct group names)
+      SnacksPicker = { fg = "text", bg = "base" },
+      SnacksPickerBorder = { fg = "muted" },
+      SnacksPickerTitle = { fg = "foam", bold = true },
+      SnacksPickerList = { fg = "text", bg = "surface" },
+      SnacksPickerListTitle = { fg = "pine", bold = true },
+      SnacksPickerPreview = { fg = "text", bg = "surface" },
+      SnacksPickerInput = { fg = "text", bg = "highlight_med" },
+      SnacksPickerInputTitle = { fg = "iris", bold = true },
+      SnacksPickerInputBorder = { fg = "pine" },
+      SnacksPickerInputSearch = { fg = "gold", bold = true },
+      SnacksPickerFile = { fg = "text" },
+      SnacksPickerDir = { fg = "foam", bold = true },
+      SnacksPickerPathHidden = { fg = "subtle" },
+      SnacksPickerPathIgnored = { fg = "muted" },
+      
+      -- Critical: Selection and cursor highlighting for visibility
+      CursorLine = { bg = "highlight_med" }, -- Ensure cursor line is visible
+      PmenuSel = { fg = "base", bg = "iris" }, -- Selection in popup menus
+      IncSearch = { fg = "base", bg = "gold" }, -- Incremental search highlighting
       
       -- Better git signs
       GitSignsAdd = { fg = "foam" },
@@ -84,8 +99,9 @@ return {
       StatusLine = { fg = "text", bg = "surface" },
       StatusLineNC = { fg = "subtle", bg = "surface" },
       
-      -- Better visual selection
-      Visual = { bg = "highlight_med" },
+      -- Better visual selection (preserve text colors, more noticeable)
+      Visual = { bg = "gold" },
+      VisualNOS = { bg = "love" },
       
       -- Enhanced completion menu
       Pmenu = { fg = "text", bg = "surface" },

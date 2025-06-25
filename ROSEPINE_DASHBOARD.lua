@@ -16,9 +16,9 @@ return {
   },
   
   shortcuts = {
-    { key = "f", desc = "󰈞  Find Files", action = "Telescope find_files" },
-    { key = "r", desc = "󰊄  Recent Files", action = "Telescope oldfiles" },
-    { key = "g", desc = "󰊢  Find Text", action = "Telescope live_grep" },
+    { key = "f", desc = "󰈞  Find Files", action = "Snacks picker files" },
+    { key = "r", desc = "󰊄  Recent Files", action = "Snacks picker recent" },
+    { key = "g", desc = "󰊢  Find Text", action = "Snacks picker grep" },
     { key = "c", desc = "  Config", action = "edit ~/.config/nvim/init.lua" },
     { key = "l", desc = "󰒲  Lazy", action = "Lazy" },
     { key = "q", desc = "󰗼  Quit", action = "qa" },

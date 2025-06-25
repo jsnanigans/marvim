@@ -142,6 +142,16 @@ return {
       ui = {
         select = true, -- Replace vim.ui.select
       },
+      win = {
+        input = {
+          keys = {
+            ["<C-c>"] = { "close", mode = { "n", "i" } },
+          },
+        },
+        list = {
+          cursorline = true, -- Enable cursor line highlighting
+        },
+      },
     },
   },
   -- NO KEYS - All keymaps handled by our unified keymap system

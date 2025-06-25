@@ -72,7 +72,7 @@ require("lazy").setup("plugins", {
   -- Installation settings
   install = {
     missing = true, -- Install missing plugins on startup
-    colorscheme = { "catppuccin", "habamax" }, -- Fallback colorschemes
+    colorscheme = { "rose-pine", "habamax" }, -- Fallback colorschemes
   },
   -- UI configuration
   ui = {
@@ -149,15 +149,6 @@ require("config.autocmds")
 local ui = require("core.ui")
 ui.setup()
 
--- DISABLED: Project utilities were causing performance issues with monorepos
--- Keeping the code here for reference but commented out
---[[
--- Initialize project utilities for monorepo support
-local project_utils = require("config.project-utils")
-if project_utils and project_utils.setup then
-  project_utils.setup()
-end
---]]
 
 -- Initialize performance monitoring
 local performance = require("config.performance")
