@@ -117,10 +117,6 @@ return {
     picker = {
       enabled = true,
       sources = {
-        files = {
-          find_command = { "fd", "--type", "f", "--hidden", "--follow", "--exclude", "node_modules", "--exclude", ".git" },
-          hidden = true,
-        },
         grep = {
           cmd = "rg",
           args = {
