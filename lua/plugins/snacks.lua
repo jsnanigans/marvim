@@ -128,6 +128,13 @@ return {
             "--with-filename",
           },
         },
+        files = {
+          cmd = "fd",
+          args = {
+            "--type=file",
+            "--hidden",
+          },
+        },
       },
       layout = {
         preset = "ivy",
