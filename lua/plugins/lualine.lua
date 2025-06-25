@@ -9,7 +9,7 @@ return {
 
     lualine.setup({
       options = {
-        theme = "catppuccin",
+        theme = "rose-pine",
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
         disabled_filetypes = {

@@ -78,11 +78,7 @@ return {
   {
     "tpope/vim-fugitive",
     cmd = { "Git", "G" },
-    keys = {
-      { "<leader>gs", "<cmd>Git<cr>", desc = "Git status" },
-      { "<leader>gp", "<cmd>Git push<cr>", desc = "Git push" },
-      { "<leader>gl", "<cmd>Git pull<cr>", desc = "Git pull" },
-      { "<leader>gf", "<cmd>Git fetch<cr>", desc = "Git fetch" },
-    },
+    -- NO KEYS - Handled by our unified keymap system  
+    keys = {},
   },
 } 

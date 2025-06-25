@@ -4,88 +4,74 @@ local keymaps = require("core.keymaps")
 -- Setup all keymaps through the centralized system
 keymaps.setup()
 
--- Additional keymaps specific to this config
+-- Additional keymaps specific to this config (NON-CONFLICTING ONLY)
 keymaps.register({
   n = {
-    -- Quick quit
+    -- Quick quit (unique)
     ["<leader>qq"] = { ":qa<CR>", { desc = "Quit all" } },
 
-    -- Better join lines
+    -- Better join lines (unique)
     ["J"] = { "mzJ`z", { desc = "Join lines without moving cursor" } },
 
-    -- Center screen after navigation
-    ["<C-d>"] = { "<C-d>zz", { desc = "Scroll down and center" } },
-    ["<C-u>"] = { "<C-u>zz", { desc = "Scroll up and center" } },
-    ["n"] = { "nzzzv", { desc = "Next search result centered" } },
-    ["N"] = { "Nzzzv", { desc = "Previous search result centered" } },
-
-    -- Quick macro execution
+    -- Quick macro execution (unique)
     ["Q"] = { "@q", { desc = "Execute macro q" } },
 
-    -- Navigate buffers
-    ["<S-l>"] = { ":bnext<CR>", { desc = "Next buffer" } },
-    ["<S-h>"] = { ":bprevious<CR>", { desc = "Previous buffer" } },
-
-    -- Save file
+    -- Save file with Ctrl+S (unique)
     ["<C-s>"] = { "<cmd>w<cr>", { desc = "Save file" } },
-  },
 
-  v = {
-    -- Better paste behavior
-    ["p"] = { '"_dP', { desc = "Paste without yanking" } },
-
-    -- Stay in indent mode
-    ["<"] = { "<gv", { desc = "Indent left and reselect" } },
-    [">"] = { ">gv", { desc = "Indent right and reselect" } },
-
-    -- Move text up and down
-    ["J"] = { ":m '>+1<CR>gv=gv", { desc = "Move selection down" } },
-    ["K"] = { ":m '<-2<CR>gv=gv", { desc = "Move selection up" } },
-  },
-
-  x = {
-    -- Better paste in visual block mode
-    ["p"] = { '"_dP', { desc = "Paste without yanking" } },
-
-    -- Move text up and down in visual block mode
-    ["J"] = { ":move '>+1<CR>gv-gv", { desc = "Move block down" } },
-    ["K"] = { ":move '<-2<CR>gv-gv", { desc = "Move block up" } },
-  },
-
-  i = {
-    -- Quick escape alternatives
-    ["jk"] = { "<ESC>", { desc = "Exit insert mode" } },
-    ["kj"] = { "<ESC>", { desc = "Exit insert mode (alternative)" } },
-    -- Save file
-    ["<C-s>"] = { "<cmd>w<cr><esc>", { desc = "Save file" } },
-  },
-
-})
-
--- Plugin-specific keymaps that don't belong in plugin configs
-keymaps.register({
-  n = {
-    -- Flash.nvim integration
+    -- Flash.nvim integration (unique)
     ["s"] = { function() require("flash").jump() end, { desc = "Flash" } },
     ["S"] = { function() require("flash").treesitter() end, { desc = "Flash Treesitter" } },
 
-    -- Git conflict resolution
+    -- Git conflict resolution (unique)
     ["<leader>gco"] = { ":diffget //2<CR>", { desc = "Get from left (ours)" } },
     ["<leader>gct"] = { ":diffget //3<CR>", { desc = "Get from right (theirs)" } },
 
-    -- Snacks.nvim integration
-    ["<leader>bd"] = { function() Snacks.bufdelete() end, { desc = "Delete buffer" } },
-    ["<leader>bD"] = { function() Snacks.bufdelete.other() end, { desc = "Delete other buffers" } },
+    -- Snacks.nvim integration (unique mappings only)
+    ["<leader>un"] = { function() require("snacks").notifier.hide() end, { desc = "Dismiss All Notifications" } },
+    ["<leader>gg"] = { function() require("snacks").lazygit() end, { desc = "Lazygit" } },
+    ["<leader>gB"] = { function() require("snacks").gitbrowse() end, { desc = "Git Browse" } },
+    ["<leader>gl"] = { function() require("snacks").lazygit.log() end, { desc = "Lazygit Log (cwd)" } },
+    ["<leader>gF"] = { function() require("snacks").lazygit.log_file() end, { desc = "Lazygit Current File History" } },
+    ["<leader>cR"] = { function() require("snacks").rename.rename_file() end, { desc = "Rename File" } },
+    
+    -- Grug-far (search and replace) integration (unique prefixes)
+    ["<leader>rr"] = { function() require("grug-far").open() end, { desc = "Search and replace" } },
+    ["<leader>rW"] = { function() require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } }) end, { desc = "Search and replace current word" } },
+    ["<leader>rf"] = { function() require("grug-far").open({ prefills = { paths = vim.fn.expand("%") } }) end, { desc = "Search and replace in current file" } },
+    
+    -- Git commands (fugitive) (unique)
+    ["<leader>gp"] = { "<cmd>Git push<cr>", { desc = "Git push" } },
+    ["<leader>gP"] = { "<cmd>Git pull<cr>", { desc = "Git pull" } },
+    ["<leader>gE"] = { "<cmd>Git fetch<cr>", { desc = "Git fetch" } },
+    
+    -- Terminal toggle (unique)
+    ["<c-/>"] = { function() require("snacks").terminal() end, { desc = "Toggle Terminal" } },
+    ["<c-_>"] = { function() require("snacks").terminal() end, { desc = "Toggle Terminal (which_key_ignore)" } },
+    
+    -- Word navigation (unique)
+    ["]]"] = { function() require("snacks").words.jump(vim.v.count1) end, { desc = "Next Reference" } },
+    ["[["] = { function() require("snacks").words.jump(-vim.v.count1) end, { desc = "Prev Reference" } },
+    
+    -- Rosé Pine theme switching
+    ["<leader>utm"] = { "<cmd>RosePineMain<cr>", { desc = "Rosé Pine Main" } },
+    ["<leader>utn"] = { "<cmd>RosePineMoon<cr>", { desc = "Rosé Pine Moon" } },
+    ["<leader>utd"] = { "<cmd>RosePineDawn<cr>", { desc = "Rosé Pine Dawn" } },
+    ["<leader>utt"] = { "<cmd>RosePineToggleTransparency<cr>", { desc = "Toggle transparency" } },
+    ["<leader>utc"] = { "<cmd>colorscheme catppuccin<cr>", { desc = "Switch to Catppuccin" } },
   },
 
   v = {
-    -- Flash.nvim in visual mode
+    -- Flash.nvim in visual mode (unique)
     ["s"] = { function() require("flash").jump() end, { desc = "Flash" } },
     ["S"] = { function() require("flash").treesitter() end, { desc = "Flash Treesitter" } },
+    
+    -- Grug-far in visual mode (unique)
+    ["<leader>rr"] = { function() require("grug-far").with_visual_selection() end, { desc = "Search and replace selection" } },
   },
 
   o = {
-    -- Flash.nvim in operator mode
+    -- Flash.nvim in operator mode (unique)
     ["s"] = { function() require("flash").jump() end, { desc = "Flash" } },
     ["S"] = { function() require("flash").treesitter() end, { desc = "Flash Treesitter" } },
     ["r"] = { function() require("flash").remote() end, { desc = "Remote Flash" } },
@@ -93,16 +79,28 @@ keymaps.register({
   },
 
   x = {
-    -- Flash.nvim in visual block mode
+    -- Flash.nvim in visual block mode (unique)
     ["R"] = { function() require("flash").treesitter_search() end, { desc = "Treesitter Search" } },
   },
 
   c = {
-    -- Flash.nvim in command mode
+    -- Flash.nvim in command mode (unique)
     ["<c-s>"] = { function() require("flash").toggle() end, { desc = "Toggle Flash Search" } },
-  }
+  },
+  
+  t = {
+    -- Word navigation in terminal mode (unique)
+    ["]]"] = { function() require("snacks").words.jump(vim.v.count1) end, { desc = "Next Reference" } },
+    ["[["] = { function() require("snacks").words.jump(-vim.v.count1) end, { desc = "Prev Reference" } },
+  },
+
+  i = {
+    -- Save file with Ctrl+S (unique)
+    ["<C-s>"] = { "<cmd>w<cr><esc>", { desc = "Save file" } },
+  },
 })
 
+-- NOTE: Core keymaps are handled in lua/core/keymaps/
 -- NOTE: Snacks Picker keymaps are handled in lua/core/keymaps/picker.lua
 -- NOTE: LSP keymaps are handled in lua/core/keymaps/lsp.lua
 -- NOTE: DAP keymaps are handled in plugins/debug.lua

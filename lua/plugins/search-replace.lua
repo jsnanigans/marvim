@@ -2,12 +2,8 @@
 return {
   "MagicDuck/grug-far.nvim",
   cmd = { "GrugFar" },
-  keys = {
-    { "<leader>sr", desc = "Search and replace" },
-    { "<leader>sw", desc = "Search and replace current word" },
-    { "<leader>sf", desc = "Search and replace in current file" },
-    { "<leader>sr", mode = "v", desc = "Search and replace selection" },
-  },
+  -- NO KEYS - Handled by our unified keymap system
+  keys = {},
   config = function()
     require("grug-far").setup({
       -- Options, see Configuration section below

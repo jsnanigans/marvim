@@ -144,20 +144,8 @@ return {
       },
     },
   },
-  keys = {
-    { "<leader>un", function() require("snacks").notifier.hide() end, desc = "Dismiss All Notifications" },
-    { "<leader>bd", function() require("snacks").bufdelete() end, desc = "Delete Buffer" },
-    { "<leader>gg", function() require("snacks").lazygit() end, desc = "Lazygit" },
-    { "<leader>gb", function() require("snacks").git.blame_line() end, desc = "Git Blame Line" },
-    { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse" },
-    { "<leader>gf", function() require("snacks").lazygit.log_file() end, desc = "Lazygit Current File History" },
-    { "<leader>gl", function() require("snacks").lazygit.log() end, desc = "Lazygit Log (cwd)" },
-    { "<leader>cR", function() require("snacks").rename.rename_file() end, desc = "Rename File" },
-    { "<c-/>", function() require("snacks").terminal() end, desc = "Toggle Terminal" },
-    { "<c-_>", function() require("snacks").terminal() end, desc = "which_key_ignore" },
-    { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
-    { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
-  },
+  -- NO KEYS - All keymaps handled by our unified keymap system
+  keys = {},
   config = function(_, opts)
     local snacks = require("snacks")
     snacks.setup(opts)

@@ -27,11 +27,10 @@ function M.on_attach(bufnr)
       -- Documentation and hover
       ["K"] = { vim.lsp.buf.hover, buf_opts("Show hover documentation") },
       ["<C-k>"] = { vim.lsp.buf.signature_help, buf_opts("Show signature help") },
-      ["<leader>sh"] = { vim.lsp.buf.signature_help, buf_opts("Show signature help") },
       
       -- Code actions and refactoring
       ["<leader>ca"] = { vim.lsp.buf.code_action, buf_opts("Code action") },
-      ["<leader>rn"] = { 
+      ["<leader>cr"] = { 
         function()
           local curr_name = vim.fn.expand("<cword>")
           vim.ui.input({
@@ -45,7 +44,7 @@ function M.on_attach(bufnr)
         end,
         buf_opts("Rename symbol") 
       },
-      ["<leader>f"] = { 
+      ["<leader>cf"] = { 
         function() vim.lsp.buf.format({ async = true }) end, 
         buf_opts("Format document") 
       },
@@ -58,13 +57,13 @@ function M.on_attach(bufnr)
         buf_opts("List workspace folders") 
       },
       
-      -- Diagnostics
-      ["<leader>d"] = { vim.diagnostic.open_float, buf_opts("Show line diagnostics") },
+      -- Diagnostics (using [e and ]e to avoid conflicts)
+      ["<leader>cd"] = { vim.diagnostic.open_float, buf_opts("Show line diagnostics") },
       ["[d"] = { vim.diagnostic.goto_prev, buf_opts("Previous diagnostic") },
       ["]d"] = { vim.diagnostic.goto_next, buf_opts("Next diagnostic") },
       ["[D"] = { function() vim.diagnostic.goto_prev({scope="workspace"}) end, buf_opts("Previous workspace diagnostic") },
       ["]D"] = { function() vim.diagnostic.goto_next({scope="workspace"}) end, buf_opts("Next workspace diagnostic") },
-      ["<leader>q"] = { vim.diagnostic.setloclist, buf_opts("Set location list") },
+      ["<leader>cq"] = { vim.diagnostic.setloclist, buf_opts("Set location list") },
       
       -- Call hierarchy
       ["<leader>ci"] = { vim.lsp.buf.incoming_calls, buf_opts("Show incoming calls") },
@@ -72,10 +71,10 @@ function M.on_attach(bufnr)
       
       -- Codelens
       ["<leader>cl"] = { vim.lsp.codelens.run, buf_opts("Run codelens") },
-      ["<leader>cr"] = { vim.lsp.codelens.refresh, buf_opts("Refresh codelens") },
+      ["<leader>cL"] = { vim.lsp.codelens.refresh, buf_opts("Refresh codelens") },
       
       -- Additional helpers
-      ["<leader>lI"] = { ":LspInfo<CR>", buf_opts("LSP info") },
+      ["<leader>li"] = { ":LspInfo<CR>", buf_opts("LSP info") },
       ["<leader>lR"] = { ":LspRestart<CR>", buf_opts("Restart LSP") },
       ["<leader>uh"] = { 
         function()
@@ -88,21 +87,9 @@ function M.on_attach(bufnr)
     v = {
       -- Visual mode code actions
       ["<leader>ca"] = { vim.lsp.buf.code_action, buf_opts("Code action") },
-      ["<leader>f"] = { 
+      ["<leader>cf"] = { 
         function() vim.lsp.buf.format({ async = true }) end, 
         buf_opts("Format selection") 
-      },
-      ["<leader>fr"] = { 
-        function() 
-          vim.lsp.buf.format({ 
-            async = true,
-            range = {
-              ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
-              ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
-            }
-          }) 
-        end, 
-        buf_opts("Format range") 
       },
     },
     

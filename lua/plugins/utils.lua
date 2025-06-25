@@ -52,36 +52,13 @@ return {
       local wk = require("which-key")
       wk.setup(opts)
 
-      -- Register group descriptions
+      -- NOTE: All group descriptions are now handled by our centralized keymap system
+      -- Only register truly unique plugin-specific groups
       wk.add({
-        -- Root groups
-        { "<leader>b",     group = "+buffer" },
-        { "<leader>c",     group = "+code" },
-        { "<leader>d",     group = "+debug/test" },
-        { "<leader>e",     desc = "Show diagnostic" },
-        { "<leader>f",     group = "+find/file" },
-        { "<leader>g",     group = "+git" },
-        { "<leader>G",     group = "+goto-direct" },
-        { "<leader>h",     group = "+git-hunk" },
-        { "<leader>l",     group = "+lsp" },
-        { "<leader>n",     desc = "Clear search highlights" },
-        { "<leader>q",     desc = "Diagnostic loclist" },
-        { "<leader>r",     group = "+refactor/replace" },
-        { "<leader>s",     group = "+search/substitute" },
-        { "<leader>t",     group = "+terminal/test" },
-        { "<leader>u",     group = "+ui/toggle" },
-        { "<leader>w",     group = "+window" },
-        { "<leader>x",     group = "+diagnostics/quickfix" },
-        { "<leader>z",     group = "+fzf" },
-        { "<leader>L",     desc = "Lazy plugin manager" },
-        { "<leader>Q",     desc = "Force quit all" },
-        { "<leader>S",     desc = "Substitute to end of line" },
-
-        -- Sub-groups
-        { "<leader>ts",    group = "+typescript" },
-        { "<leader>gh",    group = "+github" },
-        { "<leader>lm",    group = "+lsp-management" },
-        { "<leader>dP",    group = "+profile" },
+        -- Plugin-specific groups only (no conflicts with core)
+        { "<leader>ts",    group = "TypeScript" },
+        { "<leader>gh",    group = "GitHub" },
+        { "<leader>dP",    group = "Profile" },
 
         -- Motion groups
         { "g",             group = "+goto" },

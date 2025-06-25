@@ -1,5 +1,10 @@
--- MARVIM: Minimal Awesome Robust Vim
--- A poweruser's dream configuration with enhanced maintainability
+-- MARVIM: Malevolently Awesome Robust Vim
+-- The ULTIMATE configuration combining the best of all vim distributions
+-- LazyVim + AstroVim + NvChad + LunarVim = MARVIM Ultimate
+-- *sigh* Because apparently perfection wasn't depressing enough
+
+-- Record startup time for performance monitoring
+vim.g.start_time = vim.fn.reltime()
 
 -- Performance: Disable some vim defaults early for faster startup
 vim.g.loaded_gzip = 1
@@ -19,8 +24,19 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 vim.g.loaded_netrwFileHandlers = 1
 
--- Initialize core configuration
+-- Initialize and validate ultimate configuration
 local config = require("core.config")
+
+-- Validate configuration before proceeding
+local valid, errors = config.validate()
+if not valid then
+  vim.api.nvim_echo({
+    { "MARVIM Configuration Errors:\n", "ErrorMsg" },
+    { table.concat(errors, "\n"), "WarningMsg" },
+    { "\nPress any key to continue with default values..." },
+  }, true, {})
+  vim.fn.getchar()
+end
 
 -- Bootstrap lazy.nvim plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -129,6 +145,10 @@ require("lazy").setup("plugins", {
 -- Post-plugin setup
 require("config.autocmds")
 
+-- Initialize Ultimate UI Framework
+local ui = require("core.ui")
+ui.setup()
+
 -- DISABLED: Project utilities were causing performance issues with monorepos
 -- Keeping the code here for reference but commented out
 --[[
@@ -152,8 +172,7 @@ if lsp_debug then
   -- LSP debug is available
 end
 
--- Setup picker keymaps
-require("core.keymaps.picker").setup()
+-- NOTE: Picker keymaps are now handled by our centralized keymap system
 
 -- Add keybinding to open lazy with centralized keymap system
 local keymaps = require("core.keymaps")
