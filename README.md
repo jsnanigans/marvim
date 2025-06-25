@@ -22,19 +22,20 @@ A modern Neovim configuration that combines the best features from popular confi
 
 ### 🛠️ Developer Experience
 - Comprehensive LSP support with auto-installation
-- Intelligent completion with nvim-cmp
+- **TypeScript inlay hints enabled** for inline type information
+- Intelligent completion with nvim-cmp and ghost text
 - Advanced file navigation with Telescope and Harpoon
 - Git integration with Gitsigns
 - Format on save with conform.nvim
 
 ### 📦 Plugin Highlights
-- **File Navigation**: Oil.nvim, Telescope, Harpoon
+- **File Navigation**: Oil.nvim, Snacks Picker, Harpoon
 - **LSP**: Full language server support with Mason
-- **Completion**: nvim-cmp with multiple sources
-- **UI**: Noice.nvim, nvim-notify, dashboard
-- **Editing**: Treesitter, Flash motions, auto-pairs
-- **Git**: Gitsigns with comprehensive keymaps
-- **Extras**: Optional AI completion, Java/Flutter support
+- **Completion**: nvim-cmp with multiple sources and ghost text
+- **UI**: Rose Pine theme, Lualine, Which-key, Dressing
+- **Editing**: Treesitter, Flash motions, Mini.surround, Comments
+- **Session**: Persistence for session management
+- **Extras**: Optional AI completion, testing framework
 
 ## 📁 Structure
 
@@ -44,7 +45,8 @@ MARVIM/
 ├── lua/
 │   ├── config/             # Core configuration
 │   │   ├── autocmds.lua    # Auto commands
-│   │   ├── keymaps.lua     # Key mappings
+│   │   ├── keybindings.lua # Comprehensive key mappings
+│   │   ├── keymaps.lua     # Additional key mappings
 │   │   ├── lazy.lua        # Plugin manager setup
 │   │   └── options.lua     # Vim options
 │   ├── plugins/            # Plugin specifications
@@ -53,9 +55,12 @@ MARVIM/
 │   │   ├── coding.lua      # Coding features
 │   │   ├── lsp.lua         # LSP configuration
 │   │   ├── ui.lua          # UI and theming
+│   │   ├── testing.lua     # Testing framework
 │   │   └── extras.lua      # Optional features
 │   └── utils/              # Utility functions
+│       ├── lsp.lua         # LSP utilities
 │       └── lsp/            # LSP utilities
+│           └── keymaps.lua # LSP keymaps
 └── README.md
 ```
 
@@ -87,12 +92,20 @@ MARVIM/
 - `<Esc>` - Clear search highlighting
 
 ### File Navigation
-- `<leader><leader>` - Find files
+- `<leader><leader>` - Find files (excludes tests)
+- `<leader>ff` - Find files (excludes tests)
 - `<leader>fr` - Recent files
+- `<leader>fb` - Buffers
 - `<leader>/` - Live grep
+- `<leader>sg` - Grep
+- `<leader>sw` - Grep word under cursor
 - `-` - Open Oil file explorer
 - `<leader>h` - Harpoon quick menu
 - `<leader>H` - Add file to Harpoon
+- `<leader>1-5` - Navigate to Harpoon file 1-5
+- `<leader>ftf` - Find test files
+- `<leader>fbf` - Find Bloc/Cubit files
+- `<leader>fp` - Find projects
 
 ### LSP
 - `gd` - Go to definition
@@ -101,12 +114,12 @@ MARVIM/
 - `<leader>ca` - Code actions
 - `<leader>cr` - Rename symbol
 - `<leader>cf` - Format code
+- `<leader>uh` - Toggle inlay hints (current buffer)
+- `<leader>uH` - Toggle inlay hints (global)
 
 ### Git
-- `]h` / `[h` - Next/previous hunk
-- `<leader>ghs` - Stage hunk
-- `<leader>ghr` - Reset hunk
-- `<leader>ghp` - Preview hunk
+- `<leader>gc` - Git commits
+- `<leader>gs` - Git status
 
 ### Buffers & Tabs
 - `<S-h>` / `<S-l>` - Previous/next buffer
@@ -128,9 +141,9 @@ return {
 ```
 
 ### Changing Theme
-Edit `lua/plugins/ui.lua` and modify the colorscheme setup:
+Edit `lua/plugins/ui.lua` and modify the colorscheme setup. Rose Pine is default, with alternatives:
 ```lua
-vim.cmd.colorscheme("your-theme")
+vim.cmd.colorscheme("rose-pine") -- or catppuccin, tokyonight, oxocarbon
 ```
 
 ### LSP Servers
@@ -144,11 +157,10 @@ servers = {
 ## 🔧 Optional Features
 
 Enable optional features in `lua/plugins/extras.lua`:
-- AI completion (Supermaven/Copilot)
-- Java development (nvim-java)
-- Flutter development
-- Terminal integration
-- Database tools
+- AI completion and development tools
+- Database integration
+- Additional language support
+- Testing framework (in `lua/plugins/testing.lua`)
 
 ## 🤝 Philosophy
 
