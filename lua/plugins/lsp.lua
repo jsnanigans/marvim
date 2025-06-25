@@ -79,6 +79,7 @@ return {
             },
           },
         },
+        -- Explicitly disable ts_ls to prevent conflicts with vtsls
         ts_ls = {
           enabled = false,
         },
@@ -97,12 +98,27 @@ return {
               enableMoveToFileCodeAction = true,
               autoUseWorkspaceTsdk = true,
               experimental = {
+                maxInlayHintLength = 30,
                 completion = {
                   enableServerSideFuzzyMatch = true,
                 },
               },
             },
             typescript = {
+              updateImportsOnFileMove = { enabled = "always" },
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+            javascript = {
               updateImportsOnFileMove = { enabled = "always" },
               suggest = {
                 completeFunctionCalls = true,
@@ -138,14 +154,19 @@ return {
           },
         },
       },
-      setup = {},
+      setup = {
+        -- Prevent ts_ls from loading to avoid conflicts with vtsls
+        ts_ls = function()
+          return true -- Skip setup completely
+        end,
+      },
     },
     config = function(_, opts)
       local Util = require("utils.lsp")
       
       Util.setup()
       Util.on_attach(function(client, buffer)
-        require("utils.lsp.keymaps").on_attach(client, buffer)
+        require("config.keybindings").setup_lsp_keybindings(client, buffer)
       end)
 
       local servers = opts.servers
@@ -159,6 +180,11 @@ return {
       )
 
       local function setup(server)
+        -- Explicitly prevent ts_ls from being set up to avoid conflicts with vtsls
+        if server == "ts_ls" then
+          return
+        end
+        
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
@@ -186,12 +212,17 @@ return {
       for server, server_opts in pairs(servers) do
         if server_opts then
           server_opts = server_opts == true and {} or server_opts
+          -- Skip disabled servers
+          if server_opts.enabled == false then
+            goto continue
+          end
           if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
             setup(server)
           else
             ensure_installed[#ensure_installed + 1] = server
           end
         end
+        ::continue::
       end
 
       if have_mason then
@@ -246,7 +277,7 @@ return {
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    -- keybindings in config/keybindings.lua
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {

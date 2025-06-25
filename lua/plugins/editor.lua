@@ -15,10 +15,25 @@ return {
       view_options = {
         show_hidden = true,
       },
+      -- Handle directory arguments properly
+      default_file_explorer = true,
     },
     keys = {
       { "-", "<CMD>Oil<CR>", desc = "Open parent directory" },
     },
+    config = function(_, opts)
+      require("oil").setup(opts)
+      
+      -- Auto-open Oil when nvim is opened on a directory
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          local args = vim.fn.argv()
+          if #args == 1 and vim.fn.isdirectory(args[1]) == 1 then
+            vim.cmd("Oil " .. args[1])
+          end
+        end,
+      })
+    end,
   },
 
   -- Snacks Picker (modern telescope replacement)
@@ -46,6 +61,15 @@ return {
             args = {
               "--type=file",
               "--hidden",
+              "--exclude", "node_modules",
+              "--exclude", ".git",
+              "--exclude", "dist",
+              "--exclude", "build",
+              "--exclude", ".next",
+              "--exclude", "coverage",
+              "--exclude", "__pycache__",
+              "--exclude", ".pytest_cache",
+              "--exclude", ".DS_Store",
             },
           },
         },
@@ -75,90 +99,23 @@ return {
     config = function(_, opts)
       local snacks = require("snacks")
       snacks.setup(opts)
-      
-      -- Set up keymaps after snacks is loaded
-      local map = vim.keymap.set
-      
-      -- File pickers
-      map("n", "<leader><leader>", function() snacks.picker.files() end, { desc = "Find Files" })
-      map("n", "<leader>ff", function() snacks.picker.files() end, { desc = "Find Files" })
-      map("n", "<leader>fr", function() snacks.picker.recent() end, { desc = "Recent Files" })
-      map("n", "<leader>fb", function() snacks.picker.buffers() end, { desc = "Buffers" })
-      map("n", "<leader>/", function() snacks.picker.grep() end, { desc = "Grep" })
-      map("n", "<leader>sg", function() snacks.picker.grep() end, { desc = "Grep" })
-      map("n", "<leader>sw", function() snacks.picker.grep_string() end, { desc = "Grep Word" })
-      map("n", "<leader>sc", function() snacks.picker.commands() end, { desc = "Commands" })
-      map("n", "<leader>sh", function() snacks.picker.help() end, { desc = "Help Pages" })
-      map("n", "<leader>sk", function() snacks.picker.keymaps() end, { desc = "Key Maps" })
-      map("n", "<leader>ss", function() snacks.picker.files() end, { desc = "Select Files" })
-      map("n", "<leader>sa", function() snacks.picker.autocmds() end, { desc = "Auto Commands" })
-      map("n", "<leader>sb", function() snacks.picker.lines() end, { desc = "Buffer Lines" })
-      map("n", "<leader>gc", function() snacks.picker.git_log() end, { desc = "Git Commits" })
-      map("n", "<leader>gs", function() snacks.picker.git_status() end, { desc = "Git Status" })
-      map("n", "<leader>:", function() snacks.picker.command_history() end, { desc = "Command History" })
-      map("n", "<leader>sR", function() snacks.picker.resume() end, { desc = "Resume" })
-      
-      -- Simple project picker (finds git repos in common locations)
-      map("n", "<leader>fp", function()
-        snacks.picker.files({
-          cwd = vim.fn.expand("~/Projects"),
-          find_command = { "find", ".", "-type", "d", "-name", ".git" },
-          prompt_title = "Projects",
-        })
-      end, { desc = "Find Projects" })
+      -- Keybindings now handled in config/keybindings.lua
     end,
   },
 
-  -- Harpoon (from bvim)
+  -- Harpoon (from bvim) - keybindings in config/keybindings.lua
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
-    keys = function()
-      local keys = {
-        {
-          "<leader>H",
-          function()
-            require("harpoon"):list():add()
-          end,
-          desc = "Harpoon File",
-        },
-        {
-          "<leader>h",
-          function()
-            local harpoon = require("harpoon")
-            harpoon.ui:toggle_quick_menu(harpoon:list())
-          end,
-          desc = "Harpoon Quick Menu",
-        },
-      }
-
-      for i = 1, 5 do
-        table.insert(keys, {
-          "<leader>" .. i,
-          function()
-            require("harpoon"):list():select(i)
-          end,
-          desc = "Harpoon to File " .. i,
-        })
-      end
-      return keys
-    end,
     opts = {},
   },
 
-  -- Flash (better f/t motions)
+  -- Flash (better f/t motions) - keybindings in config/keybindings.lua
   {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
-    keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    },
   },
 
   -- Auto pairs
@@ -175,17 +132,9 @@ return {
     },
   },
 
-  -- Comments
+  -- Comments - keybindings in config/keybindings.lua
   {
     "numToStr/Comment.nvim",
-    keys = {
-      { "gcc", mode = "n", desc = "Comment toggle current line" },
-      { "gc", mode = { "n", "o" }, desc = "Comment toggle linewise" },
-      { "gc", mode = "x", desc = "Comment toggle linewise (visual)" },
-      { "gbc", mode = "n", desc = "Comment toggle current block" },
-      { "gb", mode = { "n", "o" }, desc = "Comment toggle blockwise" },
-      { "gb", mode = "x", desc = "Comment toggle blockwise (visual)" },
-    },
     opts = {
       ignore = "^$",
     },
@@ -216,26 +165,9 @@ return {
     end,
   },
 
-  -- Surround
+  -- Surround - keybindings in config/keybindings.lua
   {
     "echasnovski/mini.surround",
-    keys = function(_, keys)
-      local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
-      local opts = require("lazy.core.plugin").values(plugin, "opts", false)
-      local mappings = {
-        { opts.mappings.add, desc = "Add Surrounding", mode = { "n", "v" } },
-        { opts.mappings.delete, desc = "Delete Surrounding" },
-        { opts.mappings.find, desc = "Find Right Surrounding" },
-        { opts.mappings.find_left, desc = "Find Left Surrounding" },
-        { opts.mappings.highlight, desc = "Highlight Surrounding" },
-        { opts.mappings.replace, desc = "Replace Surrounding" },
-        { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-      }
-      mappings = vim.tbl_filter(function(m)
-        return m[1] and #m[1] > 0
-      end, mappings)
-      return vim.list_extend(mappings, keys)
-    end,
     opts = {
       mappings = {
         add = "gsa",
@@ -249,12 +181,8 @@ return {
     },
   },
 
-  -- Buffer remove
+  -- Buffer remove - keybindings in config/keybindings.lua
   {
     "echasnovski/mini.bufremove",
-    keys = {
-      { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
-    },
   },
 }

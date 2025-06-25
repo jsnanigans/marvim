@@ -18,6 +18,9 @@ require("lazy").setup({
     -- UI and theming
     { import = "plugins.ui" },
     
+    -- Testing support
+    { import = "plugins.testing" },
+    
     -- Optional extras (LazyVim style)
     { import = "plugins.extras" },
   },

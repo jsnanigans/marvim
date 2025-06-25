@@ -10,19 +10,19 @@ function M.on_attach(client, buffer)
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 
-  -- LSP actions
-  map("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
-  map("n", "gr", function() require("snacks").picker.lsp_references() end, { desc = "References" })
-  map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to Declaration" })
-  map("n", "gI", function() require("snacks").picker.lsp_implementations() end, { desc = "Go to Implementation" })
-  map("n", "gy", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Go to Type Definition" })
+  -- LSP actions (all using Snacks picker for consistent UI)
+  map("n", "gd", function() require("snacks").picker.lsp_definitions() end, { desc = "Go to Definition", nowait = true })
+  map("n", "gr", function() require("snacks").picker.lsp_references() end, { desc = "References", nowait = true })
+  map("n", "gD", function() require("snacks").picker.lsp_declarations() end, { desc = "Go to Declaration", nowait = true })
+  map("n", "gI", function() require("snacks").picker.lsp_implementations() end, { desc = "Go to Implementation", nowait = true })
+  map("n", "gy", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Go to Type Definition", nowait = true })
   map("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
   map("n", "gK", vim.lsp.buf.signature_help, { desc = "Signature Help" })
   map("i", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
   map("n", "<c-k>", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 
   -- Code actions
-  map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+  map({ "n", "v" }, "<leader>ca", function() require("snacks").picker.lsp_code_actions() end, { desc = "Code Action" })
   map("n", "<leader>cc", vim.lsp.codelens.run, { desc = "Run Codelens" })
   map("n", "<leader>cC", vim.lsp.codelens.refresh, { desc = "Refresh Codelens" })
   map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename" })

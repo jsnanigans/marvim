@@ -52,6 +52,8 @@ return {
           { "<leader>b", group = "buffer" },
           { "<leader>c", group = "code" },
           { "<leader>f", group = "file/find" },
+          { "<leader>ft", group = "test files" },
+          { "<leader>fb", group = "bloc/cubit" },
           { "<leader>g", group = "git" },
           { "<leader>gh", group = "hunks" },
           { "<leader>q", group = "quit/session" },
