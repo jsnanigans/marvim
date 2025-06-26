@@ -584,11 +584,14 @@ return {
 
       -- Fuzzy matching configuration
       fuzzy = {
-        use_typo_resistance = true,
+        implementation = 'prefer_rust_with_warning',
+        max_typos = function(keyword) return math.floor(#keyword / 4) end,
         use_frecency = true,
         use_proximity = true,
-        max_items = 200,
-        sorts = { "label", "kind", "score" },
+        sorts = { 'score', 'sort_text' },
+        prebuilt_binaries = {
+          download = true,
+        },
       },
     },
     

@@ -177,7 +177,13 @@ return {
           vim.api.nvim_win_set_config(win, { zindex = 100 })
         end,
         -- Use unified Rose Pine theme colors
-        background_colour = theme.semantic.bg_float,
+        background_colour = function()
+          local ok, theme = pcall(require, 'utils.theme')
+          if ok then
+            return theme.semantic.bg_float
+          end
+          return "#1f1d2e"
+        end,
         stages = "fade_in_slide_out",
         render = "wrapped-compact",
         icons = {
