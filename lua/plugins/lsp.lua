@@ -239,13 +239,7 @@ return {
       Util.on_attach(function(client, buffer)
         require("config.keybindings").setup_lsp_keybindings(client, buffer)
         
-        -- Attach navic for barbecue breadcrumbs if supported
-        if client.server_capabilities.documentSymbolProvider then
-          local ok, navic = pcall(require, "nvim-navic")
-          if ok then
-            navic.attach(client, buffer)
-          end
-        end
+
       end)
 
       local servers = opts.servers
