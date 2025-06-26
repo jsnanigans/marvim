@@ -10,6 +10,7 @@ return {
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "b0o/schemastore.nvim",
     },
     opts = {
       diagnostics = {
@@ -172,11 +173,15 @@ return {
               local package_root = util.root_pattern("package.json")(fname)
               if package_root then
                 local package_json = package_root .. "/package.json"
-                local ok, content = pcall(vim.fn.readfile, package_json)
-                if ok and #content > 0 then
-                  local json_str = table.concat(content, "\n")
-                  if json_str:match('"eslintConfig"') then
-                    root = package_root
+                local stat = vim.uv.fs_stat(package_json)
+                if stat and stat.type == "file" then
+                  local fd = vim.uv.fs_open(package_json, "r", 438)
+                  if fd then
+                    local data = vim.uv.fs_read(fd, stat.size, 0)
+                    vim.uv.fs_close(fd)
+                    if data and data:match('"eslintConfig"') then
+                      root = package_root
+                    end
                   end
                 end
               end
@@ -237,18 +242,37 @@ return {
       
       Util.setup()
       Util.on_attach(function(client, buffer)
-        require("config.keybindings").setup_lsp_keybindings(client, buffer)
-        
-
+        -- Defer keybinding setup to avoid circular dependency
+        vim.schedule(function()
+          local ok, keybindings = pcall(require, "config.keybindings")
+          if ok and keybindings.setup_lsp_keybindings then
+            keybindings.setup_lsp_keybindings(client, buffer)
+          end
+        end)
       end)
 
       local servers = opts.servers
+      -- Try blink.cmp first, fallback to cmp_nvim_lsp if available
+      local has_blink, blink = pcall(require, "blink.cmp")
       local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      
+      local completion_capabilities = {}
+      if has_blink then
+        -- Use blink.cmp capabilities if available
+        local ok, caps = pcall(blink.get_lsp_capabilities)
+        if ok then
+          completion_capabilities = caps
+        end
+      elseif has_cmp then
+        -- Fallback to nvim-cmp capabilities
+        completion_capabilities = cmp_nvim_lsp.default_capabilities()
+      end
+      
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+        completion_capabilities,
         opts.capabilities or {}
       )
 
@@ -326,34 +350,7 @@ return {
         end)
       end
 
-      if vim.fn.has("nvim-0.10.0") == 1 then
-        Util.on_attach(function(client, buffer)
-          if client:supports_method("textDocument/documentHighlight") then
-            local highlight_augroup = vim.api.nvim_create_augroup("lsp_document_highlight_" .. buffer, { clear = true })
-            vim.api.nvim_create_autocmd("CursorHold", {
-              buffer = buffer,
-              group = highlight_augroup,
-              callback = function()
-                pcall(vim.lsp.buf.document_highlight)
-              end,
-            })
-            vim.api.nvim_create_autocmd("CursorMoved", {
-              buffer = buffer,
-              group = highlight_augroup,
-              callback = function()
-                pcall(vim.lsp.buf.clear_references)
-              end,
-            })
-            -- Clean up when buffer is deleted
-            vim.api.nvim_create_autocmd("BufDelete", {
-              buffer = buffer,
-              callback = function()
-                pcall(vim.api.nvim_del_augroup_by_name, "lsp_document_highlight_" .. buffer)
-              end,
-            })
-          end
-        end)
-      end
+      -- Document highlighting is handled in keybindings.lua to avoid duplication
 
       local codelens = Util.get_config("codelens")
       if codelens.enabled then
@@ -369,6 +366,7 @@ return {
             local function refresh_codelens()
               if refresh_timer then
                 vim.fn.timer_stop(refresh_timer)
+                refresh_timer = nil
               end
               refresh_timer = vim.fn.timer_start(100, function()
                 if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
@@ -439,121 +437,162 @@ return {
     end,
   },
 
-  -- Completion
+  -- Modern completion engine (blink.cmp)
   {
-    "hrsh7th/nvim-cmp",
-    version = false,
-    event = "InsertEnter",
+    "saghen/blink.cmp",
+    lazy = false, -- Load immediately for better performance
+    version = "v0.*", -- Use latest v0.x for newest features
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "b0o/schemastore.nvim",
+      "rafamadriz/friendly-snippets",
+      "echasnovski/mini.icons",
     },
-    opts = function()
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      local cmp = require("cmp")
-      local defaults = require("cmp.config.default")()
-      return {
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-        window = {
-          completion = cmp.config.window.bordered({
-            border = "rounded",
-            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-          }),
-          documentation = cmp.config.window.bordered({
-            border = "rounded", 
-            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder",
-          }),
-        },
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<S-CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }),
-          ["<C-CR>"] = function(fallback)
-            cmp.abort()
-            fallback()
-          end,
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "path" },
-        }, {
-          { name = "buffer" },
-        }),
-        formatting = {
-          format = function(_, item)
-            local icons = {
-              Array = " ",
-              Boolean = "󰨙 ",
-              Class = " ",
-              Codeium = "󰘦 ",
-              Color = " ",
-              Control = " ",
-              Collapsed = " ",
-              Constant = "󰏿 ",
-              Constructor = " ",
-              Copilot = " ",
-              Enum = " ",
-              EnumMember = " ",
-              Event = " ",
-              Field = " ",
-              File = " ",
-              Folder = " ",
-              Function = "󰊕 ",
-              Interface = " ",
-              Key = " ",
-              Keyword = " ",
-              Method = "󰊕 ",
-              Module = " ",
-              Namespace = "󰦮 ",
-              Null = " ",
-              Number = "󰎠 ",
-              Object = " ",
-              Operator = " ",
-              Package = " ",
-              Property = " ",
-              Reference = " ",
-              Snippet = " ",
-              String = " ",
-              Struct = "󰆼 ",
-              TabNine = "󰏚 ",
-              Text = " ",
-              TypeParameter = " ",
-              Unit = " ",
-              Value = " ",
-              Variable = "󰀫 ",
-            }
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
-            return item
-          end,
-        },
-        experimental = {
-          ghost_text = {
-            hl_group = "CmpGhostText",
+    
+    opts = {
+      keymap = { preset = "default" },
+
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = "mono"
+      },
+
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+        -- do not enable cmdline, it causes a deadlock
+        -- cmdline = { "path", "cmdline" },
+        providers = {
+          lsp = {
+            name = "LSP",
+            module = "blink.cmp.sources.lsp",
+            score_offset = 90,
+            opts = {
+              show_signature_help = true,
+            },
+          },
+          path = {
+            name = "Path",
+            module = "blink.cmp.sources.path",
+            score_offset = 3,
+            opts = {
+              trailing_slash = false,
+              label_trailing_slash = true,
+              get_cwd = function(context) return vim.fn.expand(('#%d:p:h'):format(context.bufnr)) end,
+              show_hidden_files_by_default = false,
+            },
+          },
+          snippets = {
+            name = "Snippets",
+            module = "blink.cmp.sources.snippets",
+            score_offset = 85,
+            opts = {
+              friendly_snippets = true,
+              search_paths = { vim.fn.stdpath("config") .. "/snippets" },
+              global_snippets = { "all" },
+              extended_filetypes = {},
+              ignored_filetypes = {},
+            },
+          },
+          buffer = {
+            name = "Buffer",
+            module = "blink.cmp.sources.buffer",
+            fallbacks = { "lsp" },
+            score_offset = -3,
+            opts = {
+              get_bufnrs = function()
+                return vim.tbl_filter(
+                  function(buf)
+                    if not vim.api.nvim_buf_is_valid(buf) then
+                      return false
+                    end
+                    local ok, byte_size = pcall(vim.api.nvim_buf_get_offset, buf, vim.api.nvim_buf_line_count(buf))
+                    if not ok then
+                      return false
+                    end
+                    return byte_size < 1024 * 1024
+                  end,
+                  vim.api.nvim_list_bufs()
+                )
+              end,
+              min_keyword_length = 2,
+              max_items = 5,
+            },
           },
         },
-        sorting = defaults.sorting,
-      }
-    end,
+      },
+
+      -- Enable signature help
+      signature = { 
+        enabled = true,
+        window = {
+          border = "rounded",
+          winhighlight = "Normal:BlinkCmpSignatureHelp,FloatBorder:BlinkCmpSignatureHelpBorder",
+        },
+      },
+
+      completion = {
+        accept = {
+          auto_brackets = {
+            enabled = true,
+          },
+        },
+        menu = {
+          border = "rounded",
+          scrolloff = 2,
+          scrollbar = true,
+          direction_priority = { "s", "n" },
+          winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
+          auto_show = function(ctx)
+            local buftype = vim.bo[ctx.bufnr] and vim.bo[ctx.bufnr].buftype or ""
+            return ctx.mode ~= "c" and not vim.tbl_contains({ "nofile", "prompt" }, buftype)
+          end,
+          draw = {
+            treesitter = { "lsp" },
+            columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "source_name" } },
+            components = {
+              kind_icon = {
+                ellipsis = false,
+                text = function(ctx)
+                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return kind_icon
+                end,
+                highlight = function(ctx)
+                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return hl
+                end,
+              },
+            },
+          },
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+          treesitter_highlighting = true,
+          window = {
+            border = "rounded",
+          },
+        },
+        ghost_text = {
+          enabled = vim.g.ai_cmp ~= false,
+        },
+        list = {
+          max_items = 200,
+          -- do not enable this, it causes a deadlock
+          -- selection = function(ctx)
+          --   return ctx.mode == "cmdline" and "auto_insert" or "preselect"
+          -- end,
+        },
+      },
+
+      -- Fuzzy matching configuration
+      fuzzy = {
+        use_typo_resistance = true,
+        use_frecency = true,
+        use_proximity = true,
+        max_items = 200,
+        sorts = { "label", "kind", "score" },
+      },
+    },
+    
+    opts_extend = { "sources.default" },
   },
 
   -- Enhanced Lua development

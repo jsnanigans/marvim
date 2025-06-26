@@ -157,7 +157,7 @@ function M.setup_lsp_keybindings(client, buffer)
   lsp_map("n", "gd", function() require("snacks").picker.lsp_definitions() end, { desc = "Go to Definition", nowait = true })
   lsp_map("n", "gr", function() require("snacks").picker.lsp_references() end, { desc = "References", nowait = true })
   lsp_map("n", "gD", function() require("snacks").picker.lsp_declarations() end, { desc = "Go to Declaration", nowait = true })
-  lsp_map("n", "gi", function() require("snacks").picker.lsp_implementations() end, { desc = "Go to Implementation", nowait = true })
+  lsp_map("n", "gI", function() require("snacks").picker.lsp_implementations() end, { desc = "Go to Implementation", nowait = true })
   lsp_map("n", "gy", function() require("snacks").picker.lsp_type_definitions() end, { desc = "Go to Type Definition", nowait = true })
 
   -- Documentation and help
@@ -240,16 +240,27 @@ function M.setup_lsp_keybindings(client, buffer)
 
   -- Document highlighting (if supported)
   if client:supports_method("textDocument/documentHighlight") then
-    local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
-    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+    local highlight_augroup = vim.api.nvim_create_augroup("lsp_document_highlight_" .. buffer, { clear = true })
+    vim.api.nvim_create_autocmd("CursorHold", {
       buffer = buffer,
       group = highlight_augroup,
-      callback = vim.lsp.buf.document_highlight,
+      callback = function()
+        pcall(vim.lsp.buf.document_highlight)
+      end,
     })
-    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+    vim.api.nvim_create_autocmd("CursorMoved", {
       buffer = buffer,
       group = highlight_augroup,
-      callback = vim.lsp.buf.clear_references,
+      callback = function()
+        pcall(vim.lsp.buf.clear_references)
+      end,
+    })
+    -- Clean up when buffer is deleted
+    vim.api.nvim_create_autocmd("BufDelete", {
+      buffer = buffer,
+      callback = function()
+        pcall(vim.api.nvim_del_augroup_by_name, "lsp_document_highlight_" .. buffer)
+      end,
     })
   end
 

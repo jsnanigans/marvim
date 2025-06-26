@@ -1,9 +1,7 @@
 -- UI and theming plugins
 -- Status line, themes, and visual enhancements
 
--- Load unified theme
-local theme = require('utils.theme')
-theme.setup()
+-- Theme will be loaded after colorscheme is set
 
 return {
   -- Colorschemes
@@ -28,6 +26,14 @@ return {
     config = function(_, opts)
       require("rose-pine").setup(opts)
       vim.cmd.colorscheme("rose-pine")
+      
+      -- Load theme system after colorscheme is set
+      vim.schedule(function()
+        local ok, theme = pcall(require, 'utils.theme')
+        if ok then
+          theme.setup()
+        end
+      end)
     end,
   },
 
@@ -420,10 +426,13 @@ return {
             return false
           end
 
-          -- Disable for large files (>1MB)
-          local stat = vim.uv.fs_stat(vim.api.nvim_buf_get_name(buf))
-          if stat and stat.size > 1024 * 1024 then
-            return false
+          -- Disable for large files (>500KB) to prevent performance issues
+          local file_path = vim.api.nvim_buf_get_name(buf)
+          if file_path ~= "" then
+            local stat = vim.uv.fs_stat(file_path)
+            if stat and stat.size > 512 * 1024 then
+              return false
+            end
           end
 
           return vim.bo[buf].ft == 'markdown'
@@ -773,9 +782,16 @@ return {
         theme.set_highlights(highlights)
       end
 
-      -- Apply highlights after colorscheme loads
+      -- Apply highlights after colorscheme loads (with proper cleanup)
+      local group = vim.api.nvim_create_augroup("DropbarTheme", { clear = true })
       vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
-        callback = setup_dropbar_highlights,
+        group = group,
+        callback = function()
+          -- Only apply if dropbar is loaded and rose-pine is active
+          if package.loaded["dropbar"] and vim.g.colors_name == "rose-pine" then
+            vim.schedule(setup_dropbar_highlights)
+          end
+        end,
       })
       
       -- Apply highlights now
