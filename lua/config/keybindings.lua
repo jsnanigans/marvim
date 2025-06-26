@@ -205,6 +205,19 @@ function M.setup_lsp_keybindings(client, buffer)
     end, { desc = "Toggle Inlay Hints (Global)" })
   end
 
+  -- Code lens toggle
+  if client:supports_method("textDocument/codeLens") then
+    lsp_map("n", "<leader>ul", function()
+      local is_enabled = vim.g.codelens_enabled ~= false
+      vim.g.codelens_enabled = not is_enabled
+      if vim.g.codelens_enabled then
+        vim.lsp.codelens.refresh({ bufnr = buffer })
+      else
+        vim.lsp.codelens.clear(nil, buffer)
+      end
+    end, { desc = "Toggle Code Lens" })
+  end
+
   -- LSP management
   lsp_map("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP Info" })
   lsp_map("n", "<leader>lR", function()

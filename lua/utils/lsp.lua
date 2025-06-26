@@ -26,7 +26,7 @@ M.config = {
     enabled = false,
   },
   codelens = {
-    enabled = false,
+    enabled = true,
   },
   document_highlight = {
     enabled = true,

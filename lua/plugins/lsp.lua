@@ -35,7 +35,7 @@ return {
         enabled = true,
       },
       codelens = {
-        enabled = false,
+        enabled = true,
       },
       document_highlight = {
         enabled = true,
@@ -117,6 +117,13 @@ return {
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },
               },
+              implementationsCodeLens = {
+                enabled = true,
+              },
+              referencesCodeLens = {
+                enabled = true,
+                showOnAllFunctions = true,
+              },
             },
             javascript = {
               updateImportsOnFileMove = { enabled = "always" },
@@ -130,6 +137,13 @@ return {
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },
+              },
+              implementationsCodeLens = {
+                enabled = true,
+              },
+              referencesCodeLens = {
+                enabled = true,
+                showOnAllFunctions = true,
               },
             },
           },
@@ -266,6 +280,25 @@ return {
               buffer = buffer,
               group = highlight_augroup,
               callback = vim.lsp.buf.clear_references,
+            })
+          end
+        end)
+      end
+
+      local codelens = Util.get_config("codelens")
+      if codelens.enabled then
+        Util.on_attach(function(client, buffer)
+          if client:supports_method("textDocument/codeLens") then
+            vim.lsp.codelens.refresh({ bufnr = buffer })
+            local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens", { clear = false })
+            vim.api.nvim_create_autocmd({"BufEnter", "CursorHold", "InsertLeave"}, {
+              buffer = buffer,
+              group = codelens_augroup,
+              callback = function()
+                if vim.g.codelens_enabled ~= false then
+                  vim.lsp.codelens.refresh({ bufnr = buffer })
+                end
+              end,
             })
           end
         end)
