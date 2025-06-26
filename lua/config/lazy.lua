@@ -6,6 +6,9 @@ require("lazy").setup({
     -- Core functionality
     { import = "plugins.core" },
     
+    -- Git integration
+    { import = "plugins.git" },
+    
     -- Editor enhancements
     { import = "plugins.editor" },
     

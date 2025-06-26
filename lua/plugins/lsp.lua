@@ -244,9 +244,9 @@ return {
       Util.on_attach(function(client, buffer)
         -- Defer keybinding setup to avoid circular dependency
         vim.schedule(function()
-          local ok, keybindings = pcall(require, "config.keybindings")
-          if ok and keybindings.setup_lsp_keybindings then
-            keybindings.setup_lsp_keybindings(client, buffer)
+          local ok, keymaps = pcall(require, "config.keymaps")
+          if ok and keymaps.setup_lsp_keybindings then
+            keymaps.setup_lsp_keybindings(client, buffer)
           end
         end)
       end)
@@ -350,7 +350,7 @@ return {
         end)
       end
 
-      -- Document highlighting is handled in keybindings.lua to avoid duplication
+      -- Document highlighting is handled in keymaps.lua to avoid duplication
 
       local codelens = Util.get_config("codelens")
       if codelens.enabled then
@@ -402,7 +402,7 @@ return {
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
-    -- keybindings in config/keybindings.lua
+    -- keybindings in config/keymaps.lua
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
@@ -464,9 +464,6 @@ return {
             name = "LSP",
             module = "blink.cmp.sources.lsp",
             score_offset = 90,
-            opts = {
-              show_signature_help = true,
-            },
           },
           path = {
             name = "Path",
@@ -494,7 +491,6 @@ return {
           buffer = {
             name = "Buffer",
             module = "blink.cmp.sources.buffer",
-            fallbacks = { "lsp" },
             score_offset = -3,
             opts = {
               get_bufnrs = function()
@@ -571,7 +567,7 @@ return {
           },
         },
         ghost_text = {
-          enabled = vim.g.ai_cmp ~= false,
+          enabled = false, -- Disabled to avoid conflicts with Copilot
         },
         list = {
           max_items = 200,

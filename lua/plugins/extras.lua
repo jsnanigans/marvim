@@ -44,6 +44,7 @@ return {
   -- Java development
   {
     "nvim-java/nvim-java",
+    enabled = false,
     ft = "java",
     config = function()
       require("java").setup()
@@ -53,6 +54,7 @@ return {
   -- Flutter/Dart development
   {
     "akinsho/flutter-tools.nvim",
+    enabled = false,
     ft = "dart",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -129,6 +131,7 @@ return {
   -- Terminal integration
   {
     "akinsho/toggleterm.nvim",
+    enabled = true,
     cmd = { "ToggleTerm", "TermExec" },
     keys = {
       { "<leader>Tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float Terminal" },
@@ -168,6 +171,7 @@ return {
   -- REST client
   {
     "rest-nvim/rest.nvim",
+    enabled = false,
     ft = "http",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
@@ -178,10 +182,12 @@ return {
   -- Database integration
   {
     "tpope/vim-dadbod",
+    enabled = false,
     cmd = "DB",
   },
   {
     "kristijanhusak/vim-dadbod-ui",
+    enabled = false,
     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
     dependencies = "vim-dadbod",
     keys = {

@@ -140,11 +140,11 @@ return {
     config = function(_, opts)
       local snacks = require("snacks")
       snacks.setup(opts)
-      -- Keybindings now handled in config/keybindings.lua
+      -- Keybindings are handled in config/keymaps.lua
     end,
   },
 
-  -- Harpoon (from bvim) - keybindings in config/keybindings.lua
+  -- Harpoon (from bvim) - keybindings in config/keymaps.lua
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
@@ -152,7 +152,7 @@ return {
     opts = {},
   },
 
-  -- Flash (better f/t motions) - keybindings in config/keybindings.lua
+  -- Flash (better f/t motions) - keybindings in config/keymaps.lua
   {
     "folke/flash.nvim",
     event = "VeryLazy",
@@ -173,7 +173,7 @@ return {
     },
   },
 
-  -- Comments - keybindings in config/keybindings.lua
+  -- Comments - keybindings in config/keymaps.lua
   {
     "numToStr/Comment.nvim",
     opts = {
@@ -206,7 +206,7 @@ return {
     end,
   },
 
-  -- Surround - keybindings in config/keybindings.lua
+  -- Surround - keybindings in config/keymaps.lua
   {
     "echasnovski/mini.surround",
     opts = {
@@ -222,7 +222,7 @@ return {
     },
   },
 
-  -- Buffer remove - keybindings in config/keybindings.lua
+  -- Buffer remove - keybindings in config/keymaps.lua
   {
     "echasnovski/mini.bufremove",
   },
