@@ -4,12 +4,22 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
--- Highlight on yank
+-- Root detection setup
+local ok_root, root_utils = pcall(require, "utils.root")
+if ok_root then
+  root_utils.setup()
+end
+
+-- Highlight on yank with enhanced options
 augroup("YankHighlight", { clear = true })
 autocmd("TextYankPost", {
   group = "YankHighlight",
   callback = function()
-    vim.hl.on_yank()
+    vim.highlight.on_yank({
+      higroup = "IncSearch",
+      timeout = 150,
+      on_visual = true,
+    })
   end,
 })
 
@@ -136,3 +146,6 @@ autocmd("BufReadPost", {
     end
   end,
 })
+
+
+

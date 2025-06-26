@@ -8,7 +8,6 @@ return {
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
-      { "folke/neodev.nvim", opts = {} },
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
@@ -181,6 +180,14 @@ return {
       Util.setup()
       Util.on_attach(function(client, buffer)
         require("config.keybindings").setup_lsp_keybindings(client, buffer)
+        
+        -- Attach navic for barbecue breadcrumbs if supported
+        if client.server_capabilities.documentSymbolProvider then
+          local ok, navic = pcall(require, "nvim-navic")
+          if ok then
+            navic.attach(client, buffer)
+          end
+        end
       end)
 
       local servers = opts.servers
@@ -364,6 +371,16 @@ return {
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
+        window = {
+          completion = cmp.config.window.bordered({
+            border = "rounded",
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+          }),
+          documentation = cmp.config.window.bordered({
+            border = "rounded", 
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder",
+          }),
+        },
         snippet = {
           expand = function(args)
             require("luasnip").lsp_expand(args.body)
@@ -450,5 +467,64 @@ return {
         sorting = defaults.sorting,
       }
     end,
+  },
+
+  -- Enhanced Lua development
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    cmd = "LazyDev",
+    opts = {
+      library = {
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        -- Load LazyVim types when the `LazyVim` global is found
+        { path = "LazyVim", words = { "LazyVim" } },
+        -- Load lazy.nvim types when the `lazy` global is found
+        { path = "lazy.nvim", words = { "lazy" } },
+        -- Load mini.nvim types for all mini.* modules
+        { path = "mini.nvim", words = { "mini" } },
+        -- Add your project-specific libraries here
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+      -- Enable for Lua projects or when working on Neovim configuration
+      enabled = function(root_dir)
+        -- Check for Lua project indicators
+        local lua_indicators = {
+          ".luarc.json",
+          ".luarc.jsonc", 
+          "lua",
+          "init.lua",
+          "lazy-lock.json",  -- Neovim config with lazy.nvim
+          ".stylua.toml",    -- Lua formatting config
+          "selene.toml",     -- Lua linting config
+        }
+        
+        for _, indicator in ipairs(lua_indicators) do
+          if vim.uv.fs_stat(root_dir .. "/" .. indicator) then
+            return true
+          end
+        end
+        
+        -- Check if we're in a Neovim config directory
+        local nvim_config_indicators = {
+          "lua/config",
+          "lua/plugins", 
+          "init.lua",
+        }
+        
+        for _, indicator in ipairs(nvim_config_indicators) do
+          if vim.uv.fs_stat(root_dir .. "/" .. indicator) then
+            return true
+          end
+        end
+        
+        return false
+      end,
+    },
+    dependencies = {
+      -- Optional `vim.uv` typings
+      { "Bilal2453/luvit-meta", lazy = true },
+    },
   },
 }

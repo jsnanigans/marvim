@@ -56,15 +56,20 @@ function M.on_attach(callback)
 end
 
 function M.setup()
-  local group = vim.api.nvim_create_augroup("LspAttach", {})
+  local group = vim.api.nvim_create_augroup("LspAttach", { clear = true })
   vim.api.nvim_create_autocmd("LspAttach", {
     group = group,
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       local buffer = args.buf
       
+      -- Ensure client and buffer are valid
+      if not client or not buffer then
+        return
+      end
+      
       for _, callback in ipairs(on_attach_callbacks) do
-        callback(client, buffer)
+        pcall(callback, client, buffer)
       end
     end,
   })

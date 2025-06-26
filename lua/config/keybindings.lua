@@ -111,6 +111,19 @@ map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to Right Window" })
 -- New file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
+-- Root directory operations
+map("n", "<leader>cd", function() 
+  local ok, root_utils = pcall(require, "utils.root")
+  if ok then root_utils.cd_root() end
+end, { desc = "Change to Root Directory" })
+map("n", "<leader>cR", function() 
+  local ok, root_utils = pcall(require, "utils.root")
+  if ok then
+    local root = root_utils.find_root()
+    vim.notify("Project root: " .. root, vim.log.levels.INFO)
+  end
+end, { desc = "Show Root Directory" })
+
 -- =============================================
 -- DIAGNOSTICS AND QUICKFIX
 -- =============================================
@@ -464,5 +477,10 @@ map("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
 
 -- Formatting
 map({ "n", "v" }, "<leader>cF", function() require("conform").format({ lsp_fallback = true }) end, { desc = "Format Injected Languages" })
+
+-- Modern Neovim development features
+map("n", "<leader>st", function()
+  vim.cmd("!nvim --startuptime /tmp/nvim_startup.log +qa && cat /tmp/nvim_startup.log")
+end, { desc = "Show Startup Time" })
 
 return M
