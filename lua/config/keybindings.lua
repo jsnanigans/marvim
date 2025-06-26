@@ -112,7 +112,7 @@ map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to Right Window" })
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- Root directory operations
-map("n", "<leader>cd", function() 
+map("n", "<leader>cD", function() 
   local ok, root_utils = pcall(require, "utils.root")
   if ok then root_utils.cd_root() end
 end, { desc = "Change to Root Directory" })
@@ -132,7 +132,7 @@ end, { desc = "Show Root Directory" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to Previous Diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to Next Diagnostic" })
 map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show Diagnostic Error" })
-map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open Diagnostic Quickfix" })
+map("n", "<leader>qc", vim.diagnostic.setloclist, { desc = "Open Diagnostic Quickfix" })
 
 -- Location and quickfix lists
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
@@ -316,7 +316,7 @@ map("n", "<leader>ff", function()
   })
 end, { desc = "Find Files" })
 map("n", "<leader>fr", function() require("snacks").picker.recent() end, { desc = "Recent Files" })
-map("n", "<leader>fb", function() require("snacks").picker.buffers() end, { desc = "Buffers" })
+map("n", "<leader>fB", function() require("snacks").picker.buffers() end, { desc = "Buffers" })
 map("n", "<leader>/", function() require("snacks").picker.grep() end, { desc = "Grep" })
 map("n", "<leader>sg", function() require("snacks").picker.grep() end, { desc = "Grep" })
 map("n", "<leader>sw", function() require("snacks").picker.grep_string() end, { desc = "Grep Word" })
@@ -335,7 +335,7 @@ map("n", "<leader>sR", function() require("snacks").picker.resume() end, { desc 
 map("n", "<leader>sS", function() require("snacks").picker.lsp_workspace_symbols() end, { desc = "Workspace Symbols" })
 
 -- Test file commands
-map("n", "<leader>ftf", function()
+map("n", "<leader>ft", function()
   require("snacks").picker.files({
     args = {
       "--hidden", "--follow",
@@ -345,7 +345,7 @@ map("n", "<leader>ftf", function()
   })
 end, { desc = "Find Test Files" })
 
-map("n", "<leader>ftg", function()
+map("n", "<leader>st", function()
   require("snacks").picker.grep({
     args = {
       "--column", "--line-number", "--no-heading", "--color=never",
@@ -359,7 +359,7 @@ map("n", "<leader>ftg", function()
 end, { desc = "Search in Test Files" })
 
 -- Bloc/Cubit file commands  
-map("n", "<leader>fbf", function()
+map("n", "<leader>fb", function()
   require("snacks").picker.files({
     args = {
       "--hidden", "--follow",
@@ -369,7 +369,7 @@ map("n", "<leader>fbf", function()
   })
 end, { desc = "Find Bloc/Cubit Files" })
 
-map("n", "<leader>fbg", function()
+map("n", "<leader>sB", function()
   require("snacks").picker.grep({
     args = {
       "--column", "--line-number", "--no-heading", "--color=never",
@@ -382,8 +382,8 @@ map("n", "<leader>fbg", function()
   })
 end, { desc = "Search in Bloc/Cubit Files" })
 
--- Toggle test files in default file picker
-map("n", "<leader>ftt", function()
+-- Show all files including tests
+map("n", "<leader>fT", function()
   require("snacks").picker.files({
     args = {
       "--hidden", "--follow",
@@ -392,10 +392,10 @@ map("n", "<leader>ftt", function()
       -- Notably NOT excluding test files
     }
   })
-end, { desc = "Toggle Test Files (Show All)" })
+end, { desc = "Find All Files (Including Tests)" })
 
 -- Feature files (implementation + tests + bloc/cubit for a feature)
-map("n", "<leader>ffa", function()
+map("n", "<leader>fF", function()
   vim.ui.input({ prompt = "Feature name: " }, function(feature)
     if not feature or feature == "" then return end
     
@@ -475,12 +475,26 @@ map("n", "<leader>xQ", function() require("trouble").toggle("quickfix") end, { d
 -- Mason (LSP installer)
 map("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
 
--- Formatting
-map({ "n", "v" }, "<leader>cF", function() require("conform").format({ lsp_fallback = true }) end, { desc = "Format Injected Languages" })
+-- Formatting (this is handled by the coding.lua plugin keys)
 
 -- Modern Neovim development features
-map("n", "<leader>st", function()
+map("n", "<leader>sT", function()
   vim.cmd("!nvim --startuptime /tmp/nvim_startup.log +qa && cat /tmp/nvim_startup.log")
 end, { desc = "Show Startup Time" })
+
+-- Debug crash issues
+map("n", "<leader>sD", function()
+  print("=== Debug Info ===")
+  print("LSP clients: " .. #vim.lsp.get_clients())
+  print("Buffers: " .. #vim.api.nvim_list_bufs())
+  print("Memory: " .. vim.loop.getrusage().maxrss .. " KB")
+  print("Autocmds: ")
+  vim.cmd("redir => g:autocmd_output | silent autocmd | redir END")
+  local autocmd_count = #vim.split(vim.g.autocmd_output, "\n")
+  print("  Total autocmds: " .. autocmd_count)
+  if autocmd_count > 1000 then
+    print("  WARNING: High autocmd count detected!")
+  end
+end, { desc = "Debug Crash Info" })
 
 return M

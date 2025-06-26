@@ -32,8 +32,8 @@ return {
       { "<leader>tc", function() require("neotest").run.run({ strategy = "dap", suite = false }) end, desc = "Debug Test Class" },
       
       -- Navigation
-      { "]t", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Next Failed Test" },
-      { "[t", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Prev Failed Test" },
+      { "]T", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Next Failed Test" },
+      { "[T", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Prev Failed Test" },
     },
     opts = function()
       return {
@@ -124,16 +124,16 @@ return {
           child_prefix = "├",
           collapsed = "─",
           expanded = "╮",
-          failed = "",
+          failed = "✖",      -- Simple X for failed tests
           final_child_indent = " ",
           final_child_prefix = "╰",
           non_collapsible = "─",
-          passed = "",
-          running = "",
-          running_animated = { "/", "|", "\\", "-", "/", "|", "\\", "-" },
-          skipped = "",
-          unknown = "",
-          watching = "",
+          passed = "✔",      -- Simple checkmark for passed tests
+          running = "●",     -- Solid circle for running tests
+          running_animated = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+          skipped = "○",     -- Empty circle for skipped tests
+          unknown = "?",     -- Question mark for unknown status
+          watching = "👁",    -- Eye icon for watched tests
         },
         
         floating = {

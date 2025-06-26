@@ -80,15 +80,25 @@ function M.format(opts)
   local buf = opts.buf or vim.api.nvim_get_current_buf()
   
   if opts.force_conform then
-    require("conform").format(opts)
+    local ok, conform = pcall(require, "conform")
+    if ok then
+      conform.format(opts)
+    end
     return
   end
 
   local have_conform, conform = pcall(require, "conform")
   if have_conform then
-    conform.format(vim.tbl_extend("force", opts, { buf = buf }))
+    conform.format(vim.tbl_extend("force", {
+      bufnr = buf,
+      lsp_fallback = true,
+      timeout_ms = 3000,
+    }, opts))
   else
-    vim.lsp.buf.format(vim.tbl_extend("force", opts, { bufnr = buf }))
+    vim.lsp.buf.format(vim.tbl_extend("force", {
+      bufnr = buf,
+      timeout_ms = 3000,
+    }, opts))
   end
 end
 

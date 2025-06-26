@@ -26,13 +26,15 @@ return {
   -- GitHub Copilot (alternative to Supermaven)
   {
     "github/copilot.vim",
-    enabled = false, -- Enable when needed
+    enabled = true,
+    cmd = { "Copilot" },
+    event = { "InsertEnter", "VeryLazy" },
     config = function()
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_assume_mapped = true
       vim.g.copilot_tab_fallback = ""
       -- Custom keymaps
-      vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
+      vim.keymap.set("i", "<C-l>", 'copilot#Accept("\\<CR>")', {
         expr = true,
         replace_keycodes = false
       })
@@ -129,9 +131,9 @@ return {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
     keys = {
-      { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float Terminal" },
-      { "<leader>th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "Horizontal Terminal" },
-      { "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Vertical Terminal" },
+      { "<leader>Tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float Terminal" },
+      { "<leader>Th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "Horizontal Terminal" },
+      { "<leader>Tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Vertical Terminal" },
     },
     opts = {
       size = 20,

@@ -61,7 +61,7 @@ map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to Previous Diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Go to Next Diagnostic" })
 map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show Diagnostic Error" })
-map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open Diagnostic Quickfix" })
+map("n", "<leader>qc", vim.diagnostic.setloclist, { desc = "Open Diagnostic Quickfix" })
 
 -- Better paste
 map("v", "p", '"_dP', { desc = "Paste without yanking" })

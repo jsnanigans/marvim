@@ -91,6 +91,11 @@ return {
             "typescriptreact",
             "typescript.tsx",
           },
+          root_dir = function(fname)
+            local util = require("lspconfig.util")
+            return util.root_pattern("tsconfig.json", "package.json", ".git")(fname)
+          end,
+          single_file_support = false, -- Prevent issues with single files
           settings = {
             complete_function_calls = true,
             vtsls = {
@@ -99,7 +104,7 @@ return {
               experimental = {
                 maxInlayHintLength = 30,
                 completion = {
-                  enableServerSideFuzzyMatch = true,
+                  enableServerSideFuzzyMatch = false, -- Can cause performance issues
                 },
               },
             },
@@ -148,8 +153,61 @@ return {
           },
         },
         eslint = {
+          root_dir = function(fname)
+            local util = require("lspconfig.util")
+            -- Only start ESLint if there's an eslint config file
+            local root = util.root_pattern(
+              ".eslintrc.js",
+              ".eslintrc.json", 
+              ".eslintrc.yml",
+              ".eslintrc.yaml",
+              ".eslintrc",
+              "eslint.config.js",
+              "eslint.config.mjs", 
+              "eslint.config.cjs"
+            )(fname)
+            
+            -- Also check for package.json with eslint config
+            if not root then
+              local package_root = util.root_pattern("package.json")(fname)
+              if package_root then
+                local package_json = package_root .. "/package.json"
+                local ok, content = pcall(vim.fn.readfile, package_json)
+                if ok and #content > 0 then
+                  local json_str = table.concat(content, "\n")
+                  if json_str:match('"eslintConfig"') then
+                    root = package_root
+                  end
+                end
+              end
+            end
+            
+            return root
+          end,
           settings = {
             workingDirectories = { mode = "auto" },
+            experimental = {
+              useFlatConfig = false,
+            },
+            validate = "on",
+            packageManager = "npm",
+            useESLintClass = false,
+            codeActionOnSave = {
+              enable = false,
+              mode = "all"
+            },
+            format = false,
+            quiet = false,
+            onIgnoredFiles = "off",
+            rulesCustomizations = {},
+            run = "onType",
+            problems = {
+              shortenToSingleLine = false,
+            },
+            -- ESLint server configuration
+            nodePath = "",
+            -- Disable if no eslint found
+            enable = true,
           },
         },
         jsonls = {
@@ -277,16 +335,27 @@ return {
       if vim.fn.has("nvim-0.10.0") == 1 then
         Util.on_attach(function(client, buffer)
           if client:supports_method("textDocument/documentHighlight") then
-            local highlight_augroup = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+            local highlight_augroup = vim.api.nvim_create_augroup("lsp_document_highlight_" .. buffer, { clear = true })
             vim.api.nvim_create_autocmd("CursorHold", {
               buffer = buffer,
               group = highlight_augroup,
-              callback = vim.lsp.buf.document_highlight,
+              callback = function()
+                pcall(vim.lsp.buf.document_highlight)
+              end,
             })
             vim.api.nvim_create_autocmd("CursorMoved", {
               buffer = buffer,
               group = highlight_augroup,
-              callback = vim.lsp.buf.clear_references,
+              callback = function()
+                pcall(vim.lsp.buf.clear_references)
+              end,
+            })
+            -- Clean up when buffer is deleted
+            vim.api.nvim_create_autocmd("BufDelete", {
+              buffer = buffer,
+              callback = function()
+                pcall(vim.api.nvim_del_augroup_by_name, "lsp_document_highlight_" .. buffer)
+              end,
             })
           end
         end)
@@ -296,15 +365,39 @@ return {
       if codelens.enabled then
         Util.on_attach(function(client, buffer)
           if client:supports_method("textDocument/codeLens") then
-            vim.lsp.codelens.refresh({ bufnr = buffer })
-            local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens", { clear = false })
-            vim.api.nvim_create_autocmd({"BufEnter", "CursorHold", "InsertLeave"}, {
+            local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
+            
+            -- Initial refresh
+            pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
+            
+            -- Set up refresh triggers with debouncing
+            local refresh_timer = nil
+            local function refresh_codelens()
+              if refresh_timer then
+                vim.fn.timer_stop(refresh_timer)
+              end
+              refresh_timer = vim.fn.timer_start(100, function()
+                if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
+                  pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
+                end
+                refresh_timer = nil
+              end)
+            end
+            
+            vim.api.nvim_create_autocmd({"BufEnter", "InsertLeave"}, {
               buffer = buffer,
               group = codelens_augroup,
+              callback = refresh_codelens,
+            })
+            
+            -- Clean up when buffer is deleted
+            vim.api.nvim_create_autocmd("BufDelete", {
+              buffer = buffer,
               callback = function()
-                if vim.g.codelens_enabled ~= false then
-                  vim.lsp.codelens.refresh({ bufnr = buffer })
+                if refresh_timer then
+                  vim.fn.timer_stop(refresh_timer)
                 end
+                pcall(vim.api.nvim_del_augroup_by_name, "lsp_codelens_" .. buffer)
               end,
             })
           end
