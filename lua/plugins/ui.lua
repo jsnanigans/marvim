@@ -438,62 +438,28 @@ return {
           local sources = require('dropbar.sources')
           local utils = require('dropbar.utils')
           
-          -- Custom path source for monorepo structure
-          local custom_path = {
+          -- Custom path source that only shows filename (no directories)
+          local filename_only_path = {
             get_symbols = function(buf, win, cursor)
+              local file_path = vim.api.nvim_buf_get_name(buf)
+              if file_path == "" then
+                return {}
+              end
+              
+              -- Get the original path symbols to copy structure
               local path_symbols = sources.path.get_symbols(buf, win, cursor)
               if not path_symbols or #path_symbols == 0 then
-                return path_symbols
+                return {}
               end
               
-              -- Always include root directory
-              local filtered = { path_symbols[1] }
-              
-              -- For monorepo support: look for apps/packages structure
-              local found_package_or_app = false
-              for i = 2, #path_symbols - 1 do
-                local symbol = path_symbols[i]
-                local prev_symbol = path_symbols[i - 1]
-                
-                -- Check if current symbol is under apps/ or packages/
-                if prev_symbol and prev_symbol.name then
-                  local prev_name = prev_symbol.name:lower()
-                  if prev_name == "apps" or prev_name == "packages" or 
-                     prev_name == "app" or prev_name == "package" then
-                    table.insert(filtered, symbol)
-                    found_package_or_app = true
-                    break
-                  end
-                end
-                
-                -- Also check if current symbol IS apps/packages (for direct navigation)
-                if symbol.name then
-                  local curr_name = symbol.name:lower()
-                  if curr_name == "apps" or curr_name == "packages" or
-                     curr_name == "app" or curr_name == "package" then
-                    -- Don't include the apps/packages directory itself, 
-                    -- but check the next level for the actual app/package
-                    if i + 1 <= #path_symbols - 1 then
-                      table.insert(filtered, path_symbols[i + 1])
-                      found_package_or_app = true
-                      break
-                    end
-                  end
-                end
-              end
-              
-              -- Always include the current file (last symbol)
-              if #path_symbols > 1 then
-                table.insert(filtered, path_symbols[#path_symbols])
-              end
-              
-              return filtered
+              -- Return only the last symbol (filename)
+              return { path_symbols[#path_symbols] }
             end
           }
           
           if vim.bo[buf].ft == 'markdown' then
             return {
-              custom_path,
+              filename_only_path,
               sources.markdown,
             }
           end
@@ -505,7 +471,7 @@ return {
           end
           
           return {
-            custom_path,
+            filename_only_path,
             utils.source.fallback({
               sources.lsp,
               sources.treesitter,
@@ -679,30 +645,6 @@ return {
         },
       },
       sources = {
-        path = {
-          relative_to = function(buf, win)
-            -- Use project root if available, otherwise current working directory
-            local ok_root, root_utils = pcall(require, "utils.root")
-            if ok_root then
-              return root_utils.find_root(buf)
-            end
-            
-            local ok, cwd = pcall(vim.fn.getcwd, win)
-            return ok and cwd or vim.fn.getcwd()
-          end,
-          filter = function(name, path)
-            -- Filter out certain directories/files from path display
-            local exclude = { ".git", "node_modules", ".DS_Store" }
-            return not vim.tbl_contains(exclude, name)
-          end,
-          modified = function(sym)
-            -- Show modified indicator for unsaved files
-            return sym:merge({
-              name = sym.name .. (vim.bo.modified and " ●" or ""),
-              name_hl = vim.bo.modified and "DiffAdded" or sym.name_hl,
-            })
-          end,
-        },
         lsp = {
           max_depth = 16,
           valid_symbols = {

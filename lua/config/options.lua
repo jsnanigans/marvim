@@ -112,10 +112,21 @@ opt.diffopt:append("linematch:60")
 opt.inccommand = "split"
 
 -- Configure floating window borders globally
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { 
-  border = "rounded",
-  winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder"
-})
+vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+  config = config or {}
+  config.border = config.border or "rounded"
+  config.winhighlight = config.winhighlight or "NormalFloat:NormalFloat,FloatBorder:FloatBorder"
+  
+  -- Don't show popup if no meaningful content
+  if not result or not result.contents or 
+     (type(result.contents) == "table" and vim.tbl_isempty(result.contents)) or
+     (type(result.contents) == "string" and result.contents == "") then
+    return
+  end
+  
+  -- Call the default handler with our config
+  return vim.lsp.handlers.hover(_, result, ctx, config)
+end
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { 
   border = "rounded",
   winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder"
