@@ -149,37 +149,6 @@ return {
           },
         },
         eslint = {
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-            local root = util.root_pattern(
-              ".eslintrc.js",
-              ".eslintrc.json",
-              ".eslintrc.yml",
-              ".eslintrc.yaml",
-              ".eslintrc",
-              "eslint.config.js",
-              "eslint.config.mjs",
-              "eslint.config.cjs"
-            )(fname)
-            if not root then
-              local package_root = util.root_pattern("package.json")(fname)
-              if package_root then
-                local package_json = package_root .. "/package.json"
-                local stat = vim.uv.fs_stat(package_json)
-                if stat and stat.type == "file" then
-                  local fd = vim.uv.fs_open(package_json, "r", 438)
-                  if fd then
-                    local data = vim.uv.fs_read(fd, stat.size, 0)
-                    vim.uv.fs_close(fd)
-                    if data and data:match('"eslintConfig"') then
-                      root = package_root
-                    end
-                  end
-                end
-              end
-            end
-            return root
-          end,
           settings = {
             workingDirectories = { mode = "auto" },
             experimental = {
@@ -257,12 +226,10 @@ return {
       local Util = require("utils.lsp")
       Util.setup()
       Util.on_attach(function(client, buffer)
-        vim.schedule(function()
-          local ok, keymaps = pcall(require, "config.keymaps")
-          if ok and keymaps.setup_lsp_keybindings then
-            keymaps.setup_lsp_keybindings(client, buffer)
-          end
-        end)
+        local ok, keymaps = pcall(require, "config.keymaps")
+        if ok and keymaps.setup_lsp_keybindings then
+          keymaps.setup_lsp_keybindings(client, buffer)
+        end
       end)
       local servers = opts.servers
       local has_blink, blink = pcall(require, "blink.cmp")
@@ -322,17 +289,6 @@ return {
       if have_mason then
         mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
       end
-      if Util.get_config("diagnostics").update_in_insert then
-        vim.lsp.handlers["textDocument/publishDiagnostics"] =
-          vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, Util.get_config("diagnostics"))
-      else
-        vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-          vim.lsp.diagnostic.on_publish_diagnostics,
-          vim.tbl_extend("force", Util.get_config("diagnostics"), {
-            update_in_insert = false,
-          })
-        )
-      end
       vim.diagnostic.config(vim.deepcopy(Util.get_config("diagnostics")))
       local inlay_hint = Util.get_config("inlay_hints")
       if inlay_hint.enabled then
@@ -348,30 +304,20 @@ return {
           if client:supports_method("textDocument/codeLens") then
             local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
             pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
-            local refresh_timer = nil
-            local function refresh_codelens()
-              if refresh_timer then
-                vim.fn.timer_stop(refresh_timer)
-                refresh_timer = nil
-              end
-              refresh_timer = vim.fn.timer_start(100, function()
+            
+            vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextChanged" }, {
+              buffer = buffer,
+              group = codelens_augroup,
+              callback = function()
                 if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
                   pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
                 end
-                refresh_timer = nil
-              end)
-            end
-            vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
-              buffer = buffer,
-              group = codelens_augroup,
-              callback = refresh_codelens,
+              end,
             })
+            
             vim.api.nvim_create_autocmd("BufDelete", {
               buffer = buffer,
               callback = function()
-                if refresh_timer then
-                  vim.fn.timer_stop(refresh_timer)
-                end
                 pcall(vim.api.nvim_del_augroup_by_name, "lsp_codelens_" .. buffer)
               end,
             })

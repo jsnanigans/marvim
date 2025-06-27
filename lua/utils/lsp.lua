@@ -25,7 +25,7 @@ M.config = {
   },
 
   inlay_hints = {
-    enabled = false,
+    enabled = true,
   },
 
   codelens = {

@@ -5,8 +5,15 @@ return {
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
+        -- LSP servers
+        "lua-language-server",
+        "vtsls",
+        "eslint-lsp",
+        "json-lsp",
+        -- Formatters
         "stylua",
         "shfmt",
+        "prettier",
       },
     },
     config = function(_, opts)
