@@ -17,6 +17,7 @@ opt.cursorline = true
 opt.conceallevel = 2
 opt.list = true
 opt.listchars = {
+  tab = "▸ ",
   trail = "·",
   nbsp = "␣",
   extends = "❯",

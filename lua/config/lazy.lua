@@ -1,7 +1,5 @@
-local plugins = require("plugins")
-
 require("lazy").setup({
-  spec = plugins.generate_spec(),
+  spec = { import = "config.plugins" },
   
   defaults = {
     lazy = true,
