@@ -13,6 +13,8 @@ return {
       require("illuminate").configure(opts)
       -- Keymaps handled via keys table in keymaps.lua
     end,
-    keys = function() return require("config.keymaps").illuminate_keys end,
+    keys = function()
+      return require("config.keymaps").illuminate_keys
+    end,
   },
 }

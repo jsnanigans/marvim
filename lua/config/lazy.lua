@@ -10,21 +10,21 @@ require("lazy").setup({
     { import = "config.plugins.testing" },
     { import = "config.plugins.extras" },
   },
-  
+
   defaults = {
     lazy = true,
     version = false,
   },
-  
-  install = { 
-    colorscheme = { "rose-pine", "habamax" } 
+
+  install = {
+    colorscheme = { "rose-pine", "habamax" },
   },
-  
-  checker = { 
-    enabled = true, 
-    notify = false 
+
+  checker = {
+    enabled = true,
+    notify = false,
   },
-  
+
   performance = {
     cache = {
       enabled = true,
@@ -50,7 +50,7 @@ require("lazy").setup({
       },
     },
   },
-  
+
   ui = {
     border = "rounded",
     backdrop = 60,
@@ -59,7 +59,7 @@ require("lazy").setup({
       height = 0.8,
     },
   },
-  
+
   dev = {
     path = "~/projects",
     patterns = {},

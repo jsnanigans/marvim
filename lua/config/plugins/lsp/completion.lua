@@ -12,7 +12,7 @@ return {
       keymap = { preset = "default" },
       appearance = {
         use_nvim_cmp_as_default = true,
-        nerd_font_variant = "mono"
+        nerd_font_variant = "mono",
       },
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
@@ -29,7 +29,9 @@ return {
             opts = {
               trailing_slash = false,
               label_trailing_slash = true,
-              get_cwd = function(context) return vim.fn.expand(('#%d:p:h'):format(context.bufnr)) end,
+              get_cwd = function(context)
+                return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
+              end,
               show_hidden_files_by_default = false,
             },
           },
@@ -51,19 +53,16 @@ return {
             score_offset = -3,
             opts = {
               get_bufnrs = function()
-                return vim.tbl_filter(
-                  function(buf)
-                    if not vim.api.nvim_buf_is_valid(buf) then
-                      return false
-                    end
-                    local ok, byte_size = pcall(vim.api.nvim_buf_get_offset, buf, vim.api.nvim_buf_line_count(buf))
-                    if not ok then
-                      return false
-                    end
-                    return byte_size < 1024 * 1024
-                  end,
-                  vim.api.nvim_list_bufs()
-                )
+                return vim.tbl_filter(function(buf)
+                  if not vim.api.nvim_buf_is_valid(buf) then
+                    return false
+                  end
+                  local ok, byte_size = pcall(vim.api.nvim_buf_get_offset, buf, vim.api.nvim_buf_line_count(buf))
+                  if not ok then
+                    return false
+                  end
+                  return byte_size < 1024 * 1024
+                end, vim.api.nvim_list_bufs())
               end,
               min_keyword_length = 2,
               max_items = 5,
@@ -71,7 +70,7 @@ return {
           },
         },
       },
-      signature = { 
+      signature = {
         enabled = true,
         window = {
           border = "rounded",
@@ -128,11 +127,13 @@ return {
         },
       },
       fuzzy = {
-        implementation = 'prefer_rust_with_warning',
-        max_typos = function(keyword) return math.floor(#keyword / 4) end,
+        implementation = "prefer_rust_with_warning",
+        max_typos = function(keyword)
+          return math.floor(#keyword / 4)
+        end,
         use_frecency = true,
         use_proximity = true,
-        sorts = { 'score', 'sort_text' },
+        sorts = { "score", "sort_text" },
         prebuilt_binaries = {
           download = true,
         },

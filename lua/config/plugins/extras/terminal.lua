@@ -3,7 +3,9 @@ return {
     "akinsho/toggleterm.nvim",
     enabled = true,
     cmd = { "ToggleTerm", "TermExec" },
-    keys = function() return require("config.keymaps").toggleterm_keys end,
+    keys = function()
+      return require("config.keymaps").toggleterm_keys
+    end,
     opts = {
       size = 20,
       open_mapping = [[<c-\>]],

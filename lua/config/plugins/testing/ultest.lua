@@ -11,7 +11,9 @@ return {
       "UltestLast",
       "UltestOutput",
     },
-    keys = function() return require("config.keymaps").ultest_keys end,
+    keys = function()
+      return require("config.keymaps").ultest_keys
+    end,
     config = function()
       vim.g.ultest_use_pty = 1
       vim.g.ultest_output_on_line = 0

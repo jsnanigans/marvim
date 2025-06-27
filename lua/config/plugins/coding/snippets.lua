@@ -19,6 +19,8 @@ return {
       history = true,
       delete_check_events = "TextChanged",
     },
-    keys = function() return require("config.keymaps").luasnip_keys end,
+    keys = function()
+      return require("config.keymaps").luasnip_keys
+    end,
   },
 }

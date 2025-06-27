@@ -11,7 +11,9 @@ return {
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
-    keys = function() return require("config.keymaps").persistence_keys end,
+    keys = function()
+      return require("config.keymaps").persistence_keys
+    end,
     opts = {},
   },
 

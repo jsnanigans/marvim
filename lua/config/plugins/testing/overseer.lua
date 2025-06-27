@@ -13,7 +13,9 @@ return {
       "OverseerQuickAction",
       "OverseerTaskAction",
     },
-    keys = function() return require("config.keymaps").overseer_keys end,
+    keys = function()
+      return require("config.keymaps").overseer_keys
+    end,
     opts = {
       templates = { "builtin", "user.test_runner" },
       task_list = {

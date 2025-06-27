@@ -23,19 +23,19 @@ M.config = {
       },
     },
   },
-  
+
   inlay_hints = {
     enabled = false,
   },
-  
+
   codelens = {
     enabled = true,
   },
-  
+
   document_highlight = {
     enabled = true,
   },
-  
+
   capabilities = {
     workspace = {
       fileOperations = {
@@ -44,7 +44,7 @@ M.config = {
       },
     },
   },
-  
+
   format = {
     formatting_options = nil,
     timeout_ms = nil,
@@ -76,12 +76,12 @@ function M.setup()
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       local buffer = args.buf
-      
+
       -- Ensure client and buffer are valid
       if not client or not buffer then
         return
       end
-      
+
       for _, callback in ipairs(on_attach_callbacks) do
         pcall(callback, client, buffer)
       end
@@ -96,7 +96,7 @@ end
 function M.format(opts)
   opts = opts or {}
   local buf = opts.buf or vim.api.nvim_get_current_buf()
-  
+
   if opts.force_conform then
     local ok, conform = pcall(require, "conform")
     if ok then
@@ -104,7 +104,7 @@ function M.format(opts)
     end
     return
   end
-  
+
   local have_conform, conform = pcall(require, "conform")
   if have_conform then
     conform.format(vim.tbl_extend("force", {
@@ -128,11 +128,11 @@ function M.rename_file()
   local buf = vim.api.nvim_get_current_buf()
   local old_name = vim.api.nvim_buf_get_name(buf)
   local new_name = vim.fn.input("New name: ", old_name, "file")
-  
+
   if new_name == "" or new_name == old_name then
     return
   end
-  
+
   local params = {
     command = "_typescript.applyRenameFile",
     arguments = {
@@ -143,7 +143,7 @@ function M.rename_file()
     },
     title = "Rename File",
   }
-  
+
   vim.lsp.buf.execute_command(params)
 end
 

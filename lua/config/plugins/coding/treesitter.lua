@@ -36,7 +36,9 @@ return {
       },
     },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    keys = function() return require("config.keymaps").treesitter_keys end,
+    keys = function()
+      return require("config.keymaps").treesitter_keys
+    end,
     opts = {
       highlight = { enable = true },
       indent = { enable = true },

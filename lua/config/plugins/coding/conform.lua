@@ -3,7 +3,9 @@ return {
     "stevearc/conform.nvim",
     lazy = true,
     cmd = "ConformInfo",
-    keys = function() return require("config.keymaps").conform_keys end,
+    keys = function()
+      return require("config.keymaps").conform_keys
+    end,
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,

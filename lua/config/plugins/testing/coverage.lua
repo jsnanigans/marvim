@@ -11,7 +11,9 @@ return {
       "CoverageClear",
       "CoverageSummary",
     },
-    keys = function() return require("config.keymaps").coverage_keys end,
+    keys = function()
+      return require("config.keymaps").coverage_keys
+    end,
     opts = {
       auto_reload = true,
       lcov_file = "./coverage/lcov.info",

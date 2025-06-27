@@ -13,7 +13,9 @@ return {
       "nvim-neotest/neotest-plenary",
     },
     event = { "BufReadPost", "BufNewFile" },
-    keys = function() return require("config.keymaps").neotest_keys end,
+    keys = function()
+      return require("config.keymaps").neotest_keys
+    end,
     opts = function()
       return {
         adapters = {
@@ -27,9 +29,9 @@ return {
           }),
           require("neotest-vitest")({
             vitestCommand = "npx vitest run",
-            env = { 
+            env = {
               CI = true,
-              VITEST_REPORTER = "verbose"
+              VITEST_REPORTER = "verbose",
             },
           }),
           require("neotest-python")({
@@ -42,7 +44,7 @@ return {
             experimental = {
               test_table = true,
             },
-            args = { "-count=1", "-timeout=60s" }
+            args = { "-count=1", "-timeout=60s" },
           }),
           require("neotest-plenary"),
         },

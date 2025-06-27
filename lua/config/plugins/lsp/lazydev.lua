@@ -14,7 +14,7 @@ return {
       enabled = function(root_dir)
         local lua_indicators = {
           ".luarc.json",
-          ".luarc.jsonc", 
+          ".luarc.jsonc",
           "lua",
           "init.lua",
           "lazy-lock.json",
@@ -28,7 +28,7 @@ return {
         end
         local nvim_config_indicators = {
           "lua/config",
-          "lua/plugins", 
+          "lua/plugins",
           "init.lua",
         }
         for _, indicator in ipairs(nvim_config_indicators) do

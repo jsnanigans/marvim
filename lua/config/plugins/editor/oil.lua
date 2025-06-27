@@ -13,6 +13,8 @@ return {
       },
       default_file_explorer = false,
     },
-    keys = function() return require("config.keymaps").oil_keys end,
+    keys = function()
+      return require("config.keymaps").oil_keys
+    end,
   },
 }

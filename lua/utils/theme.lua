@@ -34,27 +34,27 @@ M.semantic = {
   bg_popup = M.colors.overlay,
   bg_sidebar = M.colors.surface,
   bg_statusline = M.colors.surface,
-  
+
   fg_primary = M.colors.text,
   fg_secondary = M.colors.subtle,
   fg_muted = M.colors.muted,
   fg_disabled = M.colors.muted,
-  
+
   hover = M.colors.highlight_med,
   active = M.colors.highlight_high,
   selected = M.colors.highlight_high,
   focus = M.colors.iris,
-  
+
   border = M.colors.highlight_med,
   border_focus = M.colors.iris,
   border_active = M.colors.foam,
-  
+
   error = M.colors.love,
   warning = M.colors.gold,
   info = M.colors.foam,
   success = M.colors.pine,
   hint = M.colors.iris,
-  
+
   keyword = M.colors.pine,
   function_name = M.colors.rose,
   string = M.colors.gold,
@@ -67,11 +67,11 @@ M.semantic = {
   class = M.colors.foam,
   method = M.colors.rose,
   property = M.colors.iris,
-  
+
   git_add = M.colors.pine,
   git_change = M.colors.gold,
   git_delete = M.colors.love,
-  
+
   diff_add = M.colors.pine,
   diff_change = M.colors.gold,
   diff_delete = M.colors.love,
@@ -97,7 +97,9 @@ end
 -- ============================================================================
 
 function M.with_alpha(color, alpha)
-  if alpha == nil then return color end
+  if alpha == nil then
+    return color
+  end
   local r = tonumber(color:sub(2, 3), 16)
   local g = tonumber(color:sub(4, 5), 16)
   local b = tonumber(color:sub(6, 7), 16)
@@ -132,7 +134,7 @@ M.ui_highlights = {
   NormalFloat = { fg = M.semantic.fg_primary, bg = "NONE" },
   FloatBorder = { fg = M.semantic.border, bg = "NONE" },
   FloatTitle = { fg = M.semantic.fg_primary, bg = "NONE", bold = true },
-  
+
   Pmenu = { fg = M.semantic.fg_primary, bg = M.semantic.bg_popup },
   PmenuExtra = { fg = M.semantic.fg_secondary, bg = M.semantic.bg_popup },
   PmenuExtraSel = { fg = M.semantic.fg_primary, bg = M.semantic.selected },
@@ -141,20 +143,20 @@ M.ui_highlights = {
   PmenuSbar = { bg = M.semantic.bg_popup },
   PmenuSel = { fg = M.semantic.fg_primary, bg = M.semantic.selected },
   PmenuThumb = { bg = M.semantic.border },
-  
+
   LspInfoBorder = { fg = M.semantic.border, bg = "NONE" },
   LspSignatureActiveParameter = { fg = M.semantic.focus, bold = true },
-  
+
   DiagnosticError = { fg = M.semantic.error },
   DiagnosticWarn = { fg = M.semantic.warning },
   DiagnosticInfo = { fg = M.semantic.info },
   DiagnosticHint = { fg = M.semantic.hint },
   DiagnosticOk = { fg = M.semantic.success },
-  
+
   LspReferenceText = { bg = M.semantic.highlight_low },
   LspReferenceRead = { bg = M.semantic.highlight_low },
   LspReferenceWrite = { bg = M.semantic.highlight_med },
-  
+
   WinBar = { fg = M.semantic.fg_secondary, bg = M.semantic.bg_statusline },
   WinBarNC = { fg = M.semantic.fg_muted, bg = M.semantic.bg_statusline },
 }
@@ -167,7 +169,7 @@ function M.setup()
   vim.schedule(function()
     M.set_highlights(M.ui_highlights)
   end)
-  
+
   vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
       if vim.g.colors_name == "rose-pine" then

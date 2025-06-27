@@ -64,7 +64,7 @@ return {
       commit_log_panel = {
         win_config = {
           win_opts = {},
-        }
+        },
       },
       default_args = {
         DiffviewOpen = {},

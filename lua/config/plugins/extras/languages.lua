@@ -63,8 +63,7 @@ return {
             virtual_text = true,
             virtual_text_str = "■",
           },
-          on_attach = function(client, bufnr)
-          end,
+          on_attach = function(client, bufnr) end,
           capabilities = function(config)
             config.textDocument.completion.completionItem.snippetSupport = true
             return config

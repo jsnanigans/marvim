@@ -153,12 +153,12 @@ return {
             local util = require("lspconfig.util")
             local root = util.root_pattern(
               ".eslintrc.js",
-              ".eslintrc.json", 
+              ".eslintrc.json",
               ".eslintrc.yml",
               ".eslintrc.yaml",
               ".eslintrc",
               "eslint.config.js",
-              "eslint.config.mjs", 
+              "eslint.config.mjs",
               "eslint.config.cjs"
             )(fname)
             if not root then
@@ -190,7 +190,7 @@ return {
             useESLintClass = false,
             codeActionOnSave = {
               enable = false,
-              mode = "all"
+              mode = "all",
             },
             format = false,
             quiet = false,
@@ -295,9 +295,8 @@ return {
         mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
       end
       if Util.get_config("diagnostics").update_in_insert then
-        vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-          vim.lsp.diagnostic.on_publish_diagnostics, Util.get_config("diagnostics")
-        )
+        vim.lsp.handlers["textDocument/publishDiagnostics"] =
+          vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, Util.get_config("diagnostics"))
       else
         vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
           vim.lsp.diagnostic.on_publish_diagnostics,
@@ -334,7 +333,7 @@ return {
                 refresh_timer = nil
               end)
             end
-            vim.api.nvim_create_autocmd({"BufEnter", "InsertLeave"}, {
+            vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
               buffer = buffer,
               group = codelens_augroup,
               callback = refresh_codelens,
