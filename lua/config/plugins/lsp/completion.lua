@@ -150,20 +150,20 @@ return {
     opts_extend = { "sources.default" },
     config = function(_, opts)
       require("blink.cmp").setup(opts)
-      
+
       -- Command to enable snippets on-demand
       vim.api.nvim_create_user_command("EnableSnippets", function()
         -- Load snippet dependencies
         require("lazy").load({ plugins = { "friendly-snippets", "LuaSnip" } })
-        
+
         -- Update blink.cmp config to enable snippets
         local current_config = require("blink.cmp").get_config()
         current_config.sources.default = vim.list_extend(current_config.sources.default or {}, { "snippets" })
         current_config.sources.providers.snippets.opts.friendly_snippets = true
-        
+
         -- Restart blink.cmp with updated config
         require("blink.cmp").setup(current_config)
-        
+
         vim.notify("Snippets enabled and loaded", vim.log.levels.INFO)
       end, { desc = "Enable and load snippet support" })
     end,

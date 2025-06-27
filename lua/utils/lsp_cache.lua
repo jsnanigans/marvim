@@ -13,7 +13,7 @@ function M.get_capabilities()
   end
 
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  
+
   -- Try blink.cmp first (preferred)
   local has_blink, blink = pcall(require, "blink.cmp")
   if has_blink then

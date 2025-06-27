@@ -29,7 +29,6 @@ M.persistence_keys = {
   },
 }
 
-
 -- Copilot AI
 M.copilot_keys = {
   { "<C-l>", 'copilot#Accept("\\<CR>")', mode = "i", expr = true, replace_keycodes = false, desc = "Accept Copilot" },

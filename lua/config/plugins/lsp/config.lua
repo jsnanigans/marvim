@@ -98,14 +98,10 @@ return {
       end)
       local lsp_cache = require("utils.lsp_cache")
       local server_configs = require("utils.lsp_servers")
-      
+
       -- Use cached capabilities for performance
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        lsp_cache.get_capabilities(),
-        opts.capabilities or {}
-      )
-      
+      local capabilities = vim.tbl_deep_extend("force", lsp_cache.get_capabilities(), opts.capabilities or {})
+
       -- Merge lazy-loaded server configs with opts.servers
       local servers = vim.tbl_deep_extend("force", {
         lua_ls = server_configs.get_server_config("lua_ls"),
@@ -171,7 +167,7 @@ return {
               end
             end)
           end
-          
+
           local codelens = Util.get_config("codelens")
           if codelens.enabled then
             Util.on_attach(function(client, buffer)
@@ -180,7 +176,7 @@ return {
                   if vim.api.nvim_buf_is_valid(buffer) then
                     local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
                     pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
-                    
+
                     vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextChanged" }, {
                       buffer = buffer,
                       group = codelens_augroup,
@@ -190,7 +186,7 @@ return {
                         end
                       end,
                     })
-                    
+
                     vim.api.nvim_create_autocmd("BufDelete", {
                       buffer = buffer,
                       callback = function()
