@@ -1,5 +1,4 @@
 -- Core plugins that are essential for the configuration
--- Plugin files with 18+ lines get their own file, smaller ones are consolidated here
 
 return {
   -- Essential dependencies

@@ -61,6 +61,8 @@ opt.maxmempattern = 20000
 
 -- File handling
 opt.undofile = true
+opt.undolevels = 10000
+opt.undoreload = 10000
 opt.backup = false
 opt.writebackup = false
 opt.swapfile = false
@@ -105,31 +107,3 @@ g.loaded_perl_provider = 0
 -- Netrw
 g.netrw_banner = 0
 g.netrw_winsize = 25
-
--- LSP handlers
-vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
-  config = config or {}
-  config.border = config.border or "rounded"
-  config.winhighlight = config.winhighlight or "NormalFloat:NormalFloat,FloatBorder:FloatBorder"
-  if
-    not result
-    or not result.contents
-    or (type(result.contents) == "table" and vim.tbl_isempty(result.contents))
-    or (type(result.contents) == "string" and result.contents == "")
-  then
-    return
-  end
-  return vim.lsp.handlers.hover(_, result, ctx, config)
-end
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = "rounded",
-  winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-})
-
-vim.diagnostic.config({
-  float = {
-    border = "rounded",
-    winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
-  },
-})

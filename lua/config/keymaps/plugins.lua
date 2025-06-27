@@ -46,6 +46,11 @@ M.copilot_keys = {
   { "<C-l>", 'copilot#Accept("\\<CR>")', mode = "i", expr = true, replace_keycodes = false, desc = "Accept Copilot" },
 }
 
+-- Undotree
+M.undotree_keys = {
+  { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Toggle Undotree" },
+}
+
 -- Overseer task runner
 M.overseer_keys = {
   { "<leader>tor", "<cmd>OverseerRun<cr>", desc = "Run Task" },
