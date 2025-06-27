@@ -55,8 +55,8 @@ lua/config/plugins/
 
 ## Key Features
 
-- **Optimized Performance**: ~41ms startup time with immediate LSP functionality - no artificial delays
-- **Lazy Loading**: Most plugins load on-demand for exceptional startup speed
+- **Fast and Functional**: Quick startup with immediate LSP functionality
+- **Lazy Loading**: Most plugins load on-demand when needed
 - **Multi-language Support**: LSP, testing, and formatting for JS/TS, Python, Go, Lua, etc.
 - **Modern UI**: Uses noice.nvim, lualine, rose-pine theme
 - **Git Workflow**: Comprehensive git integration with LazyGit, gitsigns, diffview
