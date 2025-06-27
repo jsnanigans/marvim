@@ -1,7 +1,7 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
       "mason-org/mason.nvim",
@@ -49,143 +49,8 @@ return {
         timeout_ms = nil,
       },
       servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              workspace = {
-                checkThirdParty = false,
-              },
-              codeLens = {
-                enable = true,
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-              doc = {
-                privateName = { "^_" },
-              },
-              hint = {
-                enable = true,
-                setType = false,
-                paramType = true,
-                paramName = "Disable",
-                semicolon = "Disable",
-                arrayIndex = "Disable",
-              },
-            },
-          },
-        },
         ts_ls = {
           enabled = false,
-        },
-        vtsls = {
-          filetypes = {
-            "javascript",
-            "javascriptreact",
-            "javascript.jsx",
-            "typescript",
-            "typescriptreact",
-            "typescript.tsx",
-          },
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-            return util.root_pattern("tsconfig.json", "package.json", ".git")(fname)
-          end,
-          single_file_support = false,
-          settings = {
-            complete_function_calls = true,
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = {
-                maxInlayHintLength = 30,
-                completion = {
-                  enableServerSideFuzzyMatch = false,
-                },
-              },
-            },
-            typescript = {
-              updateImportsOnFileMove = { enabled = "always" },
-              suggest = {
-                completeFunctionCalls = true,
-              },
-              inlayHints = {
-                enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
-              },
-              implementationsCodeLens = {
-                enabled = true,
-              },
-              referencesCodeLens = {
-                enabled = true,
-                showOnAllFunctions = true,
-              },
-            },
-            javascript = {
-              updateImportsOnFileMove = { enabled = "always" },
-              suggest = {
-                completeFunctionCalls = true,
-              },
-              inlayHints = {
-                enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
-              },
-              implementationsCodeLens = {
-                enabled = true,
-              },
-              referencesCodeLens = {
-                enabled = true,
-                showOnAllFunctions = true,
-              },
-            },
-          },
-        },
-        eslint = {
-          settings = {
-            workingDirectories = { mode = "auto" },
-            experimental = {
-              useFlatConfig = false,
-            },
-            validate = "on",
-            packageManager = "npm",
-            useESLintClass = false,
-            codeActionOnSave = {
-              enable = false,
-              mode = "all",
-            },
-            format = false,
-            quiet = false,
-            onIgnoredFiles = "off",
-            rulesCustomizations = {},
-            run = "onType",
-            problems = {
-              shortenToSingleLine = false,
-            },
-            nodePath = "",
-            enable = true,
-          },
-        },
-        jsonls = {
-          on_new_config = function(new_config)
-            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
-          end,
-          settings = {
-            json = {
-              format = {
-                enable = true,
-              },
-              validate = { enable = true },
-            },
-          },
         },
       },
       setup = {
@@ -231,23 +96,23 @@ return {
           keymaps.setup_lsp_keybindings(client, buffer)
         end
       end)
-      local servers = opts.servers
-      local has_blink, blink = pcall(require, "blink.cmp")
-      local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-      local completion_capabilities = {}
-      if has_blink then
-        local ok, caps = pcall(blink.get_lsp_capabilities)
-        if ok then
-          completion_capabilities = caps
-        end
-      end
+      local lsp_cache = require("utils.lsp_cache")
+      local server_configs = require("utils.lsp_servers")
+      
+      -- Use cached capabilities for performance
       local capabilities = vim.tbl_deep_extend(
         "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        completion_capabilities,
+        lsp_cache.get_capabilities(),
         opts.capabilities or {}
       )
+      
+      -- Merge lazy-loaded server configs with opts.servers
+      local servers = vim.tbl_deep_extend("force", {
+        lua_ls = server_configs.get_server_config("lua_ls"),
+        vtsls = server_configs.get_server_config("vtsls"),
+        eslint = server_configs.get_server_config("eslint"),
+        jsonls = server_configs.get_server_config("jsonls"),
+      }, opts.servers)
       local function setup(server)
         if server == "ts_ls" then
           return
@@ -287,43 +152,58 @@ return {
         ::continue::
       end
       if have_mason then
-        mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
+        -- Defer mason setup to background for better startup
+        vim.defer_fn(function()
+          mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
+        end, 50)
       end
       vim.diagnostic.config(vim.deepcopy(Util.get_config("diagnostics")))
-      local inlay_hint = Util.get_config("inlay_hints")
-      if inlay_hint.enabled then
-        Util.on_attach(function(client, buffer)
-          if client:supports_method("textDocument/inlayHint") then
-            vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
+      -- Defer heavy features until buffer is actually used
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        group = vim.api.nvim_create_augroup("lsp_deferred_features", { clear = true }),
+        once = true,
+        callback = function()
+          local inlay_hint = Util.get_config("inlay_hints")
+          if inlay_hint.enabled then
+            Util.on_attach(function(client, buffer)
+              if client:supports_method("textDocument/inlayHint") then
+                vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
+              end
+            end)
           end
-        end)
-      end
-      local codelens = Util.get_config("codelens")
-      if codelens.enabled then
-        Util.on_attach(function(client, buffer)
-          if client:supports_method("textDocument/codeLens") then
-            local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
-            pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
-            
-            vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextChanged" }, {
-              buffer = buffer,
-              group = codelens_augroup,
-              callback = function()
-                if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
-                  pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
-                end
-              end,
-            })
-            
-            vim.api.nvim_create_autocmd("BufDelete", {
-              buffer = buffer,
-              callback = function()
-                pcall(vim.api.nvim_del_augroup_by_name, "lsp_codelens_" .. buffer)
-              end,
-            })
+          
+          local codelens = Util.get_config("codelens")
+          if codelens.enabled then
+            Util.on_attach(function(client, buffer)
+              if client:supports_method("textDocument/codeLens") then
+                vim.defer_fn(function()
+                  if vim.api.nvim_buf_is_valid(buffer) then
+                    local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
+                    pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
+                    
+                    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextChanged" }, {
+                      buffer = buffer,
+                      group = codelens_augroup,
+                      callback = function()
+                        if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
+                          pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
+                        end
+                      end,
+                    })
+                    
+                    vim.api.nvim_create_autocmd("BufDelete", {
+                      buffer = buffer,
+                      callback = function()
+                        pcall(vim.api.nvim_del_augroup_by_name, "lsp_codelens_" .. buffer)
+                      end,
+                    })
+                  end
+                end, 100)
+              end
+            end)
           end
-        end)
-      end
+        end,
+      })
     end,
   },
 }

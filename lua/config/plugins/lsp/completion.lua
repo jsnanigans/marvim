@@ -2,10 +2,18 @@ return {
   {
     "saghen/blink.cmp",
     priority = 800,
-    event = { "InsertEnter", "CmdlineEnter" },
+    event = "InsertEnter",
     version = "v0.*",
     dependencies = {
-      "rafamadriz/friendly-snippets",
+      {
+        "rafamadriz/friendly-snippets",
+        lazy = true,
+      },
+      {
+        "L3MON4D3/LuaSnip",
+        lazy = true,
+        build = "make install_jsregexp",
+      },
       "echasnovski/mini.icons",
     },
     opts = {
@@ -15,7 +23,7 @@ return {
         nerd_font_variant = "mono",
       },
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "lsp", "path", "buffer" },
         providers = {
           lsp = {
             name = "LSP",
@@ -40,7 +48,7 @@ return {
             module = "blink.cmp.sources.snippets",
             score_offset = 85,
             opts = {
-              friendly_snippets = true,
+              friendly_snippets = false,
               search_paths = { vim.fn.stdpath("config") .. "/snippets" },
               global_snippets = { "all" },
               extended_filetypes = {},
@@ -140,5 +148,24 @@ return {
       },
     },
     opts_extend = { "sources.default" },
+    config = function(_, opts)
+      require("blink.cmp").setup(opts)
+      
+      -- Command to enable snippets on-demand
+      vim.api.nvim_create_user_command("EnableSnippets", function()
+        -- Load snippet dependencies
+        require("lazy").load({ plugins = { "friendly-snippets", "LuaSnip" } })
+        
+        -- Update blink.cmp config to enable snippets
+        local current_config = require("blink.cmp").get_config()
+        current_config.sources.default = vim.list_extend(current_config.sources.default or {}, { "snippets" })
+        current_config.sources.providers.snippets.opts.friendly_snippets = true
+        
+        -- Restart blink.cmp with updated config
+        require("blink.cmp").setup(current_config)
+        
+        vim.notify("Snippets enabled and loaded", vim.log.levels.INFO)
+      end, { desc = "Enable and load snippet support" })
+    end,
   },
 }
