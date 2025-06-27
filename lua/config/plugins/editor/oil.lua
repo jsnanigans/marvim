@@ -13,8 +13,6 @@ return {
       },
       default_file_explorer = false,
     },
-    keys = {
-      { "-", "<CMD>Oil<CR>", desc = "Open parent directory" }
-    },
+    keys = function() return require("config.keymaps").oil_keys end,
   },
 }

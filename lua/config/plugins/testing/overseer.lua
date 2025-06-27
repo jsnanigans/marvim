@@ -13,11 +13,7 @@ return {
       "OverseerQuickAction",
       "OverseerTaskAction",
     },
-    keys = {
-      { "<leader>tor", "<cmd>OverseerRun<cr>", desc = "Run Task" },
-      { "<leader>tot", "<cmd>OverseerToggle<cr>", desc = "Toggle Overseer" },
-      { "<leader>toa", "<cmd>OverseerQuickAction<cr>", desc = "Quick Action" },
-    },
+    keys = function() return require("config.keymaps").overseer_keys end,
     opts = {
       templates = { "builtin", "user.test_runner" },
       task_list = {

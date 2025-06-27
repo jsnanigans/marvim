@@ -3,11 +3,7 @@ return {
     "akinsho/toggleterm.nvim",
     enabled = true,
     cmd = { "ToggleTerm", "TermExec" },
-    keys = {
-      { "<leader>Tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float Terminal" },
-      { "<leader>Th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "Horizontal Terminal" },
-      { "<leader>Tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Vertical Terminal" },
-    },
+    keys = function() return require("config.keymaps").toggleterm_keys end,
     opts = {
       size = 20,
       open_mapping = [[<c-\>]],

@@ -36,10 +36,7 @@ return {
       },
     },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    keys = {
-      { "<c-space>", desc = "Increment Selection" },
-      { "<bs>", desc = "Decrement Selection", mode = "x" },
-    },
+    keys = function() return require("config.keymaps").treesitter_keys end,
     opts = {
       highlight = { enable = true },
       indent = { enable = true },

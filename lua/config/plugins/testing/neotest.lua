@@ -13,20 +13,7 @@ return {
       "nvim-neotest/neotest-plenary",
     },
     event = { "BufReadPost", "BufNewFile" },
-    keys = {
-      { "<leader>tt", function() require("neotest").run.run() end, desc = "Run Nearest Test" },
-      { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File Tests" },
-      { "<leader>ta", function() require("neotest").run.run(vim.fn.getcwd()) end, desc = "Run All Tests" },
-      { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Test Summary" },
-      { "<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Test Output" },
-      { "<leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
-      { "<leader>tw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, desc = "Toggle Test Watch" },
-      { "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug Nearest Test" },
-      { "<leader>tS", function() require("neotest").run.stop() end, desc = "Stop Tests" },
-      { "<leader>tc", function() require("neotest").run.run({ strategy = "dap", suite = false }) end, desc = "Debug Test Class" },
-      { "]T", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Next Failed Test" },
-      { "[T", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Prev Failed Test" },
-    },
+    keys = function() return require("config.keymaps").neotest_keys end,
     opts = function()
       return {
         adapters = {

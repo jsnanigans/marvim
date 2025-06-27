@@ -11,12 +11,7 @@ return {
       "CoverageClear",
       "CoverageSummary",
     },
-    keys = {
-      { "<leader>tcv", "<cmd>Coverage<cr>", desc = "Toggle Coverage" },
-      { "<leader>tcs", "<cmd>CoverageSummary<cr>", desc = "Coverage Summary" },
-      { "<leader>tcl", "<cmd>CoverageLoad<cr>", desc = "Load Coverage" },
-      { "<leader>tcc", "<cmd>CoverageClear<cr>", desc = "Clear Coverage" },
-    },
+    keys = function() return require("config.keymaps").coverage_keys end,
     opts = {
       auto_reload = true,
       lcov_file = "./coverage/lcov.info",

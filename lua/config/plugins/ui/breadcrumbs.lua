@@ -296,6 +296,7 @@ return {
 				},
 			},
 		},
+		keys = function() return require("config.keymaps").dropbar_keys end,
 		config = function(_, opts)
 			local theme = require("utils.theme")
 			local function setup_dropbar_highlights()
@@ -390,10 +391,6 @@ return {
 			})
 			setup_dropbar_highlights()
 			require("dropbar").setup(opts)
-			local dropbar_api = require("dropbar.api")
-			vim.keymap.set("n", "<leader>;", dropbar_api.pick, { desc = "Pick symbols in winbar" })
-			vim.keymap.set("n", "[;", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
-			vim.keymap.set("n", "];", dropbar_api.select_next_context, { desc = "Select next context" })
 		end,
 	},
 }

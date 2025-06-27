@@ -67,3 +67,50 @@ lua/config/plugins/
 6. `<leader>cf` for code formatting
 
 The configuration prioritizes performance and developer experience with thoughtful defaults and discoverable keybindings via which-key.nvim.
+
+## Keymap Management
+
+**MARVIM uses a fully centralized keymap system** where `lua/config/keymaps.lua` is the **single source of truth** for ALL keybindings:
+
+### Architecture
+- **Core keymaps**: Editor, window, buffer, tab, terminal, file operations, diagnostics, and LSP bindings
+- **Plugin keymaps**: Exported as key tables (e.g., `M.neotest_keys`, `M.oil_keys`) and imported by plugin configs
+- **No scattered keymaps**: Zero `vim.keymap.set` calls exist in plugin files
+
+### Implementation Pattern
+```lua
+-- In keymaps.lua:
+M.neotest_keys = {
+  { "<leader>tt", function() require("neotest").run.run() end, desc = "Run Nearest Test" },
+  { "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File Tests" },
+  -- ... more keys
+}
+
+-- In plugin config:
+{
+  "nvim-neotest/neotest",
+  keys = function() return require("config.keymaps").neotest_keys end,
+  opts = { ... },
+}
+```
+
+### Available Key Tables
+- `M.persistence_keys` - Session management
+- `M.toggleterm_keys` - Terminal management  
+- `M.neotest_keys` - Test runner
+- `M.trouble_keys` - Diagnostics
+- `M.oil_keys` - File explorer
+- `M.copilot_keys` - AI completion
+- And many more...
+
+### Benefits
+- **Single source of truth**: All keybindings in one file
+- **Easy maintenance**: Change any keymap in one place
+- **Better discoverability**: See all keybindings at a glance
+- **Consistent organization**: Standardized pattern across all plugins
+- **No duplication**: Eliminates scattered keymap definitions
+
+### Special Keymaps
+- **LSP keymaps**: Set up via `M.setup_lsp_keybindings(client, buffer)` callback
+- **Gitsigns keymaps**: Set up via `M.setup_gitsigns_keybindings(buffer)` callback
+- **Global keymaps**: Non-plugin specific bindings handled in setup functions
