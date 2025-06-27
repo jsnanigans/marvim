@@ -22,7 +22,7 @@ autocmd("TextYankPost", {
 
 -- Resize splits when window resizes
 augroup("ResizeSplits", { clear = true })
-autocmd({ "VimResized" }, {
+autocmd("VimResized", {
   group = "ResizeSplits",
   callback = function()
     local current_tab = vim.fn.tabpagenr()
@@ -65,7 +65,7 @@ autocmd("FileType", {
 augroup("WrapSpell", { clear = true })
 autocmd("FileType", {
   group = "WrapSpell",
-  pattern = { "*.txt", "*.md", "*.tex", "gitcommit", "markdown" },
+  pattern = { "text", "markdown", "tex", "gitcommit" },
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
@@ -74,7 +74,7 @@ autocmd("FileType", {
 
 -- Disable conceallevel for JSON files
 augroup("JsonConceal", { clear = true })
-autocmd({ "FileType" }, {
+autocmd("FileType", {
   group = "JsonConceal",
   pattern = { "json", "jsonc", "json5" },
   callback = function()
@@ -84,7 +84,7 @@ autocmd({ "FileType" }, {
 
 -- Auto-create directories when saving files
 augroup("AutoCreateDir", { clear = true })
-autocmd({ "BufWritePre" }, {
+autocmd("BufWritePre", {
   group = "AutoCreateDir",
   callback = function(event)
     if event.match:match("^%w%w+:[\\/][\\/]") then
@@ -95,14 +95,23 @@ autocmd({ "BufWritePre" }, {
   end,
 })
 
--- Check for file changes when gaining focus
-augroup("CheckTime", { clear = true })
-autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = "CheckTime",
+-- Auto-trim trailing whitespace on save
+augroup("TrimWhitespace", { clear = true })
+autocmd("BufWritePre", {
+  group = "TrimWhitespace",
   callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
+    local save_cursor = vim.fn.getpos(".")
+    vim.cmd([[%s/\s\+$//e]])
+    vim.fn.setpos(".", save_cursor)
+  end,
+})
+
+-- Return to normal mode when leaving terminal
+augroup("TerminalBehavior", { clear = true })
+autocmd("TermLeave", {
+  group = "TerminalBehavior",
+  callback = function()
+    vim.cmd("stopinsert")
   end,
 })
 
@@ -111,7 +120,7 @@ augroup("LastPosition", { clear = true })
 autocmd("BufReadPost", {
   group = "LastPosition",
   callback = function(event)
-    local exclude = { "gitcommit" }
+    local exclude = { "gitcommit", "help", "qf" }
     local buf = event.buf
     if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc then
       return
@@ -125,27 +134,3 @@ autocmd("BufReadPost", {
   end,
 })
 
--- Enhanced filetype detection with Treesitter fallback
-augroup("FiletypeDetect", { clear = true })
-autocmd({ "BufRead", "BufNewFile" }, {
-  group = "FiletypeDetect",
-  callback = function(event)
-    local buf = event.buf
-    local filename = vim.api.nvim_buf_get_name(buf)
-    if vim.bo[buf].filetype == "" and filename ~= "" then
-      vim.api.nvim_buf_call(buf, function()
-        vim.cmd("filetype detect")
-      end)
-    end
-    vim.defer_fn(function()
-      if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype ~= "" then
-        local ok, _ = pcall(vim.treesitter.start, buf)
-        if not ok then
-          vim.api.nvim_buf_call(buf, function()
-            vim.cmd("syntax enable")
-          end)
-        end
-      end
-    end, 100)
-  end,
-})

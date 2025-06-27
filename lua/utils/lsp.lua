@@ -144,7 +144,13 @@ function M.rename_file()
     title = "Rename File",
   }
 
-  vim.lsp.buf.execute_command(params)
+  local clients = vim.lsp.get_clients({ bufnr = buf })
+  for _, client in ipairs(clients) do
+    if client.name == "vtsls" then
+      client:exec_cmd(params)
+      break
+    end
+  end
 end
 
 return M

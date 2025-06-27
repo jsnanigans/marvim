@@ -68,6 +68,9 @@ opt.autoread = true
 opt.confirm = true
 opt.hidden = true
 
+-- Filetype detection
+vim.cmd("filetype plugin indent on")
+
 -- Completion
 opt.completeopt = { "menuone", "noselect", "noinsert" }
 opt.pumheight = 10
