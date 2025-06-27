@@ -21,21 +21,26 @@ The configuration follows a modular structure:
 The configuration uses lazy.nvim's standard import system with a streamlined structure:
 - Plugin specs are organized into category modules under `lua/config/plugins/`
 - Each category (core, editor, coding, git, lsp, ui, testing, extras) has its own subdirectory
-- **18-Line Rule**: Plugins with fewer than 18 lines are consolidated into the main category file; larger configs get separate files
-- Individual plugin configurations are isolated in separate files for better maintainability when they exceed the line threshold
+- **Cognitive Complexity Rule**: Plugins with low cognitive complexity are consolidated into the main category file; complex configs get separate files
+- Individual plugin configurations are isolated in separate files when they have substantial configuration, custom logic, or high maintenance overhead
 - The main lazy.nvim setup imports from each category directly (e.g., `config.plugins.core`, `config.plugins.editor`)
+
+**Complexity Assessment Criteria:**
+- **LOW**: Simple opts table, basic config function, minimal setup → Consolidate
+- **MEDIUM**: Moderate configuration with some custom logic → Judgment call based on importance
+- **HIGH**: Complex setup, extensive configuration, critical functionality → Keep separate
 
 Example structure:
 ```
 lua/config/plugins/
-├── core.lua         # Contains small plugins + imports larger ones
+├── core.lua         # Contains simple plugins + imports complex ones
 ├── core/
-│   └── which-key.lua  # 18+ lines, gets own file
+│   └── which-key.lua  # Complex keymap definitions, gets own file
 ├── lsp.lua          # Imports from lsp/*
 ├── lsp/
-│   ├── config.lua   # Large LSP config
-│   ├── mason.lua
-│   └── completion.lua
+│   ├── config.lua   # Complex LSP setup
+│   ├── mason.lua    # Moderate complexity
+│   └── completion.lua # Complex completion config
 └── ...
 ```
 
