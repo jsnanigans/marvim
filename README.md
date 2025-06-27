@@ -11,7 +11,7 @@ Because entropy is undefeated and you still need to edit files.
 
 | MARVIM | Other configs |
 | ------ | ------------- |
-| **Sub-40 ms cold start** (benchmarked on a potato) | “Fast” is a feeling, not a metric |
+| **Fast startup with immediate LSP (no artificial delays) | “Fast” is a feeling, not a metric |
 | **Complexity-aware layout** (low/med/high) | One flat directory to rule them all |
 | **Single source of truth for keymaps** with conflict warnings | `vim.keymap.set()` sprayed everywhere |
 | **32-pattern project-root detector** | `git rev-parse --show-toplevel` and pray |
@@ -94,9 +94,10 @@ Absolutely **zero** `vim.keymap.set()` calls inside plugin specs. One file rules
 ---
 
 ## 6 · Performance Tricks (or “How We Hit 38 ms and Still Felt Nothing”)
+- **Immediate LSP on file open**; no artificial delays to inflate benchmark scores while you suffer.
 - **Cache LSP capabilities**; reusing work is the only real love in this cold world.
 - **Deferred snippets**; they load when you beg (`:EnableSnippets`).
-- **Server installs in background threads**—like hearing elevator music while you wait for inevitable doom.
+- **Server installs asynchronously**—like hearing elevator music while you wait for inevitable doom.
 - `:Lazy profile` for flamegraphs of your impatience.
 
 ---
@@ -112,7 +113,7 @@ Absolutely **zero** `vim.keymap.set()` calls inside plugin specs. One file rules
 ---
 
 ## 8 · Contributing
-Pull requests welcome; each one a hopeful photon in an expanding void. Follow code style, write docs, keep startup below 50 ms. If it gets slower, at least add a good joke.
+Pull requests welcome; each one a hopeful photon in an expanding void. Follow code style, write docs, keep startup below 50ms while maintaining immediate functionality.
 
 ---
 

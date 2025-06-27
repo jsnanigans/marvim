@@ -55,13 +55,13 @@ lua/config/plugins/
 
 ## Key Features
 
-- **Optimized Performance**: Sub-40ms startup time through aggressive lazy loading and deferred initialization
+- **Optimized Performance**: ~41ms startup time with immediate LSP functionality - no artificial delays
 - **Lazy Loading**: Most plugins load on-demand for exceptional startup speed
 - **Multi-language Support**: LSP, testing, and formatting for JS/TS, Python, Go, Lua, etc.
 - **Modern UI**: Uses noice.nvim, lualine, rose-pine theme
 - **Git Workflow**: Comprehensive git integration with LazyGit, gitsigns, diffview
 - **Testing**: Neotest with adapters for Jest, Vitest, pytest, Go testing
-- **Code Intelligence**: Treesitter, LSP with Mason auto-install, blink.cmp completion
+- **Code Intelligence**: Treesitter, LSP with Mason async auto-install, blink.cmp completion
 - **File Management**: Oil.nvim (buffer-based file explorer) instead of traditional tree
 - **Smart Snippet Loading**: On-demand snippet system via `:EnableSnippets` command
 

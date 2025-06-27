@@ -148,10 +148,7 @@ return {
         ::continue::
       end
       if have_mason then
-        -- Defer mason setup to background for better startup
-        vim.defer_fn(function()
-          mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
-        end, 50)
+        mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
       end
       vim.diagnostic.config(vim.deepcopy(Util.get_config("diagnostics")))
       -- Defer heavy features until buffer is actually used
