@@ -1,9 +1,5 @@
 local M = {}
 
--- ============================================================================
--- KEYMAP CONFIGURATION CONSTANTS
--- ============================================================================
-
 -- Common file excludes for search operations
 M.COMMON_EXCLUDES = {
   "node_modules",
@@ -14,9 +10,9 @@ M.COMMON_EXCLUDES = {
   "coverage",
   ".svelte-kit",
   ".nuxt",
-  "target", -- Rust
-  "vendor", -- Go/PHP
-  "__pycache__", -- Python
+  "target",
+  "vendor",
+  "__pycache__",
   ".pytest_cache",
   ".mypy_cache",
   ".tox",
@@ -53,51 +49,6 @@ M.GREP_ARGS = {
   "--with-filename",
 }
 
--- Leader key prefixes for organization
-M.LEADER_PREFIXES = {
-  -- Core operations
-  BUFFER = "<leader>b", -- Buffer operations
-  WINDOW = "<leader>w", -- Window operations
-  TAB = "<leader><tab>", -- Tab operations
-  FILE = "<leader>f", -- File operations (fp=projects in root module)
-
-  -- Search and navigation
-  SEARCH = "<leader>s", -- Search operations
-  GOTO = "g", -- Go-to operations
-  JUMP = "]", -- Forward jumps
-  JUMP_BACK = "[", -- Backward jumps
-
-  -- Code operations
-  CODE = "<leader>c", -- Code actions
-  LSP = "<leader>l", -- LSP management
-  WORKSPACE = "<leader>w", -- Workspace operations
-
-  -- Testing
-  TEST = "<leader>t", -- Test operations
-
-  -- Git operations
-  GIT = "<leader>g", -- Git operations
-  GIT_HUNK = "<leader>gh", -- Git hunk operations
-  GIT_CONFLICT = "<leader>gc", -- Git conflict resolution
-
-  -- UI toggles
-  UI = "<leader>u", -- UI toggles
-
-  -- Diagnostics and troubleshooting
-  DIAGNOSTIC = "<leader>x", -- Diagnostics
-  QUICKFIX = "<leader>q", -- Quickfix operations
-
-  -- Session management
-  SESSION = "<leader>q", -- Session operations
-
-  -- Terminal
-  TERMINAL = "<leader>T", -- Terminal operations
-
-  -- Extras
-  DATABASE = "<leader>D", -- Database operations
-  OVERSEER = "<leader>to", -- Task operations
-}
-
 -- File operation templates
 M.FILE_FIND_ARGS_TEMPLATE = {
   "--type=file",
@@ -105,84 +56,9 @@ M.FILE_FIND_ARGS_TEMPLATE = {
   "--follow",
 }
 
--- Diagnostic severity levels
-M.DIAGNOSTIC_SEVERITY = {
-  ERROR = vim.diagnostic.severity.ERROR,
-  WARN = vim.diagnostic.severity.WARN,
-  INFO = vim.diagnostic.severity.INFO,
-  HINT = vim.diagnostic.severity.HINT,
-}
-
--- Key modes for documentation
-M.KEY_MODES = {
-  NORMAL = "n",
-  INSERT = "i",
-  VISUAL = "v",
-  VISUAL_LINE = "V",
-  VISUAL_BLOCK = "<C-v>",
-  SELECT = "s",
-  OPERATOR = "o",
-  TERMINAL = "t",
-  COMMAND = "c",
-  MULTIPLE = { "n", "v" },
-  MULTIPLE_INSERT = { "i", "s" },
-  MULTIPLE_VISUAL = { "x", "o" },
-}
-
--- Common keymap options
-M.KEYMAP_OPTS = {
-  SILENT = { silent = true },
-  NOREMAP = { noremap = true },
-  EXPR = { expr = true },
-  SILENT_NOREMAP = { silent = true, noremap = true },
-  BUFFER_LOCAL = function(buffer)
-    return { buffer = buffer }
-  end,
-  WITH_DESC = function(desc)
-    return { desc = desc }
-  end,
-  SILENT_WITH_DESC = function(desc)
-    return { silent = true, desc = desc }
-  end,
-}
-
 -- Plugin dependencies for validation
 M.PLUGIN_DEPS = {
   SEARCH = { "snacks" },
-  LSP = { "lspconfig" },
-  TREESITTER = { "nvim-treesitter" },
-  COMPLETION = { "blink.cmp" },
-  GIT = { "gitsigns" },
-  TESTING = { "neotest" },
-  TERMINAL = { "toggleterm" },
-  HARPOON = { "harpoon" },
-  FLASH = { "flash" },
-  COMMENT = { "Comment" },
-  SURROUND = { "mini.surround" },
-  BUFREMOVE = { "mini.bufremove" },
-}
-
--- Timeout values (in milliseconds)
-M.TIMEOUTS = {
-  KEYMAP_DEFER = 100,
-  FORMAT_TIMEOUT = 3000,
-  LSP_TIMEOUT = 5000,
-}
-
--- Project-specific paths
-M.PATHS = {
-  PROJECTS_DIR = vim.fn.expand("~/Projects"),
-  TEMP_DIR = "/tmp",
-  STARTUP_LOG = "/tmp/nvim_startup.log",
-}
-
--- Error message templates
-M.ERROR_TEMPLATES = {
-  MODULE_LOAD_FAILED = "Failed to load module '%s': %s",
-  KEYMAP_CONFLICT = "Keymap conflict: %s already bound to %s",
-  PLUGIN_NOT_AVAILABLE = "Plugin '%s' not available for %s functionality",
-  INVALID_KEYMAP_TABLE = "Invalid keymap table provided by %s",
-  DEPENDENCY_MISSING = "Missing dependencies for %s: %s",
 }
 
 -- Helper function to build file args with excludes

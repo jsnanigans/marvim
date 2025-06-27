@@ -163,7 +163,7 @@ function M.setup_search_keymaps()
   -- Show all files including tests
   map("n", "<leader>fT", function()
     snacks.picker.files({
-      args = build_file_args(COMMON_EXCLUDES),
+      args = build_file_args(constants.COMMON_EXCLUDES),
     })
   end, { desc = "Find All Files (Including Tests)" })
 
