@@ -2,7 +2,7 @@ return {
   {
     "folke/snacks.nvim",
     priority = 1000,
-    event = "VeryLazy",
+    lazy = false,
     opts = {
       picker = {
         enabled = true,

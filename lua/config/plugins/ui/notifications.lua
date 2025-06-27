@@ -24,7 +24,7 @@ return {
           return "#1f1d2e"
         end,
         stages = "fade_in_slide_out",
-        render = "wrapped-compact",
+        render = "compact",
         icons = {
           ERROR = "",
           WARN = "",
