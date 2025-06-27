@@ -330,7 +330,8 @@ return {
 	-- Dashboard
 	{
 		"nvimdev/dashboard-nvim",
-		lazy = false,
+		priority = 900,
+		event = "VimEnter",
 		opts = function()
 			local logo = [[
 ███╗   ███╗ █████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗

@@ -410,7 +410,8 @@ return {
   -- Modern completion engine (blink.cmp)
   {
     "saghen/blink.cmp",
-    lazy = false, -- Load immediately for better performance
+    priority = 800,
+    event = { "InsertEnter", "CmdlineEnter" },
     version = "v0.*", -- Use latest v0.x for newest features
     dependencies = {
       "rafamadriz/friendly-snippets",

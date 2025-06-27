@@ -1,9 +1,13 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+
+-- Root utilities setup
 local ok_root, root_utils = pcall(require, "utils.root")
 if ok_root then
   root_utils.setup()
 end
+
+-- Highlight yanked text
 augroup("YankHighlight", { clear = true })
 autocmd("TextYankPost", {
   group = "YankHighlight",
@@ -15,6 +19,8 @@ autocmd("TextYankPost", {
     })
   end,
 })
+
+-- Resize splits when window resizes
 augroup("ResizeSplits", { clear = true })
 autocmd({ "VimResized" }, {
   group = "ResizeSplits",
@@ -24,6 +30,8 @@ autocmd({ "VimResized" }, {
     vim.cmd("tabnext " .. current_tab)
   end,
 })
+
+-- Close certain windows with 'q'
 augroup("CloseWithQ", { clear = true })
 autocmd("FileType", {
   group = "CloseWithQ",
@@ -52,6 +60,8 @@ autocmd("FileType", {
     })
   end,
 })
+
+-- Enable wrap and spell for text files
 augroup("WrapSpell", { clear = true })
 autocmd("FileType", {
   group = "WrapSpell",
@@ -61,6 +71,8 @@ autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
+
+-- Disable conceallevel for JSON files
 augroup("JsonConceal", { clear = true })
 autocmd({ "FileType" }, {
   group = "JsonConceal",
@@ -69,6 +81,8 @@ autocmd({ "FileType" }, {
     vim.opt_local.conceallevel = 0
   end,
 })
+
+-- Auto-create directories when saving files
 augroup("AutoCreateDir", { clear = true })
 autocmd({ "BufWritePre" }, {
   group = "AutoCreateDir",
@@ -80,6 +94,8 @@ autocmd({ "BufWritePre" }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+
+-- Check for file changes when gaining focus
 augroup("CheckTime", { clear = true })
 autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = "CheckTime",
@@ -89,6 +105,8 @@ autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end
   end,
 })
+
+-- Remember last cursor position
 augroup("LastPosition", { clear = true })
 autocmd("BufReadPost", {
   group = "LastPosition",
@@ -106,6 +124,8 @@ autocmd("BufReadPost", {
     end
   end,
 })
+
+-- Enhanced filetype detection with Treesitter fallback
 augroup("FiletypeDetect", { clear = true })
 autocmd({ "BufRead", "BufNewFile" }, {
   group = "FiletypeDetect",
@@ -121,7 +141,7 @@ autocmd({ "BufRead", "BufNewFile" }, {
       if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype ~= "" then
         local ok, _ = pcall(vim.treesitter.start, buf)
         if not ok then
-            vim.api.nvim_buf_call(buf, function()
+          vim.api.nvim_buf_call(buf, function()
             vim.cmd("syntax enable")
           end)
         end
