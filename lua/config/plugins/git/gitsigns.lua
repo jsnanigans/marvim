@@ -28,7 +28,7 @@ return {
       current_line_blame_opts = {
         virt_text = true,
         virt_text_pos = "eol",
-        delay = 1000,
+        delay = 300,
         ignore_whitespace = false,
       },
       on_attach = function(buffer)

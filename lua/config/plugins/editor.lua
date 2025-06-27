@@ -12,6 +12,7 @@ return {
   -- Smart commenting
   {
     "numToStr/Comment.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       ignore = "^$",
     },
@@ -52,26 +53,60 @@ return {
       view_options = {
         show_hidden = true,
       },
-      default_file_explorer = false,
+      default_file_explorer = true,
     },
     keys = function()
       return require("config.keymaps").oil_keys
     end,
   },
 
-  -- Illuminate with basic config
+  -- Illuminate with proper config
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
+      providers = {
+        "lsp",
+        "treesitter",
+        "regex",
+      },
       delay = 200,
+      filetype_overrides = {},
+      filetypes_denylist = {
+        "dirbuf",
+        "dirvish",
+        "fugitive",
+        "alpha",
+        "NvimTree",
+        "lazy",
+        "neogitstatus",
+        "Trouble",
+        "lir",
+        "Outline",
+        "spectre_panel",
+        "toggleterm",
+        "DressingSelect",
+        "TelescopePrompt",
+      },
+      filetypes_allowlist = {},
+      modes_denylist = {},
+      modes_allowlist = {},
+      providers_regex_syntax_denylist = {},
+      providers_regex_syntax_allowlist = {},
+      under_cursor = true,
       large_file_cutoff = 2000,
       large_file_overrides = {
         providers = { "lsp" },
       },
+      min_count_to_highlight = 1,
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
+      
+      -- Set up highlight groups
+      vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Visual" })
+      vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Visual" })
+      vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Visual" })
     end,
     keys = function()
       return require("config.keymaps").illuminate_keys
@@ -85,12 +120,17 @@ return {
     keys = function()
       return require("config.keymaps").undotree_keys
     end,
-    config = function()
-      vim.g.undotree_WindowLayout = 2
-      vim.g.undotree_ShortIndicators = 1
-      vim.g.undotree_SetFocusWhenToggle = 1
-      vim.g.undotree_TreeNodeShape = "●"
-      vim.g.undotree_DiffAutoOpen = 0
+    opts = {
+      WindowLayout = 2,
+      ShortIndicators = 1,
+      SetFocusWhenToggle = 1,
+      TreeNodeShape = "●",
+      DiffAutoOpen = 0,
+    },
+    config = function(_, opts)
+      for key, value in pairs(opts) do
+        vim.g["undotree_" .. key] = value
+      end
     end,
   },
 

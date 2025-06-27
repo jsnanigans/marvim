@@ -24,7 +24,6 @@ end
 
 -- Re-export all plugin key tables
 M.persistence_keys = plugins.persistence_keys
-M.toggleterm_keys = plugins.toggleterm_keys
 M.dadbod_keys = plugins.dadbod_keys
 M.copilot_keys = plugins.copilot_keys
 M.undotree_keys = plugins.undotree_keys
@@ -77,10 +76,10 @@ function M.setup_plugin_keymaps()
 
   -- Git Conflicts
   if vim.fn.exists(":GitConflictChooseOurs") == 2 then
-    map("n", "<leader>gco", "<cmd>GitConflictChooseOurs<cr>", { desc = "Choose Ours" })
-    map("n", "<leader>gct", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Choose Theirs" })
-    map("n", "<leader>gcb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Choose Both" })
-    map("n", "<leader>gc0", "<cmd>GitConflictChooseNone<cr>", { desc = "Choose None" })
+    map("n", "<leader>gxo", "<cmd>GitConflictChooseOurs<cr>", { desc = "Take Ours" })
+    map("n", "<leader>gxt", "<cmd>GitConflictChooseTheirs<cr>", { desc = "Take Theirs" })
+    map("n", "<leader>gxb", "<cmd>GitConflictChooseBoth<cr>", { desc = "Take Both" })
+    map("n", "<leader>gxn", "<cmd>GitConflictChooseNone<cr>", { desc = "Take None" })
     map("n", "]x", "<cmd>GitConflictNextConflict<cr>", { desc = "Next Conflict" })
     map("n", "[x", "<cmd>GitConflictPrevConflict<cr>", { desc = "Prev Conflict" })
   end
@@ -89,8 +88,8 @@ function M.setup_plugin_keymaps()
   if vim.fn.exists(":DiffviewOpen") == 2 then
     map("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Open Diffview" })
     map("n", "<leader>gD", "<cmd>DiffviewClose<cr>", { desc = "Close Diffview" })
-    map("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", { desc = "File History" })
-    map("n", "<leader>gH", "<cmd>DiffviewFileHistory %<cr>", { desc = "Current File History" })
+    map("n", "<leader>gf", "<cmd>DiffviewFileHistory<cr>", { desc = "File History" })
+    map("n", "<leader>gF", "<cmd>DiffviewFileHistory %<cr>", { desc = "Current File History" })
   end
 
   -- Harpoon

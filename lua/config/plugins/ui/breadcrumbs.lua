@@ -25,7 +25,6 @@ return {
             "lazy",
             "mason",
             "notify",
-            "toggleterm",
             "lazyterm",
             "alpha",
             "starter",

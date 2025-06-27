@@ -18,7 +18,6 @@ return {
           "lazy",
           "mason",
           "notify",
-          "toggleterm",
           "lazyterm",
         },
         callback = function()

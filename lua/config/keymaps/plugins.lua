@@ -29,17 +29,6 @@ M.persistence_keys = {
   },
 }
 
--- ToggleTerm
-M.toggleterm_keys = {
-  { "<leader>Tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float Terminal" },
-  { "<leader>Th", "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "Horizontal Terminal" },
-  { "<leader>Tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Vertical Terminal" },
-}
-
--- Database UI
-M.dadbod_keys = {
-  { "<leader>D", "<cmd>DBUIToggle<CR>", desc = "Toggle DBUI" },
-}
 
 -- Copilot AI
 M.copilot_keys = {
