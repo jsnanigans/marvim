@@ -36,7 +36,6 @@ return {
   -- Complex plugins kept in separate files
   { import = "config.plugins.ui.statusline" },
   { import = "config.plugins.ui.notifications" },
-  { import = "config.plugins.ui.dashboard" },
   { import = "config.plugins.ui.indentation" },
   { import = "config.plugins.ui.breadcrumbs" },
 }
