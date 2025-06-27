@@ -1,6 +1,13 @@
+-- Core plugins that are essential for the configuration
+-- Plugin files with 18+ lines get their own file, smaller ones are consolidated here
+
 return {
+  -- Essential dependencies
   { "folke/lazy.nvim", version = false },
   { "nvim-lua/plenary.nvim", lazy = true },
+  { "nvim-tree/nvim-web-devicons", lazy = true },
+
+  -- Session persistence
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -11,6 +18,8 @@ return {
       { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
     },
   },
+
+  -- Better vim.ui
   {
     "stevearc/dressing.nvim",
     lazy = true,
@@ -25,45 +34,7 @@ return {
       end
     end,
   },
-  { "nvim-tree/nvim-web-devicons", lazy = true },
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    opts = {
-      plugins = { spelling = true },
-      spec = {
-        {
-          mode = { "n", "v" },
-          { "<leader><tab>", group = "tabs" },
-          { "<leader>b", group = "buffer" },
-          { "<leader>c", group = "code" },
-          { "<leader>f", group = "file/find" },
-          { "<leader>g", group = "git" },
-          { "<leader>gh", group = "hunks" },
-          { "<leader>gc", group = "conflicts" },
-          { "<leader>q", group = "quit/session" },
-          { "<leader>qc", group = "quickfix" },
-          { "<leader>s", group = "search" },
-          { "<leader>sn", group = "noice" },
-          { "<leader>t", group = "test" },
-          { "<leader>tc", group = "coverage" },
-          { "<leader>to", group = "overseer" },
-          { "<leader>tu", group = "ultest" },
-          { "<leader>T", group = "terminal" },
-          { "<leader>u", group = "ui" },
-          { "<leader>w", group = "windows" },
-          { "<leader>x", group = "diagnostics/quickfix" },
-          { "[", group = "prev" },
-          { "]", group = "next" },
-          { "g", group = "goto" },
-          { "gs", group = "surround" },
-          { "z", group = "fold" },
-        },
-      },
-    },
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-    end,
-  },
+
+  -- Which-key (kept separate due to size)
+  { import = "config.plugins.core.which-key" },
 }

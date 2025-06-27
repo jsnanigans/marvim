@@ -1,21 +1,12 @@
-local M = {}
+-- UI enhancement plugins
+-- Plugin files with 18+ lines get their own file, smaller ones are consolidated here
 
--- Import UI subcategories
-local function merge_tables(...)
-	local result = {}
-	for _, tbl in ipairs({ ... }) do
-		for _, spec in ipairs(tbl) do
-			table.insert(result, spec)
-		end
-	end
-	return result
-end
-
-return merge_tables(
-	require("config.plugins.ui.theme"),
-	require("config.plugins.ui.statusline"),
-	require("config.plugins.ui.notifications"),
-	require("config.plugins.ui.dashboard"),
-	require("config.plugins.ui.indentation"),
-	require("config.plugins.ui.breadcrumbs")
-)
+return {
+  -- All UI plugins are complex enough to warrant separate files
+  { import = "config.plugins.ui.theme" },
+  { import = "config.plugins.ui.statusline" },
+  { import = "config.plugins.ui.notifications" },
+  { import = "config.plugins.ui.dashboard" },
+  { import = "config.plugins.ui.indentation" },
+  { import = "config.plugins.ui.breadcrumbs" },
+}

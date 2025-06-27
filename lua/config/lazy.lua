@@ -1,5 +1,15 @@
 require("lazy").setup({
-  spec = { import = "config.plugins" },
+  spec = {
+    -- Import all plugin categories directly
+    { import = "config.plugins.core" },
+    { import = "config.plugins.editor" },
+    { import = "config.plugins.coding" },
+    { import = "config.plugins.git" },
+    { import = "config.plugins.lsp" },
+    { import = "config.plugins.ui" },
+    { import = "config.plugins.testing" },
+    { import = "config.plugins.extras" },
+  },
   
   defaults = {
     lazy = true,
@@ -29,6 +39,14 @@ require("lazy").setup({
         "tohtml",
         "tutor",
         "zipPlugin",
+        "2html_plugin",
+        "getscript",
+        "getscriptPlugin",
+        "logipat",
+        "rrhelper",
+        "spellfile_plugin",
+        "vimball",
+        "vimballPlugin",
       },
     },
   },

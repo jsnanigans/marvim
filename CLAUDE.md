@@ -12,16 +12,32 @@ The configuration follows a modular structure:
 
 - `init.lua` - Entry point that sets up lazy.nvim and loads core configs
 - `lua/config/` - Core configuration (options, keymaps, autocmds, lazy setup)
-- `lua/config/plugins/` - Plugin configurations organized by category 
-- `lua/plugins.lua` - Plugin registry with metadata and lazy loading specs
+- `lua/config/plugins/` - Plugin configurations organized by category with subdirectories
+- No separate plugin registry - uses lazy.nvim's import system directly
 - `lua/utils/` - Utility functions (LSP, root detection, theming)
 
 ### Plugin Management System
 
-The configuration uses a custom plugin registry system in `lua/plugins.lua`:
-- Plugins are registered with metadata (category, enabled status, lazy loading config)
-- `generate_spec()` creates the lazy.nvim spec by importing category-specific configs
-- Categories: core, editor, coding, git, lsp, ui, testing, extras
+The configuration uses lazy.nvim's standard import system with a streamlined structure:
+- Plugin specs are organized into category modules under `lua/config/plugins/`
+- Each category (core, editor, coding, git, lsp, ui, testing, extras) has its own subdirectory
+- **18-Line Rule**: Plugins with fewer than 18 lines are consolidated into the main category file; larger configs get separate files
+- Individual plugin configurations are isolated in separate files for better maintainability when they exceed the line threshold
+- The main lazy.nvim setup imports from each category directly (e.g., `config.plugins.core`, `config.plugins.editor`)
+
+Example structure:
+```
+lua/config/plugins/
+├── core.lua         # Contains small plugins + imports larger ones
+├── core/
+│   └── which-key.lua  # 18+ lines, gets own file
+├── lsp.lua          # Imports from lsp/*
+├── lsp/
+│   ├── config.lua   # Large LSP config
+│   ├── mason.lua
+│   └── completion.lua
+└── ...
+```
 
 ## Essential Commands
 
