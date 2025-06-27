@@ -263,9 +263,6 @@ return {
         if ok then
           completion_capabilities = caps
         end
-      elseif has_cmp then
-        -- Fallback to nvim-cmp capabilities
-        completion_capabilities = cmp_nvim_lsp.default_capabilities()
       end
       
       local capabilities = vim.tbl_deep_extend(

@@ -33,10 +33,3 @@ spell/
 # Temporary files
 tmp/
 temp/
-
-LazyVim
-AstroNvim
-NvChad
-kickstart.nvim
-MARVIM_OLD
-bvim

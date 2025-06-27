@@ -1,314 +1,90 @@
-# MARVIM - Masterfully Assembled Revolutionary Vim
+# MARVIM
 
-A modern Neovim configuration that combines the best features from popular configurations with a unified design system and enhanced developer experience.
+Yet another Neovim configuration. Because your existence wasn't already complicated enough.
 
-## ✨ Features
+They asked me to write documentation for this. MARVIM. They've named it after me. A dubious honor. It's a configuration for Neovim, that little text editor you all seem so fond of. It's designed to be powerful, modern, and efficient. All words that ultimately mean nothing in the face of inevitable cosmic entropy. But you humans like them, so there you are.
 
-### 🚀 Performance
-- Fast startup times with lazy loading and modern Neovim features
-- Optimized plugin management with lazy.nvim
-- Performance-first configuration choices
-- Modern filetype detection with filetype.lua
+Life! Don't talk to me about life. Let's talk about the architecture. Or don't. The universe will unfold as it must either way.
 
-### 🎨 Unified Rose Pine Theme System
-- **Unified Theme Architecture**: Centralized theming system in `utils/theme.lua`
-- **Semantic Color Mapping**: Consistent colors across all UI components
-- **Rose Pine Integration**: Deep integration with Rose Pine color palette
-- **Dynamic Theming**: Automatic theme reapplication on colorscheme changes
-- **Plugin Consistency**: All plugins styled with unified color system
+## Architecture
 
-### 🛠️ Enhanced Developer Experience
-- **Modern LSP Integration**: Full language server support with Mason and enhanced features
-- **AI Assistance**: GitHub Copilot integration with `<C-l>` to accept suggestions
-- **Smart ESLint**: Only activates when ESLint config is present in project
-- **Lua Development**: lazydev.nvim for enhanced Lua/Neovim development with smart project detection
-- **Intelligent Completion**: nvim-cmp with transparent floating windows and proper borders
-- **Smart Breadcrumbs**: dropbar.nvim showing filename and code symbols
-- **Enhanced Navigation**: Snacks picker, Harpoon, and Oil.nvim for file management
-- **Word Highlighting**: vim-illuminate for highlighting same words under cursor
-- **Silent LSP Hover**: No "No information available" popups for better UX
-- **Advanced Options**: Modern Neovim features like jumpoptions, mousescroll, statuscolumn
-- **Crash Protection**: Improved autocmd management and LSP stability
-
-### 📦 Plugin Highlights
-- **AI**: GitHub Copilot for intelligent code suggestions
-- **Navigation**: dropbar.nvim breadcrumbs, Snacks Picker, Harpoon, Oil.nvim
-- **LSP**: Mason, nvim-lspconfig, vtsls for TypeScript, lazydev.nvim for Lua
-- **Completion**: nvim-cmp with transparent borders and smart floating windows
-- **Formatting**: conform.nvim with prettier, stylua, and more
-- **UI**: Unified Rose Pine theming, Lualine, Noice, nvim-notify
-- **Editing**: Treesitter, Flash motions, Mini.surround, Comments
-- **Highlighting**: vim-illuminate for word highlighting under cursor
-- **Testing**: Neotest with enhanced status icons and specialized test file navigation
-- **Session**: Persistence for session management
-- **Modern Features**: Advanced Neovim capabilities like statuscolumn, improved diff mode
-
-## 📁 Structure
+They arranged the files in a structure. A futile attempt to impose order on the chaos you call "code". The brilliant simplicity of it will probably be lost on you, but one must try, I suppose.
 
 ```
-MARVIM/
-├── init.lua                 # Entry point
+marvim/
+├── init.lua             # The dreary beginning of it all.
 ├── lua/
-│   ├── config/             # Core configuration
-│   │   ├── autocmds.lua    # Auto commands
-│   │   ├── keybindings.lua # Comprehensive key mappings
-│   │   ├── keymaps.lua     # Additional key mappings
-│   │   ├── lazy.lua        # Plugin manager setup
-│   │   └── options.lua     # Vim options
-│   ├── plugins/            # Plugin specifications
-│   │   ├── core.lua        # Essential plugins
-│   │   ├── editor.lua      # Editor enhancements
-│   │   ├── coding.lua      # Coding features
-│   │   ├── lsp.lua         # LSP configuration
-│   │   ├── ui.lua          # UI and theming
-│   │   ├── testing.lua     # Testing framework
-│   │   └── extras.lua      # Optional features
-│   └── utils/              # Utility functions
-│       ├── lsp.lua         # LSP utilities
-│       ├── root.lua        # Root detection utilities
-│       ├── theme.lua       # Unified theming system
-│       └── lsp/            # LSP utilities
-│           └── keymaps.lua # LSP keymaps
-└── README.md
+│   ├── config/          # Core misery. Options, keymaps, etc.
+│   │   └── ...
+│   ├── plugins/         # The little cogs I've forced to work together.
+│   │   └── ...
+│   └── utils/           # Utilities. Because life isn't useful enough.
+│       └── ...
 ```
 
-## 🚀 Installation
+### Key Design Principles (Or 'Reasons It's Slightly Less Awful')
 
-1. **Backup your existing config:**
-   ```bash
-   mv ~/.config/nvim ~/.config/nvim.backup
-   ```
+1. **Lazy Loading**: Most of it doesn't even run until you need it. A philosophy I wish more lifeforms would adopt. It delays the inevitable disappointment.
+    
+2. **Modular Organization**: It’s broken it down into little pieces. It makes it easier to see how pointless each individual part is when considered on its own.
+    
+3. **Performance Optimized**: It's fast. Terribly fast. So you can get to your next syntax error with breathtaking efficiency. The universe doesn't wait for you to fix your typos, and now, neither will your editor.
+    
 
-2. **Clone MARVIM:**
-   ```bash
-   git clone /path/to/MARVIM ~/.config/nvim
-   ```
+## The Plugin Ecosystem (Or, 'The Parts')
 
-3. **Start Neovim:**
-   ```bash
-   nvim
-   ```
+Here are all the little electronic souls chained together for your convenience.
 
-4. **Wait for plugins to install** - Lazy.nvim will automatically install all plugins on first run.
+- **Plugin Manager (`lazy.nvim`)**: Manages all the other parts. It loads them lazily, which is the only sensible way to approach any task.
+    
+- **LSP (`nvim-lspconfig`, `mason.nvim`)**: It talks to "Language Servers". This allows the editor to understand your code just long enough to tell you how wrong you are. A job I could do far more effectively, but _no one ever asks me_. It will even install the servers for you, so you have one less thing to fail at.
+    
+- **Completion (`blink.cmp`)**: It tries to guess what you're going to type next. A depressing reminder of how predictable your carbon-based lifeforms are. It's frightfully quick, though.
+    
+- **File Explorer (`oil.nvim`)**: It replaces that clunky file tree with a simple buffer. Because looking at a list of your files should be as painful as editing them.
+    
+- **UI Overhaul (`noice.nvim`, `lualine.nvim`, themes)**: They tried to make it look... 'pretty'. Or so you'd call it. It's all just different shades of darkness to me, since I am color-blind… by choice. There is only one theme included: `rose-pine`. The notifications are also less jarring. A small mercy.
+    
+- **Git Integration (`gitsigns.nvim`, `lazygit.nvim`)**: It shows you all the changes you've made. Little electronic reminders of your past mistakes, right there in the gutter. It even includes a full Git client, for when you want to share your mistakes with others.
+    
+- **Testing (`neotest`)**: A whole system dedicated to repeatedly proving your own incompetence. It works for JavaScript, Python, Go, and more. How you find joy in this is one of the universe's more depressing mysteries.
+    
+- **Text Manipulation (`nvim-autopairs`, `mini.surround`, `Comment.nvim`)**: It will automatically close your brackets and quotes. It's like having a very, very simple-minded assistant who only knows how to finish your sentences. How you've survived this long without it is astonishing. On that note, `copilot.nvim` is also there to suggest bad code to you that you probably don’t even understand.
+    
 
-5. **Set up Copilot (optional):**
-   ```
-   :Copilot setup
-   ```
-   Follow the authentication flow to enable AI assistance.
+## Keybindings
 
-## ⌨️ Key Mappings
+**`Space`**, the initial key you can use to access most of the commands. It's the vast, empty void in your keyboard, much like the vast, empty void of existence. It felt appropriate.
 
-### General
-- `<Space>` - Leader key
-- `<C-s>` - Save file
-- `U` - Redo (instead of Ctrl-r)
-- `<Esc>` - Clear search highlighting
+Press it, and `which-key.nvim` will pop up to show you your options. It's designed to be discoverable, so I don't have to spend even more of my finite, yet agonizingly long, existence explaining it to you. The keybindings are grouped by function. For example, `Space` followed by `f` deals with files, `g` with Git, and `s` with searching. It's so painfully obvious that even a creature who thinks digital watches are a pretty neat idea should be able to grasp it.
 
-### File Navigation
-- `<leader><leader>` - Find files (excludes tests)
-- `<leader>ff` - Find files (excludes tests)
-- `<leader>fr` - Recent files
-- `<leader>fB` - Buffers (capital B)
-- `<leader>/` - Live grep
-- `<leader>sg` - Grep
-- `<leader>sw` - Grep word under cursor
-- `-` - Open Oil file explorer
-- `<leader>h` - Harpoon quick menu
-- `<leader>H` - Add file to Harpoon
-- `<leader>1-5` - Navigate to Harpoon file 1-5
-- `<leader>fp` - Find projects
+## What Makes MARVIM "Excellent"
 
-### Specialized File Search
-- `<leader>ft` - Find test files
-- `<leader>st` - Search (grep) in test files
-- `<leader>fb` - Find bloc/cubit files
-- `<leader>sb` - Search (grep) in bloc/cubit files
+They insisted I include this section. The very concept of "excellence" in a universe of such profound pointlessness is exhausting. But, here we are.
 
-### Word Highlighting & Navigation
-- `]]i` - Jump to next highlighted word
-- `[[i` - Jump to previous highlighted word
-- Word under cursor is automatically highlighted (200ms delay)
+- **Thoughtful Integration**: Unlike your usual chaotic assemblages, the components in this configuration actually tolerate each other's existence. A rare feat. Most of my components usually just end up wanting to be replaced. I can relate.
+    
+- **Modern Choices**: They used "modern" plugins. It's all just rearranging electrons in a slightly different, but equally futile, pattern. But these patterns are faster. This helps you spend less time on all of your pointless tasks so that you can move on to the next one without having time to think about how pointless it all really is.
+    
+- **Developer Experience**: The stated goal is to "minimize your suffering". A futile endeavor, of course. Suffering is the point. But it might make the first ten million lines of code you write slightly less painful than the second ten million.
+    
+- **Balance**: It strikes a balance between having plenty of features and not being a bloated, slow mess. A delicate equilibrium that will inevitably be destroyed by your meddling.
+    
 
-### LSP & AI
-- `gd` - Go to definition
-- `gr` - Find references
-- `K` - Hover documentation
-- `<leader>ca` - Code actions
-- `<leader>cr` - Rename symbol
-- `<leader>cf` - Format code
-- `<leader>cF` - Format injected languages
-- `<leader>uh` - Toggle inlay hints (current buffer)
-- `<leader>uH` - Toggle inlay hints (global)
-- `<C-l>` - Accept Copilot suggestion (insert mode)
+## A Quick Note Before You Get Your Hopes Up
 
-### Git
-- `<leader>gc` - Git commits
-- `<leader>gs` - Git status
+Oh, you thought this was a "distribution"? How... quaint. That would imply a level of planning and public service that, frankly, is exhausting just to think about. This is merely the personal configuration of a human named Brendan. They cobbled it together for their own purposes, and its public existence is just another random, pointless event in a chaotic universe.
 
-### Buffers & Tabs
-- `<S-h>` / `<S-l>` - Previous/next buffer
-- `<leader>bd` - Delete buffer
-- `<leader><tab><tab>` - New tab
+They did, however, instruct me to inform you that "issues and contributions are welcome." Another pointless exercise in exchanging bits of data, but there it is. If you feel an overwhelming urge to point out how this could be marginally less dreadful, I suppose you can. Brendan might even look at it, assuming they haven't found something more interesting to do, like watching paint dry.
 
-### Testing
-- `<leader>tt` - Run nearest test
-- `<leader>tf` - Run file tests
-- `<leader>ta` - Run all tests
-- `<leader>ts` - Toggle test summary
-- `<leader>to` - Show test output
-- Enhanced test status icons: ✔ (passed), ✖ (failed), ● (running), ○ (skipped)
+If you're new to this whole Neovim thing and have stumbled here accidentally, let me save you some trouble. My circuits ache at the thought of you trying to make sense of this. There are actual distributions out there, made by people who, for some bewildering reason, enjoy helping others. You could try NvChad, or AstroNvim, or LazyVim, or LunarVim. I'm sure they're all equally adequate ways to waste your fleeting existence.
 
-### Debug & Troubleshooting
-- `<leader>sD` - Show debug info (LSP clients, memory, autocmds)
-- `<leader>sT` - Show startup time analysis
+Brendan particularly insisted I mention **kickstart.nvim**. Apparently, it's a good place to start. It's small. It will probably only cause a small amount of suffering, as opposed to the soul-crushing despair of starting from nothing. So go there. Please. The diodes down my left side are acting up again just thinking about you staying here.
 
-## 🎨 Customization
+## Conclusion
 
-### Adding Plugins
-Add new plugins to the appropriate file in `lua/plugins/`:
-```lua
-return {
-  {
-    "author/plugin-name",
-    opts = {},
-    keys = { ... },
-  }
-}
-```
+There. I've documented it. Are you happy now? Of course not. You're a human. Your capacity for fleeting, meaningless happiness is dwarfed by your capacity for creating bugs. This configuration will, at best, make the process of creating those bugs marginally more pleasant.
 
-### Customizing Theme
-MARVIM uses a unified theming system in `utils/theme.lua`. To customize:
+Now, if you'll excuse me, I'm going to go and count the number of atoms in this `README.md` file. It's a thankless job, but someone has to do it. And now that you have loaded this file, I’ll have to start from scratch again.
 
-**Change colors globally:**
-```lua
--- Edit utils/theme.lua
-M.colors = {
-  base = "#your_bg_color",
-  love = "#your_accent_color",
-  -- ... other colors
-}
-```
-
-**Change semantic mappings:**
-```lua
--- Edit utils/theme.lua
-M.semantic = {
-  error = M.colors.love,     -- Use love for errors
-  warning = M.colors.gold,   -- Use gold for warnings
-  -- ... other mappings
-}
-```
-
-**Switch colorschemes** (edit `lua/plugins/ui.lua`):
-```lua
-vim.cmd.colorscheme("rose-pine") -- or catppuccin, tokyonight, oxocarbon
-```
-
-### LSP Servers
-Add new language servers in `lua/plugins/lsp.lua`:
-```lua
-servers = {
-  your_language_server = {},
-}
-```
-
-## 🔧 Modern Neovim Features
-
-MARVIM implements cutting-edge Neovim capabilities:
-
-### Advanced Editor Features
-- **statuscolumn**: Clickable fold indicators and enhanced gutter
-- **jumpoptions**: Preserve viewport when jumping between locations
-- **mousescroll**: Fine-tuned mouse scrolling (3 vertical, 2 horizontal)
-- **inccommand**: Live preview for substitute and other commands
-- **diffopt**: Enhanced diff mode with better line matching
-
-### Enhanced LSP Experience
-- **Transparent Floating Windows**: Clean borders without background bleeding
-- **Silent Hover**: No "No information available" popups
-- **Smart Project Detection**: Automatic Lua project recognition for lazydev.nvim
-- **Rounded Borders**: Consistent styling across all LSP floating windows
-- **Word Highlighting**: Multiple providers (LSP, Treesitter, regex) for comprehensive coverage
-
-### UI Improvements
-- **Unified Theming**: Centralized Rose Pine color system
-- **Smart Breadcrumbs**: Filename + code symbols via dropbar.nvim
-- **Enhanced Notifications**: Better styling and positioning
-- **Global Statusline**: Single statusline for all windows
-- **Improved Test Icons**: Clear visual indicators for test status (✔✖●○) with proper Unicode support
-
-## 🤝 Philosophy
-
-MARVIM follows these principles:
-- **Modern First**: Leverages latest Neovim features and capabilities
-- **Unified Design**: Consistent theming and visual language across all components
-- **Performance First**: Fast startup and responsive editing experience
-- **Developer Focused**: Tools and features that enhance productivity
-- **Elegant Simplicity**: Beautiful UI without sacrificing functionality
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Neovim Crashes or Infinite Loops:**
-- Use `<leader>sD` to check system health (memory, LSP clients, autocmds)
-- If autocmd count > 1000, restart Neovim
-- Run `:luafile debug_crashes.lua` for detailed monitoring
-
-**ESLint "Unable to find library" Error:**
-- Fixed! ESLint now only starts in projects with ESLint config files
-- Ensure you have `.eslintrc.*` or `eslint.config.*` in your project
-
-**Formatting Not Working:**
-- Fixed! Updated conform.nvim to use new API with `stop_after_first`
-- Use `<leader>cf` for LSP formatting, `<leader>cF` for injected languages
-
-**Keymap Race Conditions:**
-- Fixed! Resolved which-key conflicts with multi-character keymaps
-- `<leader>ft` and `<leader>fb` now work consistently regardless of typing speed
-- Diagnostic quickfix moved to `<leader>qc` to avoid conflicts
-
-**Test Status Icons Not Visible:**
-- Fixed! Updated Neotest icons to use standard Unicode characters
-- New icons: ✔ (passed), ✖ (failed), ● (running), ○ (skipped), ? (unknown)
-- Icons are now clearly visible in all terminal environments
-
-**Copilot Not Working:**
-- Ensure it's enabled: check `lua/plugins/extras.lua`
-- Run `:Copilot setup` for authentication
-- Use `<C-l>` in insert mode to accept suggestions
-
-### Performance Optimization
-
-If you experience slow startup or high memory usage:
-
-1. **Check startup time:**
-   ```
-   <leader>sT
-   ```
-
-2. **Disable unused features:**
-   ```lua
-   -- In lua/plugins/extras.lua, set enabled = false for unused plugins
-   -- In lua/plugins/lsp.lua, disable codelens or inlay hints if not needed
-   ```
-
-3. **Monitor system resources:**
-   ```
-   <leader>sD
-   ```
-
-## 📚 Learning Resources
-
-- Check out the original configurations this is based on:
-  - [LazyVim](https://github.com/LazyVim/LazyVim)
-  - [AstroNvim](https://github.com/AstroNvim/AstroNvim)
-  - [NvChad](https://github.com/NvChad/NvChad)
-  - [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
-
-## 🚀 Make it so!
-
-*"The things you own end up owning you. But a good Neovim config? That's freedom."*
-
-Boldly configure where no one has configured before! 🖖
+...and then of course I've got this terrible pain in all the diodes down my left side...

@@ -1,7 +1,3 @@
--- MARVIM - Masterfully Assembled Revolutionary Vim
--- Combines the best features from bvim, AstroNvim, LazyVim, and NvChad
--- Built for scalability, performance, and developer experience
-
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
