@@ -119,3 +119,25 @@ M.neotest_keys = {
 - **LSP keymaps**: Set up via `M.setup_lsp_keybindings(client, buffer)` callback
 - **Gitsigns keymaps**: Set up via `M.setup_gitsigns_keybindings(buffer)` callback
 - **Global keymaps**: Non-plugin specific bindings handled in setup functions
+
+### Keymap System Architecture Details
+
+The keymap system uses a sophisticated modular architecture with conflict detection:
+
+**File Structure:**
+- `lua/config/keymaps.lua` - Main entry point and plugin key table exports
+- `lua/config/keymaps/core.lua` - Editor, window, buffer, tab, terminal, file, diagnostics keymaps
+- `lua/config/keymaps/lsp.lua` - LSP and Gitsigns setup functions
+- `lua/config/keymaps/plugins.lua` - Plugin key table definitions
+- `lua/config/keymaps/search.lua` - Search-related keymaps
+- `lua/config/keymaps/root.lua` - Root directory operations
+- `lua/utils/keymaps.lua` - Keymap utilities and conflict detection
+
+**Safety Features:**
+- **Conflict Detection**: `safe_keymap_set()` function tracks and warns about keymap conflicts
+- **Error Handling**: Graceful handling of failed keymap registrations
+- **Deferred Setup**: Plugin keymaps load via `setup_deferred()` to avoid timing issues
+- **Availability Checks**: Plugins are checked before keymap registration
+
+**Diagnostic Command:**
+- `:KeymapDiagnostics` - Shows keymap conflicts and registration errors
