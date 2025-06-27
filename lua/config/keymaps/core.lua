@@ -1,17 +1,13 @@
 local M = {}
-
--- Utility functions
-local function is_available(module)
-  local ok, mod = pcall(require, module)
-  return ok and mod ~= nil
-end
+local keymap_utils = require("utils.keymaps")
+local constants = require("config.keymap_constants")
 
 -- ============================================================================
 -- EDITOR KEYMAPS
 -- ============================================================================
 
 function M.setup_editor()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_editor")
 
   -- Better up/down with wrapped lines
   map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
@@ -61,7 +57,7 @@ end
 -- ============================================================================
 
 function M.setup_windows()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_windows")
 
   -- Move to window using the <ctrl> hjkl keys
   map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
@@ -87,7 +83,7 @@ end
 -- ============================================================================
 
 function M.setup_buffers()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_buffers")
 
   -- Buffer navigation
   map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
@@ -98,12 +94,13 @@ function M.setup_buffers()
   map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
   -- Buffer management (using mini.bufremove if available)
-  if is_available("mini.bufremove") then
+  local available, bufremove = keymap_utils.is_available("mini.bufremove")
+  if available then
     map("n", "<leader>bd", function()
-      require("mini.bufremove").delete(0, false)
+      bufremove.delete(0, false)
     end, { desc = "Delete Buffer" })
     map("n", "<leader>bD", function()
-      require("mini.bufremove").delete(0, true)
+      bufremove.delete(0, true)
     end, { desc = "Delete Buffer (Force)" })
   else
     -- Fallback to built-in commands
@@ -117,7 +114,7 @@ end
 -- ============================================================================
 
 function M.setup_tabs()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_tabs")
 
   map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
   map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
@@ -133,7 +130,7 @@ end
 -- ============================================================================
 
 function M.setup_terminal()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_terminal")
 
   map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
   map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to Left Window" })
@@ -147,26 +144,10 @@ end
 -- ============================================================================
 
 function M.setup_files()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_files")
 
   -- New file
   map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
-
-  -- Root directory operations
-  map("n", "<leader>cD", function()
-    local ok, root_utils = pcall(require, "utils.root")
-    if ok then
-      root_utils.cd_root()
-    end
-  end, { desc = "Change to Root Directory" })
-
-  map("n", "<leader>cR", function()
-    local ok, root_utils = pcall(require, "utils.root")
-    if ok then
-      local root = root_utils.find_root()
-      vim.notify("Project root: " .. root, vim.log.levels.INFO)
-    end
-  end, { desc = "Show Root Directory" })
 end
 
 -- ============================================================================
@@ -174,7 +155,7 @@ end
 -- ============================================================================
 
 function M.setup_diagnostics()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_diagnostics")
 
   -- Diagnostic navigation
   map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to Previous Diagnostic" })
@@ -194,7 +175,7 @@ end
 -- ============================================================================
 
 function M.setup_dev()
-  local map = vim.keymap.set
+  local map = keymap_utils.create_safe_mapper("core_dev")
 
   -- Modern Neovim development features
   map("n", "<leader>sT", function()

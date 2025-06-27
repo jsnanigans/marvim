@@ -1,10 +1,12 @@
 local M = {}
 
 -- Import modular keymap modules
+local keymap_utils = require("utils.keymaps")
 local core = require("config.keymaps.core")
 local lsp = require("config.keymaps.lsp")
 local plugins = require("config.keymaps.plugins")
 local search = require("config.keymaps.search")
+local root = require("config.keymaps.root")
 
 -- Utility functions
 local function is_available(module)
@@ -179,6 +181,11 @@ end
 -- SETUP FUNCTION
 -- ============================================================================
 
+-- Add diagnostic command
+vim.api.nvim_create_user_command("KeymapDiagnostics", function()
+  keymap_utils.print_diagnostics()
+end, { desc = "Show keymap diagnostics and conflicts" })
+
 function M.setup()
   -- Setup core keymaps
   core.setup_editor()
@@ -190,13 +197,15 @@ function M.setup()
   core.setup_diagnostics()
   core.setup_dev()
 
-  -- Setup search keymaps
-  search.setup_search_keymaps()
+  -- Setup root operations
+  root.setup_root_operations()
 
   -- Setup plugin keymaps (deferred to avoid conflicts)
-  vim.defer_fn(function()
+  keymap_utils.setup_deferred(function()
     M.setup_plugin_keymaps()
-  end, 100)
+    -- Setup search keymaps after plugins load
+    search.setup_search_keymaps()
+  end, 100, "plugin_and_search_keymaps")
 end
 
 M.setup()
