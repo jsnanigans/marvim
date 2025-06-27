@@ -1,8 +1,4 @@
--- Git integration plugins
--- Comprehensive git workflow with enhanced UI and conflict resolution
-
 return {
-  -- Core git signs integration
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -41,8 +37,6 @@ return {
       end,
     },
   },
-
-  -- LazyGit integration for enhanced git workflow
   {
     "kdheepak/lazygit.nvim",
     cmd = "LazyGit",
@@ -57,8 +51,6 @@ return {
       vim.g.lazygit_use_neovim_remote = 1
     end,
   },
-
-  -- Enhanced git conflict resolution
   {
     "akinsho/git-conflict.nvim",
     version = "^1.0.0",
@@ -82,8 +74,6 @@ return {
       },
     },
   },
-
-  -- Enhanced git blame functionality
   {
     "f-person/git-blame.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -101,8 +91,6 @@ return {
       delay = 1000,
     },
   },
-
-  -- Git diff view (optional enhancement)
   {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },

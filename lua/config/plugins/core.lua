@@ -1,14 +1,6 @@
--- Core plugins
--- Essential functionality every config needs
-
 return {
-  -- Plugin manager
   { "folke/lazy.nvim", version = false },
-
-  -- Library used by many plugins
   { "nvim-lua/plenary.nvim", lazy = true },
-
-  -- Session management (from bvim)
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -19,8 +11,6 @@ return {
       { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
     },
   },
-
-  -- Better vim.ui
   {
     "stevearc/dressing.nvim",
     lazy = true,
@@ -35,11 +25,7 @@ return {
       end
     end,
   },
-
-  -- Icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
-
-  -- Which-key (LazyVim style)
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -80,5 +66,4 @@ return {
       wk.setup(opts)
     end,
   },
-
 }

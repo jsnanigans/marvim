@@ -1,14 +1,10 @@
--- LSP configuration
--- Language servers, completion, and diagnostics
-
 return {
-  -- LSP Configuration
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
-      "mason.nvim",
+      "mason-org/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "b0o/schemastore.nvim",
     },
@@ -167,7 +163,6 @@ return {
               "eslint.config.mjs", 
               "eslint.config.cjs"
             )(fname)
-            
             -- Also check for package.json with eslint config
             if not root then
               local package_root = util.root_pattern("package.json")(fname)
@@ -186,7 +181,6 @@ return {
                 end
               end
             end
-            
             return root
           end,
           settings = {
@@ -239,7 +233,6 @@ return {
     },
     config = function(_, opts)
       local Util = require("utils.lsp")
-      
       Util.setup()
       Util.on_attach(function(client, buffer)
         -- Defer keybinding setup to avoid circular dependency
@@ -250,12 +243,10 @@ return {
           end
         end)
       end)
-
       local servers = opts.servers
       -- Try blink.cmp first, fallback to cmp_nvim_lsp if available
       local has_blink, blink = pcall(require, "blink.cmp")
       local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-      
       local completion_capabilities = {}
       if has_blink then
         -- Use blink.cmp capabilities if available
@@ -264,7 +255,6 @@ return {
           completion_capabilities = caps
         end
       end
-      
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
@@ -272,17 +262,14 @@ return {
         completion_capabilities,
         opts.capabilities or {}
       )
-
       local function setup(server)
         -- Explicitly prevent ts_ls from being set up to avoid conflicts with vtsls
         if server == "ts_ls" then
           return
         end
-        
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
-
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
             return
@@ -294,14 +281,12 @@ return {
         end
         require("lspconfig")[server].setup(server_opts)
       end
-
       local have_mason, mlsp = pcall(require, "mason-lspconfig")
       local all_mslp_servers = {}
       if have_mason then
         -- Get available servers from mason-lspconfig
         all_mslp_servers = mlsp.get_available_servers()
       end
-
       local ensure_installed = {}
       for server, server_opts in pairs(servers) do
         if server_opts then
@@ -318,11 +303,9 @@ return {
         end
         ::continue::
       end
-
       if have_mason then
         mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
       end
-
       if Util.get_config("diagnostics").update_in_insert then
         vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
           vim.lsp.diagnostic.on_publish_diagnostics, Util.get_config("diagnostics")
@@ -335,9 +318,7 @@ return {
           })
         )
       end
-
       vim.diagnostic.config(vim.deepcopy(Util.get_config("diagnostics")))
-
       local inlay_hint = Util.get_config("inlay_hints")
       if inlay_hint.enabled then
         Util.on_attach(function(client, buffer)
@@ -346,18 +327,14 @@ return {
           end
         end)
       end
-
       -- Document highlighting is handled in keymaps.lua to avoid duplication
-
       local codelens = Util.get_config("codelens")
       if codelens.enabled then
         Util.on_attach(function(client, buffer)
           if client:supports_method("textDocument/codeLens") then
             local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
-            
             -- Initial refresh
             pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
-            
             -- Set up refresh triggers with debouncing
             local refresh_timer = nil
             local function refresh_codelens()
@@ -372,13 +349,11 @@ return {
                 refresh_timer = nil
               end)
             end
-            
             vim.api.nvim_create_autocmd({"BufEnter", "InsertLeave"}, {
               buffer = buffer,
               group = codelens_augroup,
               callback = refresh_codelens,
             })
-            
             -- Clean up when buffer is deleted
             vim.api.nvim_create_autocmd("BufDelete", {
               buffer = buffer,
@@ -394,10 +369,9 @@ return {
       end
     end,
   },
-
   -- Mason
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     cmd = "Mason",
     -- keybindings in config/keymaps.lua
     build = ":MasonUpdate",
@@ -433,7 +407,6 @@ return {
       end
     end,
   },
-
   -- Modern completion engine (blink.cmp)
   {
     "saghen/blink.cmp",
@@ -443,15 +416,12 @@ return {
       "rafamadriz/friendly-snippets",
       "echasnovski/mini.icons",
     },
-    
     opts = {
       keymap = { preset = "default" },
-
       appearance = {
         use_nvim_cmp_as_default = true,
         nerd_font_variant = "mono"
       },
-
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
         -- do not enable cmdline, it causes a deadlock
@@ -511,7 +481,6 @@ return {
           },
         },
       },
-
       -- Enable signature help
       signature = { 
         enabled = true,
@@ -520,7 +489,6 @@ return {
           winhighlight = "Normal:BlinkCmpSignatureHelp,FloatBorder:BlinkCmpSignatureHelpBorder",
         },
       },
-
       completion = {
         accept = {
           auto_brackets = {
@@ -574,7 +542,6 @@ return {
           -- end,
         },
       },
-
       -- Fuzzy matching configuration
       fuzzy = {
         implementation = 'prefer_rust_with_warning',
@@ -587,10 +554,8 @@ return {
         },
       },
     },
-    
     opts_extend = { "sources.default" },
   },
-
   -- Enhanced Lua development
   {
     "folke/lazydev.nvim",
@@ -621,26 +586,22 @@ return {
           ".stylua.toml",    -- Lua formatting config
           "selene.toml",     -- Lua linting config
         }
-        
         for _, indicator in ipairs(lua_indicators) do
           if vim.uv.fs_stat(root_dir .. "/" .. indicator) then
             return true
           end
         end
-        
         -- Check if we're in a Neovim config directory
         local nvim_config_indicators = {
           "lua/config",
           "lua/plugins", 
           "init.lua",
         }
-        
         for _, indicator in ipairs(nvim_config_indicators) do
           if vim.uv.fs_stat(root_dir .. "/" .. indicator) then
             return true
           end
         end
-        
         return false
       end,
     },

@@ -1,14 +1,9 @@
--- Coding plugins
--- Treesitter, snippets, and coding utilities
-
 return {
-  -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
     version = false,
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre", "VeryLazy" },
-    lazy = vim.fn.argc(-1) == 0,
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     init = function(plugin)
       require("lazy.core.loader").add_to_rtp(plugin)
       require("nvim-treesitter.query_predicates")
@@ -101,8 +96,6 @@ return {
       require("nvim-treesitter.configs").setup(opts)
     end,
   },
-
-  -- Snippets
   {
     "L3MON4D3/LuaSnip",
     build = (function()
@@ -118,7 +111,6 @@ return {
           require("luasnip.loaders.from_vscode").lazy_load()
         end,
       },
-
     },
     opts = {
       history = true,
@@ -136,8 +128,6 @@ return {
       { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
   },
-
-  -- Formatting
   {
     "stevearc/conform.nvim",
     lazy = true,
@@ -184,8 +174,6 @@ return {
       },
     },
   },
-
-  -- Trouble diagnostics
   {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
@@ -225,8 +213,6 @@ return {
       },
     },
   },
-
-  -- Todo comments
   {
     "folke/todo-comments.nvim",
     cmd = { "TodoTrouble" },

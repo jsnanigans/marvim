@@ -1,16 +1,9 @@
--- Auto commands
--- Combining best practices from all configs
-
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-
--- Root detection setup
 local ok_root, root_utils = pcall(require, "utils.root")
 if ok_root then
   root_utils.setup()
 end
-
--- Highlight on yank with enhanced options
 augroup("YankHighlight", { clear = true })
 autocmd("TextYankPost", {
   group = "YankHighlight",
@@ -22,8 +15,6 @@ autocmd("TextYankPost", {
     })
   end,
 })
-
--- Resize splits if window got resized
 augroup("ResizeSplits", { clear = true })
 autocmd({ "VimResized" }, {
   group = "ResizeSplits",
@@ -33,8 +24,6 @@ autocmd({ "VimResized" }, {
     vim.cmd("tabnext " .. current_tab)
   end,
 })
-
--- Close some filetypes with <q>
 augroup("CloseWithQ", { clear = true })
 autocmd("FileType", {
   group = "CloseWithQ",
@@ -63,8 +52,6 @@ autocmd("FileType", {
     })
   end,
 })
-
--- Wrap and check for spell in text filetypes
 augroup("WrapSpell", { clear = true })
 autocmd("FileType", {
   group = "WrapSpell",
@@ -74,8 +61,6 @@ autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
-
--- Fix conceallevel for json files
 augroup("JsonConceal", { clear = true })
 autocmd({ "FileType" }, {
   group = "JsonConceal",
@@ -84,8 +69,6 @@ autocmd({ "FileType" }, {
     vim.opt_local.conceallevel = 0
   end,
 })
-
--- Auto create dir when saving a file, in case some intermediate directory does not exist
 augroup("AutoCreateDir", { clear = true })
 autocmd({ "BufWritePre" }, {
   group = "AutoCreateDir",
@@ -97,8 +80,6 @@ autocmd({ "BufWritePre" }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
-
--- Check if we need to reload the file when it changed
 augroup("CheckTime", { clear = true })
 autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = "CheckTime",
@@ -108,8 +89,6 @@ autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end
   end,
 })
-
--- Go to last position when opening a buffer (merged duplicate)
 augroup("LastPosition", { clear = true })
 autocmd("BufReadPost", {
   group = "LastPosition",
@@ -127,6 +106,26 @@ autocmd("BufReadPost", {
     end
   end,
 })
-
-
-
+augroup("FiletypeDetect", { clear = true })
+autocmd({ "BufRead", "BufNewFile" }, {
+  group = "FiletypeDetect",
+  callback = function(event)
+    local buf = event.buf
+    local filename = vim.api.nvim_buf_get_name(buf)
+    if vim.bo[buf].filetype == "" and filename ~= "" then
+      vim.api.nvim_buf_call(buf, function()
+        vim.cmd("filetype detect")
+      end)
+    end
+    vim.defer_fn(function()
+      if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype ~= "" then
+        local ok, _ = pcall(vim.treesitter.start, buf)
+        if not ok then
+            vim.api.nvim_buf_call(buf, function()
+            vim.cmd("syntax enable")
+          end)
+        end
+      end
+    end, 100)
+  end,
+})

@@ -1,32 +1,6 @@
--- Lazy.nvim setup
--- Plugin management with performance optimizations
-
+local plugins = require("plugins")
 require("lazy").setup({
-  spec = {
-    -- Core functionality
-    { import = "plugins.core" },
-    
-    -- Git integration
-    { import = "plugins.git" },
-    
-    -- Editor enhancements
-    { import = "plugins.editor" },
-    
-    -- Coding features
-    { import = "plugins.coding" },
-    
-    -- LSP and completion
-    { import = "plugins.lsp" },
-    
-    -- UI and theming
-    { import = "plugins.ui" },
-    
-    -- Testing support
-    { import = "plugins.testing" },
-    
-    -- Optional extras (LazyVim style)
-    { import = "plugins.extras" },
-  },
+  spec = plugins.generate_spec(),
   defaults = {
     lazy = true,
     version = false,

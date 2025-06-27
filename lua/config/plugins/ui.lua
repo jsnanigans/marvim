@@ -1,8 +1,3 @@
--- UI and theming plugins
--- Status line, themes, and visual enhancements
-
--- Theme will be loaded after colorscheme is set
-
 return {
 	-- Colorschemes
 	{
@@ -26,7 +21,6 @@ return {
 		config = function(_, opts)
 			require("rose-pine").setup(opts)
 			vim.cmd.colorscheme("rose-pine")
-
 			-- Load theme system after colorscheme is set
 			vim.schedule(function()
 				local ok, theme = pcall(require, "utils.theme")
@@ -36,7 +30,6 @@ return {
 			end)
 		end,
 	},
-
 	-- Status line
 	{
 		"nvim-lualine/lualine.nvim",
@@ -52,7 +45,6 @@ return {
 		opts = function()
 			local lualine_require = require("lualine_require")
 			lualine_require.require = require
-
 			local icons = {
 				diagnostics = {
 					Error = " ",
@@ -66,9 +58,7 @@ return {
 					removed = " ",
 				},
 			}
-
 			vim.o.laststatus = vim.g.lualine_laststatus
-
 			return {
 				options = {
 					theme = "auto",
@@ -78,7 +68,6 @@ return {
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = { "branch" },
-
 					lualine_c = {
 						{
 							"diagnostics",
@@ -157,7 +146,6 @@ return {
 			}
 		end,
 	},
-
 	-- Better vim.notify
 	{
 		"rcarriga/nvim-notify",
@@ -211,7 +199,6 @@ return {
 			end
 		end,
 	},
-
 	-- Better UI
 	{
 		"folke/noice.nvim",
@@ -340,7 +327,6 @@ return {
 			},
 		},
 	},
-
 	-- Dashboard
 	{
 		"nvimdev/dashboard-nvim",
@@ -354,9 +340,7 @@ return {
 ██║ ╚═╝ ██║██║  ██║██║  ██║ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝
       ]]
-
 			logo = string.rep("\n", 8) .. logo .. "\n\n"
-
 			local opts = {
 				theme = "doom",
 				hide = {
@@ -387,12 +371,10 @@ return {
 					end,
 				},
 			}
-
 			for _, button in ipairs(opts.config.center) do
 				button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
 				button.key_format = "  %s"
 			end
-
 			if vim.o.filetype == "lazy" then
 				vim.cmd.close()
 				vim.api.nvim_create_autocmd("User", {
@@ -402,11 +384,9 @@ return {
 					end,
 				})
 			end
-
 			return opts
 		end,
 	},
-
 	-- Indent guides
 	{
 		"lukas-reineke/indent-blankline.nvim",
@@ -433,7 +413,6 @@ return {
 		},
 		main = "ibl",
 	},
-
 	-- Active indent guide and indent text objects
 	{
 		"echasnovski/mini.indentscope",
@@ -463,7 +442,6 @@ return {
 			})
 		end,
 	},
-
 	-- Enhanced breadcrumbs with dropbar.nvim (better alternative to barbecue)
 	{
 		"Bekaboo/dropbar.nvim",
@@ -483,7 +461,6 @@ return {
 					then
 						return false
 					end
-
 					-- Exclude certain filetypes
 					local exclude_ft = {
 						"help",
@@ -503,11 +480,9 @@ return {
 						"gitrebase",
 						"",
 					}
-
 					if vim.tbl_contains(exclude_ft, vim.bo[buf].ft) then
 						return false
 					end
-
 					-- Disable for large files (>500KB) to prevent performance issues
 					local file_path = vim.api.nvim_buf_get_name(buf)
 					if file_path ~= "" then
@@ -516,7 +491,6 @@ return {
 							return false
 						end
 					end
-
 					return vim.bo[buf].ft == "markdown"
 						or pcall(vim.treesitter.get_parser, buf)
 						or not vim.tbl_isempty(vim.lsp.get_clients({
@@ -528,7 +502,6 @@ return {
 				sources = function(buf, _)
 					local sources = require("dropbar.sources")
 					local utils = require("dropbar.utils")
-
 					-- Custom path source that only shows filename (no directories)
 					local filename_only_path = {
 						get_symbols = function(buf, win, cursor)
@@ -536,31 +509,26 @@ return {
 							if file_path == "" then
 								return {}
 							end
-
 							-- Get the original path symbols to copy structure
 							local path_symbols = sources.path.get_symbols(buf, win, cursor)
 							if not path_symbols or #path_symbols == 0 then
 								return {}
 							end
-
 							-- Return only the last symbol (filename)
 							return { path_symbols[#path_symbols] }
 						end,
 					}
-
 					if vim.bo[buf].ft == "markdown" then
 						return {
 							filename_only_path,
 							sources.markdown,
 						}
 					end
-
 					if vim.bo[buf].buftype == "terminal" then
 						return {
 							sources.terminal,
 						}
 					end
-
 					return {
 						filename_only_path,
 						utils.source.fallback({
@@ -637,7 +605,6 @@ return {
 						Function = "󰊕 ",
 						Variable = "󰀫 ",
 						Constant = "󰏿 ",
-
 						-- Data types
 						String = "󰉾 ",
 						Number = "󰎠 ",
@@ -648,14 +615,12 @@ return {
 						Null = "󰢤 ",
 						EnumMember = " ",
 						Struct = "󰆼 ",
-
 						-- Special symbols
 						Event = " ",
 						Operator = "󰆕 ",
 						TypeParameter = "󰆩 ",
 						Folder = "󰉋 ",
 						Terminal = " ",
-
 						-- Additional programming constructs
 						Keyword = "󰌋 ",
 						Snippet = "󰩫 ",
@@ -663,7 +628,6 @@ return {
 						Unit = "󰑭 ",
 						Value = "󰎠 ",
 						Reference = "󰈇 ",
-
 						-- Control flow
 						IfStatement = "󰇉 ",
 						ForStatement = "󰑖 ",
@@ -674,7 +638,6 @@ return {
 						ContinueStatement = "→ ",
 						Return = "󰌑 ",
 						GotoStatement = "󰁔 ",
-
 						-- Markdown headings
 						MarkdownH1 = "󰉫 ",
 						MarkdownH2 = "󰉬 ",
@@ -682,7 +645,6 @@ return {
 						MarkdownH4 = "󰉮 ",
 						MarkdownH5 = "󰉯 ",
 						MarkdownH6 = "󰉰 ",
-
 						-- Other useful symbols
 						Text = "󰉿 ",
 						Identifier = "󰀫 ",
@@ -796,7 +758,6 @@ return {
 		config = function(_, opts)
 			-- Set up unified Rose Pine theme for dropbar
 			local theme = require("utils.theme")
-
 			local function setup_dropbar_highlights()
 				local highlights = {
 					-- Dropbar winbar styling
@@ -805,13 +766,11 @@ return {
 						fg = theme.semantic.bg_primary,
 						bold = true,
 					},
-
 					DropBarHover = {
 						bg = theme.semantic.hover,
 						fg = theme.semantic.fg_primary,
 						bold = true,
 					},
-
 					-- Icon highlights by category using semantic colors
 					DropBarIconKindFile = { fg = theme.semantic.info, bold = true },
 					DropBarIconKindFolder = { fg = theme.semantic.warning, bold = true },
@@ -829,7 +788,6 @@ return {
 					DropBarIconKindEnum = { fg = theme.semantic.type, bold = true },
 					DropBarIconKindModule = { fg = theme.semantic.class, bold = true },
 					DropBarIconKindNamespace = { fg = theme.semantic.class, bold = true },
-
 					-- Symbol kind name highlights
 					DropBarKindFile = { fg = theme.semantic.fg_primary },
 					DropBarKindFolder = { fg = theme.semantic.fg_primary, bold = true },
@@ -841,7 +799,6 @@ return {
 					DropBarKindConstant = { fg = theme.semantic.fg_primary, bold = true },
 					DropBarKindModule = { fg = theme.semantic.fg_primary, bold = true },
 					DropBarKindNamespace = { fg = theme.semantic.fg_primary, bold = true },
-
 					-- UI elements
 					DropBarIconUISeparator = { fg = theme.semantic.fg_muted, bold = true },
 					DropBarIconUISeparatorMenu = { fg = theme.semantic.fg_muted },
@@ -851,42 +808,35 @@ return {
 						bg = theme.semantic.error,
 						bold = true,
 					},
-
 					-- Menu styling with proper Rose Pine colors
 					DropBarMenuCurrentContext = {
 						bg = theme.semantic.selected,
 						fg = theme.semantic.fg_primary,
 						bold = true,
 					},
-
 					DropBarMenuHoverEntry = {
 						bg = theme.semantic.hover,
 						fg = theme.semantic.fg_primary,
 					},
-
 					DropBarMenuHoverIcon = {
 						bg = theme.semantic.active,
 						fg = theme.semantic.fg_primary,
 						bold = true,
 					},
-
 					DropBarMenuHoverSymbol = {
 						bg = theme.semantic.hover,
 						fg = theme.semantic.fg_primary,
 						bold = true,
 					},
-
 					DropBarMenuFloatBorder = {
 						fg = theme.semantic.border_focus,
 						bg = "NONE",
 					},
-
 					-- Preview highlight
 					DropBarPreview = {
 						bg = theme.semantic.selected,
 						fg = theme.semantic.fg_primary,
 					},
-
 					-- Fuzzy finder match
 					DropBarFzfMatch = {
 						fg = theme.semantic.focus,
@@ -894,10 +844,8 @@ return {
 						underline = true,
 					},
 				}
-
 				theme.set_highlights(highlights)
 			end
-
 			-- Apply highlights after colorscheme loads (with proper cleanup)
 			local group = vim.api.nvim_create_augroup("DropbarTheme", { clear = true })
 			vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
@@ -909,12 +857,9 @@ return {
 					end
 				end,
 			})
-
 			-- Apply highlights now
 			setup_dropbar_highlights()
-
 			require("dropbar").setup(opts)
-
 			-- Set up keybindings
 			local dropbar_api = require("dropbar.api")
 			vim.keymap.set("n", "<leader>;", dropbar_api.pick, { desc = "Pick symbols in winbar" })
@@ -923,4 +868,3 @@ return {
 		end,
 	},
 }
-

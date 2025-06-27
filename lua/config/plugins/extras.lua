@@ -1,6 +1,3 @@
--- Extra plugins (LazyVim style optional features)
--- Load these based on project needs
-
 return {
   -- AI Completion (optional)
   {
@@ -22,7 +19,6 @@ return {
       })
     end,
   },
-
   -- GitHub Copilot (alternative to Supermaven)
   {
     "github/copilot.vim",
@@ -40,7 +36,6 @@ return {
       })
     end,
   },
-
   -- Java development
   {
     "nvim-java/nvim-java",
@@ -50,7 +45,6 @@ return {
       require("java").setup()
     end,
   },
-
   -- Flutter/Dart development
   {
     "akinsho/flutter-tools.nvim",
@@ -127,7 +121,6 @@ return {
       })
     end,
   },
-
   -- Terminal integration
   {
     "akinsho/toggleterm.nvim",
@@ -161,13 +154,11 @@ return {
       },
     },
   },
-
   -- Simple project management (using built-in features)
   -- Project switching can be done with:
   -- <leader>ff (find files) + navigate to project root
   -- Or create a simple project picker using snacks
   -- Removed project.nvim due to deprecation warnings
-
   -- REST client
   {
     "rest-nvim/rest.nvim",
@@ -178,7 +169,6 @@ return {
       require("rest-nvim").setup()
     end,
   },
-
   -- Database integration
   {
     "tpope/vim-dadbod",

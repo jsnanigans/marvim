@@ -1,11 +1,7 @@
--- Editor enhancement plugins
--- File navigation, search, and editing improvements
-
 return {
-  -- File explorer (Oil from bvim)
   {
     "stevearc/oil.nvim",
-    lazy = false,
+    cmd = "Oil",
     opts = {
       columns = { "icon" },
       keymaps = {
@@ -15,28 +11,12 @@ return {
       view_options = {
         show_hidden = true,
       },
-      -- Handle directory arguments properly
-      default_file_explorer = true,
+      default_file_explorer = false,
     },
     keys = {
-      { "-", "<CMD>Oil<CR>", desc = "Open parent directory" },
+      { "-", "<CMD>Oil<CR>", desc = "Open parent directory" }
     },
-    config = function(_, opts)
-      require("oil").setup(opts)
-      
-      -- Auto-open Oil when nvim is opened on a directory
-      vim.api.nvim_create_autocmd("VimEnter", {
-        callback = function()
-          local args = vim.fn.argv()
-          if #args == 1 and vim.fn.isdirectory(args[1]) == 1 then
-            vim.cmd("Oil " .. args[1])
-          end
-        end,
-      })
-    end,
   },
-
-  -- Word highlighting under cursor (vim-illuminate)
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
@@ -49,7 +29,6 @@ return {
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
-
       local function map(key, dir, buffer)
         vim.keymap.set("n", key, function()
           require("illuminate")["goto_" .. dir .. "_reference"](false)
@@ -58,11 +37,8 @@ return {
           buffer = buffer,
         })
       end
-
       map("]]i", "next")
       map("[[i", "prev")
-
-      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
       vim.api.nvim_create_autocmd("FileType", {
         callback = function()
           local buffer = vim.api.nvim_get_current_buf()
@@ -76,8 +52,6 @@ return {
       { "[[i", desc = "Prev Reference" },
     },
   },
-
-  -- Snacks Picker (modern telescope replacement)
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -140,26 +114,19 @@ return {
     config = function(_, opts)
       local snacks = require("snacks")
       snacks.setup(opts)
-      -- Keybindings are handled in config/keymaps.lua
     end,
   },
-
-  -- Harpoon (from bvim) - keybindings in config/keymaps.lua
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
   },
-
-  -- Flash (better f/t motions) - keybindings in config/keymaps.lua
   {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
   },
-
-  -- Auto pairs
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
@@ -172,16 +139,12 @@ return {
       },
     },
   },
-
-  -- Comments - keybindings in config/keymaps.lua
   {
     "numToStr/Comment.nvim",
     opts = {
       ignore = "^$",
     },
   },
-
-  -- Better text objects
   {
     "echasnovski/mini.ai",
     event = "VeryLazy",
@@ -205,8 +168,6 @@ return {
       }
     end,
   },
-
-  -- Surround - keybindings in config/keymaps.lua
   {
     "echasnovski/mini.surround",
     opts = {
@@ -221,8 +182,6 @@ return {
       },
     },
   },
-
-  -- Buffer remove - keybindings in config/keymaps.lua
   {
     "echasnovski/mini.bufremove",
   },

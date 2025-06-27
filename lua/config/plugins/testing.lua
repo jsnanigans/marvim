@@ -1,6 +1,3 @@
--- Unit test support for multiple frameworks
--- Comprehensive testing integration for MARVIM
-
 return {
   -- Neotest - Modern test runner interface
   {
@@ -10,7 +7,6 @@ return {
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
       "nvim-neotest/nvim-nio",               -- Required for neotest
-      
       -- Test adapters for different frameworks
       "nvim-neotest/neotest-jest",           -- JavaScript/TypeScript (Jest)
       "marilari88/neotest-vitest",           -- JavaScript/TypeScript (Vitest)
@@ -30,7 +26,6 @@ return {
       { "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug Nearest Test" },
       { "<leader>tS", function() require("neotest").run.stop() end, desc = "Stop Tests" },
       { "<leader>tc", function() require("neotest").run.run({ strategy = "dap", suite = false }) end, desc = "Debug Test Class" },
-      
       -- Navigation
       { "]T", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Next Failed Test" },
       { "[T", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Prev Failed Test" },
@@ -47,7 +42,6 @@ return {
               return vim.fn.getcwd()
             end,
           }),
-          
           -- Vitest for modern JS/TS projects
           require("neotest-vitest")({
             vitestCommand = "npx vitest run",
@@ -56,7 +50,6 @@ return {
               VITEST_REPORTER = "verbose"
             },
           }),
-          
           -- Python testing
           require("neotest-python")({
             dap = { justMyCode = false },
@@ -64,7 +57,6 @@ return {
             runner = "pytest",
             python = "python3",
           }),
-          
           -- Go testing
           require("neotest-go")({
             experimental = {
@@ -72,27 +64,22 @@ return {
             },
             args = { "-count=1", "-timeout=60s" }
           }),
-          
           -- Lua/Neovim plugin testing
           require("neotest-plenary"),
         },
-        
         -- UI configuration
         status = {
           enabled = true,
           signs = true,
           virtual_text = true,
         },
-        
         output = {
           enabled = true,
           open_on_run = "short",
         },
-        
         quickfix = {
           enabled = false,
         },
-        
         summary = {
           enabled = true,
           animated = true,
@@ -118,7 +105,6 @@ return {
             prev_failed = "K",
           },
         },
-        
         icons = {
           child_indent = "│",
           child_prefix = "├",
@@ -135,14 +121,12 @@ return {
           unknown = "?",     -- Question mark for unknown status
           watching = "👁",    -- Eye icon for watched tests
         },
-        
         floating = {
           border = "rounded",
           max_height = 0.6,
           max_width = 0.6,
           options = {},
         },
-        
         strategies = {
           integrated = {
             height = 40,
@@ -155,7 +139,6 @@ return {
       require("neotest").setup(opts)
     end,
   },
-
   -- Coverage.nvim - Test coverage visualization
   {
     "andythigpen/nvim-coverage",
@@ -203,7 +186,6 @@ return {
       },
     },
   },
-
   -- Ultest - Additional test runner (alternative interface)
   {
     "rcarriga/vim-ultest",
@@ -230,7 +212,6 @@ return {
       vim.g.ultest_max_threads = 4
     end,
   },
-
   -- Overseer integration for test tasks
   {
     "stevearc/overseer.nvim",
@@ -303,7 +284,6 @@ return {
     },
     config = function(_, opts)
       require("overseer").setup(opts)
-      
       -- Register custom test runner template
       require("overseer").register_template({
         name = "test_runner",
@@ -316,7 +296,6 @@ return {
             table.insert(cmd, "-c")
           end
           table.insert(cmd, "cd " .. vim.fn.shellescape(vim.fn.getcwd()))
-          
           return {
             cmd = cmd,
             components = { "default" },
