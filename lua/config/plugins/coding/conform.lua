@@ -30,6 +30,7 @@ return {
         handlebars = { "prettier" },
         c = { "clang-format" },
         cpp = { "clang-format" },
+        dart = { "dart_format" },
       },
       format_on_save = {
         timeout_ms = 500,

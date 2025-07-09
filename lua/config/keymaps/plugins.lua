@@ -114,25 +114,11 @@ M.neotest_keys = {
     desc = "Toggle Test Watch",
   },
   {
-    "<leader>td",
-    function()
-      require("neotest").run.run({ strategy = "dap" })
-    end,
-    desc = "Debug Nearest Test",
-  },
-  {
     "<leader>tS",
     function()
       require("neotest").run.stop()
     end,
     desc = "Stop Tests",
-  },
-  {
-    "<leader>tc",
-    function()
-      require("neotest").run.run({ vim.fn.expand("%"), strategy = "dap" })
-    end,
-    desc = "Debug Test Class",
   },
   {
     "]T",

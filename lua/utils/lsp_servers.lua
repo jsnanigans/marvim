@@ -186,6 +186,48 @@ M.clangd = function()
   }
 end
 
+-- Python server configuration
+M.pyright = function()
+  return {
+    settings = {
+      python = {
+        analysis = {
+          autoSearchPaths = true,
+          diagnosticMode = "workspace",
+          useLibraryCodeForTypes = true,
+          typeCheckingMode = "basic",
+        },
+      },
+    },
+  }
+end
+
+-- Dart server configuration
+M.dartls = function()
+  return {
+    cmd = { "dart", "language-server", "--protocol=lsp" },
+    filetypes = { "dart" },
+    mason = false,
+    init_options = {
+      onlyAnalyzeProjectsWithOpenFiles = true,
+      suggestFromUnimportedLibraries = true,
+      closingLabels = true,
+      outline = true,
+      flutterOutline = true,
+    },
+    root_dir = function(fname)
+      local util = require("lspconfig.util")
+      return util.root_pattern("pubspec.yaml", ".git")(fname)
+    end,
+    settings = {
+      dart = {
+        completeFunctionCalls = true,
+        showTodos = true,
+      },
+    },
+  }
+end
+
 -- Get server configuration by name
 function M.get_server_config(server_name)
   if M[server_name] and type(M[server_name]) == "function" then

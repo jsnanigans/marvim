@@ -11,13 +11,17 @@ return {
         "eslint-lsp",
         "json-lsp",
         "clangd",
+        "pyright",
         -- Formatters
         "stylua",
         "shfmt",
         "prettier",
         "clang-format",
+        "black",
+        "isort",
         -- Linters
         "cpplint",
+        "ruff",
       },
     },
     config = function(_, opts)

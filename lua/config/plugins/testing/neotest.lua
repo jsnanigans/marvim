@@ -11,6 +11,7 @@ return {
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-go",
       "nvim-neotest/neotest-plenary",
+      "sidlatau/neotest-dart",
     },
     event = { "BufReadPost", "BufNewFile" },
     keys = function()
@@ -35,7 +36,6 @@ return {
             },
           }),
           require("neotest-python")({
-            dap = { justMyCode = false },
             args = { "--log-level", "DEBUG", "--quiet" },
             runner = "pytest",
             python = "python3",
@@ -45,6 +45,10 @@ return {
               test_table = true,
             },
             args = { "-count=1", "-timeout=60s" },
+          }),
+          require("neotest-dart")({
+            command = "flutter",
+            use_lsp = true,
           }),
           require("neotest-plenary"),
         },
