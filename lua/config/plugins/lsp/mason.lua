@@ -10,10 +10,14 @@ return {
         "vtsls",
         "eslint-lsp",
         "json-lsp",
+        "clangd",
         -- Formatters
         "stylua",
         "shfmt",
         "prettier",
+        "clang-format",
+        -- Linters
+        "cpplint",
       },
     },
     config = function(_, opts)

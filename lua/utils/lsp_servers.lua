@@ -154,6 +154,38 @@ M.lua_ls = function()
   }
 end
 
+-- C++ server configuration
+M.clangd = function()
+  return {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--header-insertion=iwyu",
+      "--completion-style=detailed",
+      "--function-arg-placeholders",
+      "--fallback-style=llvm",
+    },
+    init_options = {
+      usePlaceholders = true,
+      completeUnimported = true,
+      clangdFileStatus = true,
+    },
+    root_dir = function(fname)
+      local util = require("lspconfig.util")
+      return util.root_pattern(
+        ".clangd",
+        ".clang-tidy",
+        ".clang-format",
+        "compile_commands.json",
+        "compile_flags.txt",
+        "configure.ac",
+        ".git"
+      )(fname)
+    end,
+  }
+end
+
 -- Get server configuration by name
 function M.get_server_config(server_name)
   if M[server_name] and type(M[server_name]) == "function" then

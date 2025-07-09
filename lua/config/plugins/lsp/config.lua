@@ -108,6 +108,7 @@ return {
         vtsls = server_configs.get_server_config("vtsls"),
         eslint = server_configs.get_server_config("eslint"),
         jsonls = server_configs.get_server_config("jsonls"),
+        clangd = server_configs.get_server_config("clangd"),
       }, opts.servers)
       local function setup(server)
         if server == "ts_ls" then
