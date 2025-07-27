@@ -42,37 +42,25 @@ return {
     opts = {
       highlight = { enable = true },
       indent = { enable = true },
+      -- Only ensure essential parsers are installed
       ensure_installed = {
-        "bash",
-        "c",
-        "cpp",
-        "css",
-        "go",
-        "gomod",
-        "gosum",
-        "gowork",
-        "html",
-        "javascript",
-        "json",
-        "jsonc",
-        "julia",
         "lua",
-        "luadoc",
-        "luap",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "query",
-        "regex",
-        "rust",
-        "svelte",
-        "toml",
-        "tsx",
-        "typescript",
         "vim",
         "vimdoc",
-        "yaml",
+        "query",
+        "markdown",
+        "markdown_inline",
       },
+      -- Auto-install parsers when entering a buffer
+      auto_install = true,
+      -- Disable parsers for large files
+      disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+          return true
+        end
+      end,
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -99,6 +87,18 @@ return {
         end, opts.ensure_installed)
       end
       require("nvim-treesitter.configs").setup(opts)
+
+      -- Set up treesitter folding per-buffer when a parser is available
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("treesitter_folding", { clear = true }),
+        callback = function(ev)
+          local ok, parser = pcall(vim.treesitter.get_parser, ev.buf)
+          if ok and parser then
+            vim.wo[ev.win].foldmethod = "expr"
+            vim.wo[ev.win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+          end
+        end,
+      })
     end,
   },
 }

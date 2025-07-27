@@ -5,7 +5,7 @@ return {
   -- Fast navigation with flash
   {
     "folke/flash.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {},
   },
 
@@ -15,7 +15,24 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       ignore = "^$",
+      -- Enable proper multiline commenting
+      pre_hook = nil,
+      post_hook = nil,
     },
+    config = function(_, opts)
+      require("Comment").setup(opts)
+      -- Fix for multiline visual mode commenting
+      local ft = require("Comment.ft")
+      -- Ensure proper comment strings for common filetypes
+      ft.javascript = { "//%s", "/*%s*/" }
+      ft.typescript = { "//%s", "/*%s*/" }
+      ft.javascriptreact = { "//%s", "/*%s*/" }
+      ft.typescriptreact = { "//%s", "/*%s*/" }
+      ft.vue = { "<!--%s-->", "/*%s*/" }
+      ft.html = { "<!--%s-->" }
+      ft.css = { "/*%s*/" }
+      ft.scss = { "//%s", "/*%s*/" }
+    end,
   },
 
   -- File navigation with harpoon

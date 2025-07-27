@@ -1,7 +1,7 @@
 return {
   {
     "echasnovski/mini.ai",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
     opts = function()
       local ai = require("mini.ai")
       return {

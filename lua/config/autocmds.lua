@@ -100,9 +100,21 @@ augroup("TrimWhitespace", { clear = true })
 autocmd("BufWritePre", {
   group = "TrimWhitespace",
   callback = function()
-    local save_cursor = vim.fn.getpos(".")
-    vim.cmd([[%s/\s\+$//e]])
-    vim.fn.setpos(".", save_cursor)
+    -- Skip binary files and large files
+    if vim.bo.binary or vim.fn.getfsize(vim.fn.expand("%")) > 1024 * 1024 then
+      return
+    end
+
+    -- Check if there's actually trailing whitespace before processing
+    local view = vim.fn.winsaveview()
+    local search = vim.fn.search("\\s\\+$", "nw")
+
+    if search ~= 0 then
+      -- Only trim if we found whitespace
+      vim.cmd([[keeppatterns %s/\s\+$//e]])
+    end
+
+    vim.fn.winrestview(view)
   end,
 })
 

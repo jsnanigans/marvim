@@ -5,4 +5,5 @@ return {
   -- Complex plugins kept in separate files
   { import = "config.plugins.extras.ai" },
   { import = "config.plugins.extras.languages" },
+  { import = "config.plugins.extras.debugging" },
 }

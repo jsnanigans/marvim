@@ -15,6 +15,7 @@ return {
         "ruff",
         "eslint_d",
         "codelldb",
+        "js-debug-adapter",
       },
     },
     config = function(_, opts)
@@ -26,19 +27,23 @@ return {
           buf = vim.api.nvim_get_current_buf(),
         })
       end)
-      local function ensure_installed()
-        for _, tool in ipairs(opts.ensure_installed) do
-          local p = mr.get_package(tool)
-          if not p:is_installed() then
-            p:install()
+
+      -- Defer package installation to avoid blocking startup
+      vim.defer_fn(function()
+        local function ensure_installed()
+          for _, tool in ipairs(opts.ensure_installed) do
+            local p = mr.get_package(tool)
+            if not p:is_installed() then
+              p:install()
+            end
           end
         end
-      end
-      if mr.refresh then
-        mr.refresh(ensure_installed)
-      else
-        ensure_installed()
-      end
+        if mr.refresh then
+          mr.refresh(ensure_installed)
+        else
+          ensure_installed()
+        end
+      end, 100)
     end,
   },
 }

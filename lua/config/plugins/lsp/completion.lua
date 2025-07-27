@@ -69,10 +69,11 @@ return {
                   if not ok then
                     return false
                   end
-                  return byte_size < 1024 * 1024
+                  -- Reduce buffer size limit for better performance
+                  return byte_size < 256 * 1024 -- 256KB instead of 1MB
                 end, vim.api.nvim_list_bufs())
               end,
-              min_keyword_length = 2,
+              min_keyword_length = 3, -- Increase from 2 to reduce noise
               max_items = 5,
             },
           },
@@ -131,7 +132,7 @@ return {
           enabled = false,
         },
         list = {
-          max_items = 200,
+          max_items = 50, -- Reduced from 200 for better performance
         },
       },
       fuzzy = {

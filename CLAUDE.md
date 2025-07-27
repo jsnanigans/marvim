@@ -64,6 +64,7 @@ lua/config/plugins/
 - **Code Intelligence**: Treesitter, LSP with Mason async auto-install, blink.cmp completion
 - **File Management**: Oil.nvim (buffer-based file explorer) instead of traditional tree
 - **Smart Snippet Loading**: On-demand snippet system via `:EnableSnippets` command
+- **Debugging**: Full DAP support with TypeScript/JavaScript debugging via js-debug-adapter
 
 ## Development Workflow
 
@@ -73,6 +74,8 @@ lua/config/plugins/
 4. `<leader>gg` for git operations
 5. `<leader>tt` for running tests
 6. `<leader>cf` for code formatting
+7. `<leader>db` to set breakpoints, `<leader>dc` to start debugging
+8. `<leader>du` to open the debugging UI
 
 The configuration prioritizes performance and developer experience with thoughtful defaults and discoverable keybindings via which-key.nvim.
 

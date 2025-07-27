@@ -16,6 +16,8 @@ return {
           spacing = 4,
           source = "if_many",
           prefix = "●",
+          -- Add delay for better performance
+          delay = 300,
         },
         severity_sort = true,
         signs = {
@@ -25,6 +27,10 @@ return {
             [vim.diagnostic.severity.HINT] = " ",
             [vim.diagnostic.severity.INFO] = " ",
           },
+        },
+        -- Float window appears after delay
+        float = {
+          delay = 300,
         },
       },
       inlay_hints = {
@@ -177,13 +183,38 @@ return {
                     local codelens_augroup = vim.api.nvim_create_augroup("lsp_codelens_" .. buffer, { clear = true })
                     pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
 
-                    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "TextChanged" }, {
-                      buffer = buffer,
-                      group = codelens_augroup,
-                      callback = function()
+                    -- Debounced codelens refresh
+                    local refresh_timer = nil
+                    local function debounced_refresh()
+                      if refresh_timer then
+                        vim.fn.timer_stop(refresh_timer)
+                      end
+                      refresh_timer = vim.fn.timer_start(500, function()
                         if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
                           pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
                         end
+                      end)
+                    end
+
+                    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+                      buffer = buffer,
+                      group = codelens_augroup,
+                      callback = debounced_refresh,
+                    })
+
+                    -- Less frequent refresh for text changes
+                    vim.api.nvim_create_autocmd({ "TextChanged" }, {
+                      buffer = buffer,
+                      group = codelens_augroup,
+                      callback = function()
+                        if refresh_timer then
+                          vim.fn.timer_stop(refresh_timer)
+                        end
+                        refresh_timer = vim.fn.timer_start(2000, function() -- 2 second delay for text changes
+                          if vim.g.codelens_enabled ~= false and vim.api.nvim_buf_is_valid(buffer) then
+                            pcall(vim.lsp.codelens.refresh, { bufnr = buffer })
+                          end
+                        end)
                       end,
                     })
 

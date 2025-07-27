@@ -61,8 +61,8 @@ opt.maxmempattern = 20000
 
 -- File handling
 opt.undofile = true
-opt.undolevels = 10000
-opt.undoreload = 10000
+opt.undolevels = 1000 -- Reduced from 10000 for better memory usage
+opt.undoreload = 5000 -- Reduced from 10000
 opt.backup = false
 opt.writebackup = false
 opt.swapfile = false
@@ -87,8 +87,8 @@ opt.splitbelow = true
 opt.clipboard = "unnamedplus"
 
 -- Folding
-opt.foldmethod = "expr"
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldmethod = "manual" -- Start with manual, set to expr per-buffer when treesitter loads
+opt.foldexpr = ""
 opt.foldenable = false
 opt.foldlevel = 99
 

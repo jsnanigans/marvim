@@ -1,7 +1,7 @@
 return {
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    event = { "UIEnter" }, -- Load when UI is ready
     init = function()
       vim.g.lualine_laststatus = vim.o.laststatus
     end,
