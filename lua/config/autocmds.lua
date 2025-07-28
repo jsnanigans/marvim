@@ -87,6 +87,9 @@ augroup("AutoCreateDir", { clear = true })
 autocmd("BufWritePre", {
   group = "AutoCreateDir",
   callback = function(event)
+    if not event.match or event.match == "" then
+      return
+    end
     if event.match:match("^%w%w+:[\\/][\\/]") then
       return
     end

@@ -74,6 +74,11 @@ function M.setup()
   vim.api.nvim_create_autocmd("LspAttach", {
     group = group,
     callback = function(args)
+      -- Validate args structure
+      if not args or not args.data or not args.data.client_id then
+        return
+      end
+      
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       local buffer = args.buf
 
@@ -147,7 +152,10 @@ function M.rename_file()
   local clients = vim.lsp.get_clients({ bufnr = buf })
   for _, client in ipairs(clients) do
     if client.name == "vtsls" then
-      client:exec_cmd(params)
+      -- Check if client supports exec_cmd method
+      if client.exec_cmd then
+        pcall(client.exec_cmd, client, params)
+      end
       break
     end
   end

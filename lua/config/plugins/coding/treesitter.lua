@@ -94,8 +94,12 @@ return {
         callback = function(ev)
           local ok, parser = pcall(vim.treesitter.get_parser, ev.buf)
           if ok and parser then
-            vim.wo[ev.win].foldmethod = "expr"
-            vim.wo[ev.win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            -- Use buffer's window or current window if ev.win is not available
+            local win = ev.win or vim.api.nvim_get_current_win()
+            if vim.api.nvim_win_is_valid(win) then
+              vim.wo[win].foldmethod = "expr"
+              vim.wo[win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            end
           end
         end,
       })

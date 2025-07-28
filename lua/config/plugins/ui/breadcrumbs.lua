@@ -112,10 +112,13 @@ return {
             if not menu then
               return
             end
-            local cursor = vim.api.nvim_win_get_cursor(menu.win)
-            local component = menu.entries[cursor[1]]:first_clickable(cursor[2])
-            if component then
-              menu:click_on(component, nil, 1, "l")
+            -- Validate window before getting cursor
+            if menu.win and vim.api.nvim_win_is_valid(menu.win) then
+              local cursor = vim.api.nvim_win_get_cursor(menu.win)
+              local component = menu.entries[cursor[1]]:first_clickable(cursor[2])
+              if component then
+                menu:click_on(component, nil, 1, "l")
+              end
             end
           end,
           ["i"] = function()
