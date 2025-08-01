@@ -2,28 +2,24 @@
 -- Plugins with low cognitive complexity are consolidated here, complex ones get separate files
 
 return {
-  -- Rose Pine theme with simple config
+  -- Nord theme
   {
-    "rose-pine/neovim",
-    name = "rose-pine",
+    "shaunsingh/nord.nvim",
     lazy = false,
     priority = 1000,
-    opts = {
-      styles = {
-        bold = true,
-        italic = true,
-        transparency = false,
-      },
-      highlight_groups = {
-        Comment = { italic = true },
-        ["@keyword"] = { italic = true },
-        ["@function"] = { bold = true },
-        ["@variable"] = { italic = false },
-      },
-    },
-    config = function(_, opts)
-      require("rose-pine").setup(opts)
-      vim.cmd.colorscheme("rose-pine")
+    config = function()
+      -- Set nord options before loading
+      vim.g.nord_contrast = true
+      vim.g.nord_borders = false
+      vim.g.nord_disable_background = false
+      vim.g.nord_italic = true
+      vim.g.nord_uniform_diff_background = true
+      vim.g.nord_bold = true
+
+      -- Load colorscheme
+      vim.cmd.colorscheme("nord")
+
+      -- Apply custom theme utilities
       vim.schedule(function()
         local ok, theme = pcall(require, "utils.theme")
         if ok then

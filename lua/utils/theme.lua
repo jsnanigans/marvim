@@ -1,25 +1,38 @@
 local M = {}
 
 -- ============================================================================
--- ROSE PINE COLORS
+-- NORD COLORS
 -- ============================================================================
 
 M.colors = {
-  base = "#191724",
-  surface = "#1f1d2e",
-  overlay = "#26233a",
-  muted = "#6e6a86",
-  subtle = "#908caa",
-  text = "#e0def4",
-  love = "#eb6f92",
-  gold = "#f6c177",
-  rose = "#ebbcba",
-  pine = "#31748f",
-  foam = "#9ccfd8",
-  iris = "#c4a7e7",
-  highlight_low = "#21202e",
-  highlight_med = "#403d52",
-  highlight_high = "#524f67",
+  -- Polar Night (darker to lighter)
+  base = "#2E3440", -- nord0
+  surface = "#3B4252", -- nord1
+  overlay = "#434C5E", -- nord2
+  highlight_high = "#4C566A", -- nord3
+
+  -- Snow Storm (darker to lighter)
+  muted = "#D8DEE9", -- nord4
+  subtle = "#E5E9F0", -- nord5
+  text = "#ECEFF4", -- nord6
+
+  -- Frost (blues/teals)
+  frost1 = "#8FBCBB", -- nord7
+  frost2 = "#88C0D0", -- nord8
+  frost3 = "#81A1C1", -- nord9
+  frost4 = "#5E81AC", -- nord10
+
+  -- Aurora (accent colors)
+  love = "#BF616A", -- nord11 (red)
+  gold = "#D08770", -- nord12 (orange)
+  rose = "#EBCB8B", -- nord13 (yellow)
+  pine = "#A3BE8C", -- nord14 (green)
+  foam = "#B48EAD", -- nord15 (purple)
+  iris = "#B48EAD", -- nord15 (purple - same as foam in Nord)
+
+  -- Additional mappings for compatibility
+  highlight_low = "#3B4252",
+  highlight_med = "#434C5E",
 }
 
 -- ============================================================================
@@ -172,7 +185,7 @@ function M.setup()
 
   vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
-      if vim.g.colors_name == "rose-pine" then
+      if vim.g.colors_name == "nord" then
         vim.schedule(function()
           M.set_highlights(M.ui_highlights)
         end)

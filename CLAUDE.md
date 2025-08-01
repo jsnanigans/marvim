@@ -58,7 +58,7 @@ lua/config/plugins/
 - **Fast and Functional**: Quick startup with immediate LSP functionality
 - **Lazy Loading**: Most plugins load on-demand when needed
 - **Multi-language Support**: LSP, testing, and formatting for JS/TS, Python, Go, Lua, etc.
-- **Modern UI**: Uses noice.nvim, lualine, rose-pine theme
+- **Modern UI**: Uses noice.nvim, lualine, nord theme
 - **Git Workflow**: Comprehensive git integration with LazyGit, gitsigns, diffview
 - **Testing**: Neotest with adapters for Jest, Vitest, pytest, Go testing
 - **Code Intelligence**: Treesitter, LSP with Mason async auto-install, blink.cmp completion
