@@ -130,28 +130,6 @@ function M.setup_plugin_keymaps()
     end, { desc = "Toggle Flash Search" })
   end
 
-  -- Comment.nvim
-  if is_available("Comment.api") then
-    map("n", "gcc", function()
-      require("Comment.api").toggle.linewise.current()
-    end, { desc = "Comment toggle current line" })
-    map({ "n", "o" }, "gc", function()
-      require("Comment.api").toggle.linewise()
-    end, { desc = "Comment toggle linewise" })
-    map("x", "gc", function()
-      require("Comment.api").toggle.linewise(vim.fn.visualmode())
-    end, { desc = "Comment toggle linewise (visual)" })
-    map("n", "gbc", function()
-      require("Comment.api").toggle.blockwise.current()
-    end, { desc = "Comment toggle current block" })
-    map({ "n", "o" }, "gb", function()
-      require("Comment.api").toggle.blockwise()
-    end, { desc = "Comment toggle blockwise" })
-    map("x", "gb", function()
-      require("Comment.api").toggle.blockwise(vim.fn.visualmode())
-    end, { desc = "Comment toggle blockwise (visual)" })
-  end
-
   -- Mini.surround
   if is_available("mini.surround") then
     map({ "n", "v" }, "gsa", function()

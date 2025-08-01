@@ -78,7 +78,7 @@ function M.setup()
       if not args or not args.data or not args.data.client_id then
         return
       end
-      
+
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       local buffer = args.buf
 
