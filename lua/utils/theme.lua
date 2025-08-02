@@ -11,24 +11,24 @@ M.colors = {
   overlay = "#434C5E", -- nord2
   highlight_high = "#4C566A", -- nord3
 
-  -- Snow Storm (darker to lighter)
-  muted = "#D8DEE9", -- nord4
-  subtle = "#E5E9F0", -- nord5
-  text = "#ECEFF4", -- nord6
+  -- Snow Storm (darker to lighter) - INCREASED CONTRAST
+  muted = "#A8B0C0", -- Brightened from #D8DEE9
+  subtle = "#C8D0E0", -- Brightened from #E5E9F0
+  text = "#F2F4F8", -- Brightened from #ECEFF4
 
-  -- Frost (blues/teals)
-  frost1 = "#8FBCBB", -- nord7
-  frost2 = "#88C0D0", -- nord8
-  frost3 = "#81A1C1", -- nord9
-  frost4 = "#5E81AC", -- nord10
+  -- Frost (blues/teals) - MORE VIBRANT
+  frost1 = "#9FCCC8", -- Brightened from #8FBCBB
+  frost2 = "#98D0E0", -- Brightened from #88C0D0
+  frost3 = "#91B1D1", -- Brightened from #81A1C1
+  frost4 = "#6E91BC", -- Brightened from #5E81AC
 
-  -- Aurora (accent colors)
-  love = "#BF616A", -- nord11 (red)
-  gold = "#D08770", -- nord12 (orange)
-  rose = "#EBCB8B", -- nord13 (yellow)
-  pine = "#A3BE8C", -- nord14 (green)
-  foam = "#B48EAD", -- nord15 (purple)
-  iris = "#B48EAD", -- nord15 (purple - same as foam in Nord)
+  -- Aurora (accent colors) - MORE VIBRANT
+  love = "#CF717A", -- Brightened from #BF616A
+  gold = "#E09780", -- Brightened from #D08770
+  rose = "#FBDB9B", -- Brightened from #EBCB8B
+  pine = "#B3CE9C", -- Brightened from #A3BE8C
+  foam = "#C49EBD", -- Brightened from #B48EAD
+  iris = "#C49EBD", -- Brightened from #B48EAD
 
   -- Additional mappings for compatibility
   highlight_low = "#3B4252",
@@ -172,6 +172,41 @@ M.ui_highlights = {
 
   WinBar = { fg = M.semantic.fg_secondary, bg = M.semantic.bg_statusline },
   WinBarNC = { fg = M.semantic.fg_muted, bg = M.semantic.bg_statusline },
+  
+  -- Line numbers with better contrast
+  LineNr = { fg = "#B0B9C8" }, -- Much brighter gray
+  LineNrAbove = { fg = "#B0B9C8" },
+  LineNrBelow = { fg = "#B0B9C8" },
+  CursorLineNr = { fg = M.colors.text, bold = true },
+  
+  -- Snacks picker highlights for better contrast
+  SnacksPickerMatch = { fg = M.colors.frost2, bold = true },
+  SnacksPickerMatchBorder = { fg = M.colors.frost3 },
+  SnacksPickerNormal = { fg = M.colors.text },
+  SnacksPickerFaint = { fg = "#B0B9C8" }, -- Much brighter gray for file paths
+  SnacksPickerComment = { fg = "#B0B9C8" }, -- Much brighter gray for comments
+  SnacksPickerSelection = { bg = M.colors.highlight_high, fg = M.colors.text },
+  SnacksPickerSelectionBorder = { bg = M.colors.highlight_high, fg = M.colors.frost3 },
+  
+  -- Telescope-like highlights that snacks might also use
+  TelescopeNormal = { fg = M.colors.text },
+  TelescopePreviewLine = { bg = M.colors.highlight_high },
+  TelescopePreviewMatch = { fg = M.colors.frost2, bold = true },
+  TelescopeMatching = { fg = M.colors.frost2, bold = true },
+  TelescopeSelection = { bg = M.colors.highlight_high, fg = M.colors.text },
+  TelescopeSelectionCaret = { fg = M.colors.frost3 },
+  
+  -- General high-contrast improvements
+  Comment = { fg = M.colors.muted, italic = true }, -- Uses the brighter muted color
+  NonText = { fg = "#808A98" }, -- Brighter than default
+  SpecialKey = { fg = "#808A98" },
+  Conceal = { fg = M.colors.muted },
+  Directory = { fg = M.colors.frost2, bold = true },
+  IncSearch = { bg = M.colors.gold, fg = M.colors.base, bold = true },
+  Search = { bg = M.colors.highlight_high, fg = M.colors.text },
+  MoreMsg = { fg = M.colors.pine, bold = true },
+  Question = { fg = M.colors.frost2, bold = true },
+  Title = { fg = M.colors.frost3, bold = true },
 }
 
 -- ============================================================================
