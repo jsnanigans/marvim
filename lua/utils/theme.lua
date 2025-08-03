@@ -1,39 +1,91 @@
 local M = {}
 
 -- ============================================================================
--- NORD COLORS
+-- ROSE PINE COLORS
 -- ============================================================================
 
-M.colors = {
-  -- Polar Night (darker to lighter)
-  base = "#2E3440", -- nord0
-  surface = "#3B4252", -- nord1
-  overlay = "#434C5E", -- nord2
-  highlight_high = "#4C566A", -- nord3
+-- Get the current background and variant
+local function get_variant()
+  if vim.o.background == "light" then
+    return "dawn"
+  else
+    -- You can change this to "moon" if preferred
+    return "main"
+  end
+end
 
-  -- Snow Storm (darker to lighter) - INCREASED CONTRAST
-  muted = "#A8B0C0", -- Brightened from #D8DEE9
-  subtle = "#C8D0E0", -- Brightened from #E5E9F0
-  text = "#F2F4F8", -- Brightened from #ECEFF4
+-- Rose Pine color palettes
+local palettes = {
+  main = {
+    -- Base colors
+    base = "#191724",
+    surface = "#1f1d2e",
+    overlay = "#26233a",
+    highlight_low = "#21202e",
+    highlight_med = "#403d52",
+    highlight_high = "#524f67",
 
-  -- Frost (blues/teals) - MORE VIBRANT
-  frost1 = "#9FCCC8", -- Brightened from #8FBCBB
-  frost2 = "#98D0E0", -- Brightened from #88C0D0
-  frost3 = "#91B1D1", -- Brightened from #81A1C1
-  frost4 = "#6E91BC", -- Brightened from #5E81AC
+    -- Text colors
+    muted = "#6e6a86",
+    subtle = "#908caa",
+    text = "#e0def4",
 
-  -- Aurora (accent colors) - MORE VIBRANT
-  love = "#CF717A", -- Brightened from #BF616A
-  gold = "#E09780", -- Brightened from #D08770
-  rose = "#FBDB9B", -- Brightened from #EBCB8B
-  pine = "#B3CE9C", -- Brightened from #A3BE8C
-  foam = "#C49EBD", -- Brightened from #B48EAD
-  iris = "#C49EBD", -- Brightened from #B48EAD
+    -- Accent colors
+    love = "#eb6f92",
+    gold = "#f6c177",
+    rose = "#ebbcba",
+    pine = "#31748f",
+    foam = "#9ccfd8",
+    iris = "#c4a7e7",
+  },
+  moon = {
+    -- Base colors
+    base = "#232136",
+    surface = "#2a273f",
+    overlay = "#393552",
+    highlight_low = "#2a283e",
+    highlight_med = "#44415a",
+    highlight_high = "#56526e",
 
-  -- Additional mappings for compatibility
-  highlight_low = "#3B4252",
-  highlight_med = "#434C5E",
+    -- Text colors
+    muted = "#6e6a86",
+    subtle = "#908caa",
+    text = "#e0def4",
+
+    -- Accent colors
+    love = "#eb6f92",
+    gold = "#f6c177",
+    rose = "#ea9a97",
+    pine = "#3e8fb0",
+    foam = "#9ccfd8",
+    iris = "#c4a7e7",
+  },
+  dawn = {
+    -- Base colors
+    base = "#faf4ed",
+    surface = "#fffaf3",
+    overlay = "#f2e9e1",
+    highlight_low = "#f4ede8",
+    highlight_med = "#dfdad9",
+    highlight_high = "#cecacd",
+
+    -- Text colors
+    muted = "#9893a5",
+    subtle = "#797593",
+    text = "#575279",
+
+    -- Accent colors
+    love = "#b4637a",
+    gold = "#ea9d34",
+    rose = "#d7827e",
+    pine = "#286983",
+    foam = "#56949f",
+    iris = "#907aa9",
+  },
 }
+
+-- Get current variant colors
+M.colors = palettes[get_variant()]
 
 -- ============================================================================
 -- SEMANTIC COLOR MAPPING
@@ -174,39 +226,39 @@ M.ui_highlights = {
   WinBarNC = { fg = M.semantic.fg_muted, bg = M.semantic.bg_statusline },
   
   -- Line numbers with better contrast
-  LineNr = { fg = "#B0B9C8" }, -- Much brighter gray
-  LineNrAbove = { fg = "#B0B9C8" },
-  LineNrBelow = { fg = "#B0B9C8" },
+  LineNr = { fg = M.colors.subtle }, -- Use rose-pine subtle color
+  LineNrAbove = { fg = M.colors.subtle },
+  LineNrBelow = { fg = M.colors.subtle },
   CursorLineNr = { fg = M.colors.text, bold = true },
   
   -- Snacks picker highlights for better contrast
-  SnacksPickerMatch = { fg = M.colors.frost2, bold = true },
-  SnacksPickerMatchBorder = { fg = M.colors.frost3 },
+  SnacksPickerMatch = { fg = M.colors.iris, bold = true },
+  SnacksPickerMatchBorder = { fg = M.colors.foam },
   SnacksPickerNormal = { fg = M.colors.text },
-  SnacksPickerFaint = { fg = "#B0B9C8" }, -- Much brighter gray for file paths
-  SnacksPickerComment = { fg = "#B0B9C8" }, -- Much brighter gray for comments
+  SnacksPickerFaint = { fg = M.colors.subtle }, -- Use rose-pine subtle color
+  SnacksPickerComment = { fg = M.colors.subtle }, -- Use rose-pine subtle color
   SnacksPickerSelection = { bg = M.colors.highlight_high, fg = M.colors.text },
-  SnacksPickerSelectionBorder = { bg = M.colors.highlight_high, fg = M.colors.frost3 },
+  SnacksPickerSelectionBorder = { bg = M.colors.highlight_high, fg = M.colors.foam },
   
   -- Telescope-like highlights that snacks might also use
   TelescopeNormal = { fg = M.colors.text },
   TelescopePreviewLine = { bg = M.colors.highlight_high },
-  TelescopePreviewMatch = { fg = M.colors.frost2, bold = true },
-  TelescopeMatching = { fg = M.colors.frost2, bold = true },
+  TelescopePreviewMatch = { fg = M.colors.iris, bold = true },
+  TelescopeMatching = { fg = M.colors.iris, bold = true },
   TelescopeSelection = { bg = M.colors.highlight_high, fg = M.colors.text },
-  TelescopeSelectionCaret = { fg = M.colors.frost3 },
+  TelescopeSelectionCaret = { fg = M.colors.foam },
   
   -- General high-contrast improvements
-  Comment = { fg = M.colors.muted, italic = true }, -- Uses the brighter muted color
-  NonText = { fg = "#808A98" }, -- Brighter than default
-  SpecialKey = { fg = "#808A98" },
+  Comment = { fg = M.colors.muted, italic = true }, -- Uses rose-pine muted color
+  NonText = { fg = M.colors.muted }, -- Use rose-pine muted color
+  SpecialKey = { fg = M.colors.muted },
   Conceal = { fg = M.colors.muted },
-  Directory = { fg = M.colors.frost2, bold = true },
+  Directory = { fg = M.colors.foam, bold = true },
   IncSearch = { bg = M.colors.gold, fg = M.colors.base, bold = true },
   Search = { bg = M.colors.highlight_high, fg = M.colors.text },
   MoreMsg = { fg = M.colors.pine, bold = true },
-  Question = { fg = M.colors.frost2, bold = true },
-  Title = { fg = M.colors.frost3, bold = true },
+  Question = { fg = M.colors.foam, bold = true },
+  Title = { fg = M.colors.iris, bold = true },
 }
 
 -- ============================================================================
@@ -220,7 +272,7 @@ function M.setup()
 
   vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
-      if vim.g.colors_name == "nord" then
+      if vim.g.colors_name == "rose-pine" or vim.g.colors_name == "rose-pine-main" or vim.g.colors_name == "rose-pine-moon" or vim.g.colors_name == "rose-pine-dawn" then
         vim.schedule(function()
           M.set_highlights(M.ui_highlights)
         end)

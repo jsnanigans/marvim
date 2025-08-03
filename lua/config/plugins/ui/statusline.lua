@@ -52,7 +52,10 @@ return {
               cond = function()
                 return package.loaded["noice"] and require("noice").api.status.command.has()
               end,
-              color = { fg = "#ff9e64" },
+              color = function()
+                local colors = require("utils.theme").colors
+                return { fg = colors.gold }
+              end,
             },
             {
               function()
@@ -61,7 +64,10 @@ return {
               cond = function()
                 return package.loaded["noice"] and require("noice").api.status.mode.has()
               end,
-              color = { fg = "#ff9e64" },
+              color = function()
+                local colors = require("utils.theme").colors
+                return { fg = colors.gold }
+              end,
             },
             {
               function()
@@ -70,12 +76,18 @@ return {
               cond = function()
                 return package.loaded["dap"] and require("dap").status() ~= ""
               end,
-              color = { fg = "#ff9e64" },
+              color = function()
+                local colors = require("utils.theme").colors
+                return { fg = colors.gold }
+              end,
             },
             {
               require("lazy.status").updates,
               cond = require("lazy.status").has_updates,
-              color = { fg = "#ff9e64" },
+              color = function()
+                local colors = require("utils.theme").colors
+                return { fg = colors.gold }
+              end,
             },
             {
               "diff",
