@@ -107,3 +107,6 @@ g.loaded_perl_provider = 0
 -- Netrw
 g.netrw_banner = 0
 g.netrw_winsize = 25
+
+-- Tmux navigation
+g.tmux_navigation_enabled = true

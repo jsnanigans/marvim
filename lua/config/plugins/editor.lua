@@ -38,6 +38,36 @@ return {
     },
   },
 
+  -- Smart splits for tmux/window navigation
+  {
+    "mrjones2014/smart-splits.nvim",
+    cond = function()
+      return vim.g.tmux_navigation_enabled
+    end,
+    lazy = false,
+    opts = {
+      ignored_filetypes = { "nofile", "quickfix", "prompt" },
+      default_amount = 3,
+      at_edge = "wrap",
+      move_cursor_same_row = false,
+      cursor_follows_swapped_bufs = false,
+      resize_mode = {
+        quit_key = "<ESC>",
+        resize_keys = { "h", "j", "k", "l" },
+        silent = false,
+      },
+      ignored_events = {
+        "BufEnter",
+        "WinEnter",
+      },
+      multiplexer_integration = "tmux",
+      disable_multiplexer_nav_when_zoomed = true,
+    },
+    keys = function()
+      return require("config.keymaps").smart_splits_keys
+    end,
+  },
+
   -- Oil file manager with simple config
   {
     "stevearc/oil.nvim",
